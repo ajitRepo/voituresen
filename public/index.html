@@ -1,0 +1,2135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>VoitureSen — Marketplace Automobile Dakar</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05070F;
+  --bg2: #0A0E1A;
+  --bg3: #111627;
+  --card: #12172A;
+  --border: rgba(255,255,255,0.08);
+  --orange: #FF6B00;
+  --orange-light: #FF8C33;
+  --green: #00D46A;
+  --green-bg: rgba(0,212,106,0.12);
+  --red: #FF4757;
+  --white: #FFFFFF;
+  --text: rgba(255,255,255,0.88);
+  --muted: rgba(255,255,255,0.45);
+  --chat-user: #1a2744;
+  --chat-bot: #161C2E;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* NAV */
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 12px 20px;
+  background: rgba(5,7,15,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-brand {
+  display:flex; align-items:center; gap:10px;
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem;
+  text-decoration:none; color:var(--white);
+}
+.nav-brand span { color:var(--orange); }
+.nav-brand .car-icon { font-size:1.4rem; }
+.nav-links { display:flex; gap:6px; }
+.nav-link {
+  padding:8px 14px; border-radius:8px; font-size:0.82rem; font-weight:500;
+  color:var(--muted); text-decoration:none; transition:all 0.2s;
+}
+.nav-link:hover, .nav-link.active { color:var(--white); background:rgba(255,255,255,0.06); }
+.nav-link.cta {
+  background:var(--orange); color:#000; font-weight:600;
+}
+
+/* MAIN LAYOUT */
+.app { display:flex; height:100vh; padding-top:54px; }
+
+/* SIDEBAR */
+.sidebar {
+  width: 320px; min-width:320px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.sidebar-header {
+  padding:16px; border-bottom:1px solid var(--border);
+}
+.sidebar-title {
+  font-family:'Space Grotesk',sans-serif; font-size:0.9rem; font-weight:600;
+  color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;
+}
+.sidebar-search {
+  width:100%; padding:10px 14px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:10px; color:var(--white); font-size:0.85rem; outline:none;
+  font-family:'Inter',sans-serif;
+}
+.sidebar-search::placeholder { color:var(--muted); }
+.sidebar-search:focus { border-color:var(--orange); }
+.sidebar-filters {
+  display:flex; gap:6px; padding:10px 16px; flex-wrap:wrap;
+  border-bottom:1px solid var(--border);
+}
+.filter-chip {
+  padding:6px 12px; border-radius:20px; font-size:0.75rem; font-weight:500;
+  background:var(--bg3); border:1px solid var(--border); color:var(--muted);
+  cursor:pointer; transition:all 0.2s;
+}
+.filter-chip:hover, .filter-chip.active {
+  background:rgba(255,107,0,0.15); border-color:var(--orange); color:var(--orange);
+}
+.sidebar-list {
+  flex:1; overflow-y:auto; padding:8px;
+}
+.sidebar-list::-webkit-scrollbar { width:4px; }
+.sidebar-list::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:4px; }
+
+.car-item {
+  display:flex; gap:12px; padding:12px; border-radius:12px; cursor:pointer;
+  transition:all 0.2s; margin-bottom:4px;
+}
+.car-item:hover { background:rgba(255,255,255,0.04); }
+.car-item-img {
+  width:64px; height:48px; border-radius:8px; background:var(--bg3);
+  display:flex; align-items:center; justify-content:center; font-size:1.6rem;
+  flex-shrink:0;
+}
+.car-item-info { flex:1; min-width:0; }
+.car-item-name {
+  font-weight:600; font-size:0.82rem; color:var(--white);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.car-item-details { font-size:0.72rem; color:var(--muted); margin-top:2px; }
+.car-item-price {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:0.8rem;
+  color:var(--orange); margin-top:4px;
+}
+.car-badge {
+  display:inline-flex; align-items:center; gap:3px;
+  font-size:0.65rem; font-weight:600; padding:2px 6px; border-radius:4px;
+  margin-left:6px;
+}
+.badge-verified { background:var(--green-bg); color:var(--green); }
+.badge-unverified { background:rgba(255,165,0,0.12); color:#FFA500; }
+
+/* CHAT AREA */
+.chat-area {
+  flex:1; display:flex; flex-direction:column; background:var(--bg);
+  position:relative;
+}
+.chat-messages {
+  flex:1; overflow-y:auto; padding:20px; padding-bottom:100px;
+}
+.chat-messages::-webkit-scrollbar { width:5px; }
+.chat-messages::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.08); border-radius:4px; }
+
+/* MESSAGES */
+.msg { display:flex; gap:10px; margin-bottom:16px; max-width:85%; animation: fadeUp 0.3s ease; }
+.msg-bot { align-self:flex-start; }
+.msg-user { align-self:flex-end; flex-direction:row-reverse; margin-left:auto; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+.msg-avatar {
+  width:36px; height:36px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+}
+.msg-bot .msg-avatar { background: linear-gradient(135deg, var(--orange), #FF8C33); }
+.msg-user .msg-avatar { background: var(--chat-user); }
+
+.msg-bubble {
+  padding:14px 18px; border-radius:16px; font-size:0.9rem; line-height:1.6;
+  color:var(--text);
+}
+.msg-bot .msg-bubble {
+  background:var(--chat-bot); border-bottom-left-radius:4px;
+}
+.msg-user .msg-bubble {
+  background:var(--chat-user); border-bottom-right-radius:4px;
+}
+
+/* CAR CARDS IN CHAT */
+.car-cards { display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+.car-card {
+  background: var(--bg3); border:1px solid var(--border); border-radius:14px;
+  padding:16px; cursor:pointer; transition:all 0.25s;
+  position:relative; overflow:hidden;
+}
+.car-card:hover { border-color:var(--orange); transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(255,107,0,0.12); }
+.car-card-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.car-card-emoji { font-size:2.2rem; }
+.car-card-info { flex:1; margin-left:14px; }
+.car-card-name {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem;
+}
+.car-card-specs { font-size:0.78rem; color:var(--muted); margin-top:4px; }
+.car-card-specs span { margin-right:10px; }
+.car-card-bottom { display:flex; justify-content:space-between; align-items:center; margin-top:12px; }
+.car-card-price {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.15rem;
+  color:var(--orange);
+}
+.car-card-btn {
+  padding:8px 16px; border-radius:8px; font-size:0.78rem; font-weight:600;
+  border:none; cursor:pointer; transition:all 0.2s;
+  background:rgba(255,107,0,0.15); color:var(--orange);
+}
+.car-card-btn:hover { background:var(--orange); color:#000; }
+
+/* SUGGESTIONS */
+.suggestions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+.suggest-btn {
+  padding:10px 16px; border-radius:20px; font-size:0.82rem; font-weight:500;
+  background:rgba(255,255,255,0.06); border:1px solid var(--border);
+  color:var(--text); cursor:pointer; transition:all 0.2s;
+  font-family:'Inter',sans-serif;
+}
+.suggest-btn:hover { border-color:var(--orange); color:var(--orange);
+  background:rgba(255,107,0,0.08); }
+
+/* TYPING INDICATOR */
+.typing { display:flex; gap:4px; padding:8px 0; }
+.typing span {
+  width:7px; height:7px; background:var(--muted); border-radius:50%;
+  animation:bounce 1.2s infinite;
+}
+.typing span:nth-child(2) { animation-delay:0.2s; }
+.typing span:nth-child(3) { animation-delay:0.4s; }
+@keyframes bounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+/* INPUT BAR */
+.chat-input-bar {
+  position:absolute; bottom:0; left:0; right:0;
+  padding:16px 20px; background:linear-gradient(transparent, var(--bg) 30%);
+}
+.chat-input-wrap {
+  display:flex; gap:10px; align-items:center;
+  background:var(--bg3); border:1px solid var(--border); border-radius:14px;
+  padding:6px 6px 6px 18px;
+}
+.chat-input {
+  flex:1; background:none; border:none; color:var(--white); font-size:0.9rem;
+  outline:none; font-family:'Inter',sans-serif;
+}
+.chat-input::placeholder { color:var(--muted); }
+.chat-send {
+  width:42px; height:42px; border-radius:10px; border:none;
+  background:var(--orange); color:#000; font-size:1.1rem; font-weight:700;
+  cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center;
+}
+.chat-send:hover { background:var(--orange-light); transform:scale(1.05); }
+.chat-send:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* FICHE DETAIL MODAL */
+.modal-overlay {
+  display:none; position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.7); backdrop-filter:blur(6px);
+  align-items:center; justify-content:center; padding:20px;
+}
+.modal-overlay.active { display:flex; }
+.modal {
+  background:var(--bg2); border:1px solid var(--border); border-radius:20px;
+  max-width:520px; width:100%; max-height:85vh; overflow-y:auto; padding:28px;
+  animation: fadeUp 0.3s ease;
+}
+.modal::-webkit-scrollbar { width:4px; }
+.modal::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:4px; }
+.modal-close {
+  float:right; background:rgba(255,255,255,0.08); border:none; color:var(--white);
+  width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:1.1rem;
+}
+.modal-emoji { font-size:3.5rem; margin:10px 0 16px; }
+.modal-title { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.4rem; }
+.modal-specs {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:20px 0;
+}
+.spec-item { background:var(--bg3); border-radius:10px; padding:12px; }
+.spec-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+.spec-value { font-weight:600; font-size:0.9rem; margin-top:4px; }
+.modal-price {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.6rem;
+  color:var(--orange); margin:16px 0;
+}
+.modal-vin { background:var(--bg3); border-radius:12px; padding:16px; margin:16px 0; }
+.modal-vin-title { font-weight:600; font-size:0.9rem; margin-bottom:8px; }
+.modal-vin-plans { display:flex; gap:10px; }
+.vin-plan {
+  flex:1; padding:14px; border-radius:10px; border:1px solid var(--border);
+  background:var(--bg); cursor:pointer; transition:all 0.2s; text-align:center;
+}
+.vin-plan:hover { border-color:var(--orange); }
+.vin-plan-price { font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--orange); font-size:1rem; }
+.vin-plan-desc { font-size:0.72rem; color:var(--muted); margin-top:4px; }
+.wa-contact-btn {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  width:100%; padding:14px; border-radius:12px; border:none;
+  background:#25D366; color:#fff; font-weight:700; font-size:0.95rem;
+  cursor:pointer; margin-top:12px; transition:all 0.2s;
+  font-family:'Space Grotesk',sans-serif;
+}
+.wa-contact-btn:hover { background:#20bd5a; }
+
+/* === PAYMENT MODAL === */
+.pay-overlay {
+  display:none; position:fixed; inset:0; z-index:300;
+  background:rgba(0,0,0,0.8); backdrop-filter:blur(8px);
+  align-items:center; justify-content:center; padding:20px;
+}
+.pay-overlay.active { display:flex; }
+.pay-modal {
+  background:var(--bg2); border:1px solid var(--border); border-radius:20px;
+  max-width:440px; width:100%; overflow:hidden; animation:fadeUp 0.3s ease;
+}
+.pay-header {
+  padding:24px 24px 16px; border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.pay-title {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem;
+}
+.pay-amount {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:2rem;
+  color:var(--orange); margin:8px 0;
+}
+.pay-desc { color:var(--muted); font-size:0.82rem; }
+.pay-body { padding:20px 24px; }
+.pay-methods { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.pay-method {
+  display:flex; align-items:center; gap:14px; padding:16px;
+  background:var(--bg3); border:2px solid var(--border); border-radius:14px;
+  cursor:pointer; transition:all 0.2s;
+}
+.pay-method:hover { border-color:rgba(255,107,0,0.4); }
+.pay-method.selected { border-color:var(--orange); background:rgba(255,107,0,0.06); }
+.pay-method-icon { font-size:1.6rem; width:40px; text-align:center; }
+.pay-method-name { font-weight:600; font-size:0.9rem; }
+.pay-method-desc { font-size:0.72rem; color:var(--muted); }
+.pay-method-radio {
+  margin-left:auto; width:20px; height:20px; border-radius:50%;
+  border:2px solid var(--border); display:flex; align-items:center; justify-content:center;
+}
+.pay-method.selected .pay-method-radio {
+  border-color:var(--orange);
+}
+.pay-method.selected .pay-method-radio::after {
+  content:''; width:10px; height:10px; border-radius:50%; background:var(--orange);
+}
+.pay-phone-input {
+  width:100%; padding:14px 16px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:12px; color:var(--white); font-size:0.95rem; outline:none;
+  font-family:'Inter',sans-serif; margin-bottom:16px; display:none;
+}
+.pay-phone-input:focus { border-color:var(--orange); }
+.pay-phone-input.visible { display:block; }
+.pay-submit {
+  width:100%; padding:16px; border:none; border-radius:14px;
+  background:var(--orange); color:#000; font-weight:700; font-size:1rem;
+  cursor:pointer; font-family:'Space Grotesk',sans-serif; transition:all 0.2s;
+}
+.pay-submit:hover { background:var(--orange-light); transform:translateY(-1px); }
+.pay-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+.pay-secure { display:flex; align-items:center; justify-content:center; gap:6px;
+  font-size:0.72rem; color:var(--muted); margin-top:12px; }
+.pay-close {
+  position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.08);
+  border:none; color:var(--white); width:32px; height:32px; border-radius:8px;
+  cursor:pointer; font-size:1rem;
+}
+
+/* Payment processing animation */
+.pay-processing {
+  display:none; text-align:center; padding:40px 20px;
+}
+.pay-processing.active { display:block; }
+.pay-spinner {
+  width:50px; height:50px; border:4px solid var(--border);
+  border-top-color:var(--orange); border-radius:50%;
+  animation:spin 0.8s linear infinite; margin:0 auto 16px;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.pay-processing-text { font-weight:600; font-size:0.95rem; }
+.pay-processing-sub { color:var(--muted); font-size:0.82rem; margin-top:6px; }
+
+/* Payment success */
+.pay-success {
+  display:none; text-align:center; padding:40px 20px;
+}
+.pay-success.active { display:block; }
+.pay-success-icon { font-size:3rem; margin-bottom:12px; }
+.pay-success-title { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.2rem; color:var(--green); }
+.pay-success-text { color:var(--muted); font-size:0.85rem; margin-top:8px; }
+
+/* Stripe card input */
+.pay-card-inputs { display:none; margin-bottom:16px; }
+.pay-card-inputs.visible { display:block; }
+.pay-card-row { display:flex; gap:10px; margin-top:10px; }
+.pay-card-input {
+  width:100%; padding:12px 14px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:10px; color:var(--white); font-size:0.88rem; outline:none;
+  font-family:'Inter',sans-serif;
+}
+.pay-card-input:focus { border-color:var(--orange); }
+.pay-card-input::placeholder { color:var(--muted); }
+
+/* === PAGE ANNONCES === */
+.page { display:none; height:100vh; padding-top:54px; overflow-y:auto; }
+.page.active { display:block; }
+.annonces-header {
+  padding:30px 40px 20px; max-width:1280px; margin:0 auto;
+}
+.annonces-title {
+  font-family:'Space Grotesk',sans-serif; font-size:1.8rem; font-weight:700;
+}
+.annonces-title span { color:var(--orange); }
+.annonces-subtitle { color:var(--muted); font-size:0.9rem; margin-top:6px; }
+.annonces-toolbar {
+  display:flex; gap:12px; margin-top:20px; flex-wrap:wrap; align-items:center;
+}
+.annonces-search {
+  flex:1; min-width:200px; padding:12px 18px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:12px; color:var(--white); font-size:0.9rem; outline:none; font-family:'Inter',sans-serif;
+}
+.annonces-search:focus { border-color:var(--orange); }
+.annonces-select {
+  padding:12px 16px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:12px; color:var(--white); font-size:0.85rem; outline:none;
+  font-family:'Inter',sans-serif; cursor:pointer;
+}
+.annonces-select option { background:var(--bg2); }
+.annonces-chips {
+  display:flex; gap:8px; padding:0 40px 16px; max-width:1280px; margin:0 auto; flex-wrap:wrap;
+}
+.annonces-chip {
+  padding:8px 16px; border-radius:20px; font-size:0.8rem; font-weight:500;
+  background:var(--bg3); border:1px solid var(--border); color:var(--muted);
+  cursor:pointer; transition:all 0.2s;
+}
+.annonces-chip:hover, .annonces-chip.active {
+  background:rgba(255,107,0,0.15); border-color:var(--orange); color:var(--orange);
+}
+.annonces-grid {
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+  gap:18px; padding:0 40px 40px; max-width:1280px; margin:0 auto;
+}
+.grid-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  overflow:hidden; cursor:pointer; transition:all 0.25s;
+}
+.grid-card:hover { border-color:var(--orange); transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(255,107,0,0.1); }
+.grid-card-img {
+  height:140px; background:var(--bg3); display:flex; align-items:center;
+  justify-content:center; font-size:3.5rem; position:relative;
+}
+.grid-card-badge {
+  position:absolute; top:10px; right:10px; padding:4px 10px; border-radius:6px;
+  font-size:0.7rem; font-weight:600;
+}
+.grid-card-badge.verified { background:var(--green-bg); color:var(--green); }
+.grid-card-badge.unverified { background:rgba(255,165,0,0.12); color:#FFA500; }
+.grid-card-body { padding:16px; }
+.grid-card-name {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem;
+}
+.grid-card-specs {
+  display:flex; gap:10px; margin-top:8px; font-size:0.78rem; color:var(--muted); flex-wrap:wrap;
+}
+.grid-card-specs span { display:flex; align-items:center; gap:3px; }
+.grid-card-footer {
+  display:flex; justify-content:space-between; align-items:center; margin-top:14px;
+  padding-top:12px; border-top:1px solid var(--border);
+}
+.grid-card-price {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem; color:var(--orange);
+}
+.grid-card-btn {
+  padding:8px 14px; border-radius:8px; font-size:0.78rem; font-weight:600;
+  border:none; cursor:pointer; background:rgba(255,107,0,0.12); color:var(--orange);
+  transition:all 0.2s;
+}
+.grid-card-btn:hover { background:var(--orange); color:#000; }
+.annonces-empty {
+  text-align:center; padding:60px 20px; color:var(--muted); font-size:1rem;
+}
+
+/* === PAGE TARIFS === */
+.tarifs-page { max-width:900px; margin:0 auto; padding:40px 30px; }
+.tarifs-heading {
+  text-align:center; margin-bottom:40px;
+}
+.tarifs-heading h1 {
+  font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:700;
+}
+.tarifs-heading h1 span { color:var(--orange); }
+.tarifs-heading p { color:var(--muted); margin-top:8px; font-size:0.95rem; }
+.tarifs-cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:18px; }
+.tarif-card {
+  background:var(--card); border:1px solid var(--border); border-radius:18px;
+  padding:28px 22px; text-align:center; transition:all 0.25s; position:relative;
+}
+.tarif-card:hover { border-color:var(--orange); transform:translateY(-3px); }
+.tarif-card.popular {
+  border-color:var(--orange); box-shadow:0 0 30px rgba(255,107,0,0.15);
+}
+.tarif-card.popular::before {
+  content:'Populaire'; position:absolute; top:-11px; left:50%; transform:translateX(-50%);
+  background:var(--orange); color:#000; font-size:0.7rem; font-weight:700;
+  padding:4px 14px; border-radius:20px;
+}
+.tarif-price {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.8rem; color:var(--orange);
+  margin:12px 0 4px;
+}
+.tarif-price.free { color:var(--green); }
+.tarif-name { font-weight:600; font-size:1rem; margin-bottom:16px; }
+.tarif-features { list-style:none; text-align:left; }
+.tarif-features li {
+  padding:8px 0; font-size:0.85rem; color:var(--text); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:8px;
+}
+.tarif-features li:last-child { border:none; }
+.tarif-btn {
+  margin-top:20px; width:100%; padding:14px; border-radius:12px; border:none;
+  font-weight:700; font-size:0.9rem; cursor:pointer; transition:all 0.2s;
+  font-family:'Space Grotesk',sans-serif;
+}
+.tarif-btn.primary { background:var(--orange); color:#000; }
+.tarif-btn.secondary { background:rgba(255,255,255,0.08); color:var(--white); }
+.tarif-btn:hover { opacity:0.9; transform:translateY(-1px); }
+
+/* === ESPACE VENDEUR === */
+.vendeur-page { max-width:1100px; margin:0 auto; padding:30px 24px; }
+.vendeur-tabs { display:flex; gap:8px; margin-bottom:24px; flex-wrap:wrap; }
+.vendeur-tab {
+  padding:10px 20px; border-radius:10px; font-size:0.85rem; font-weight:600;
+  background:var(--bg3); border:1px solid var(--border); color:var(--muted);
+  cursor:pointer; transition:all 0.2s; font-family:'Space Grotesk',sans-serif;
+}
+.vendeur-tab:hover { border-color:var(--orange); color:var(--orange); }
+.vendeur-tab.active { background:rgba(255,107,0,0.15); border-color:var(--orange); color:var(--orange); }
+.vendeur-section { display:none; }
+.vendeur-section.active { display:block; }
+
+/* Inscription */
+.inscription-card {
+  background:var(--card); border:1px solid var(--border); border-radius:18px;
+  padding:32px; max-width:600px; margin:0 auto;
+}
+.inscription-title {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.4rem;
+  margin-bottom:6px;
+}
+.inscription-title span { color:var(--orange); }
+.inscription-subtitle { color:var(--muted); font-size:0.88rem; margin-bottom:24px; }
+.form-group { margin-bottom:18px; }
+.form-label { font-size:0.8rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; display:block; }
+.form-input, .form-select, .form-textarea {
+  width:100%; padding:12px 16px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:10px; color:var(--white); font-size:0.9rem; outline:none;
+  font-family:'Inter',sans-serif; transition:border-color 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--orange); }
+.form-select option { background:var(--bg2); }
+.form-textarea { resize:vertical; min-height:80px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-submit {
+  width:100%; padding:14px; border:none; border-radius:12px;
+  background:var(--orange); color:#000; font-weight:700; font-size:0.95rem;
+  cursor:pointer; font-family:'Space Grotesk',sans-serif; transition:all 0.2s;
+  margin-top:8px;
+}
+.form-submit:hover { background:var(--orange-light); transform:translateY(-1px); }
+
+/* Dashboard vendeur */
+.dash-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:24px; }
+.dash-stat {
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:20px; text-align:center;
+}
+.dash-stat-value { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.8rem; color:var(--orange); }
+.dash-stat-label { font-size:0.78rem; color:var(--muted); margin-top:4px; }
+.dash-heading {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem;
+  margin-bottom:14px; display:flex; align-items:center; gap:8px;
+}
+.dash-badge {
+  display:inline-flex; align-items:center; gap:4px; padding:6px 14px;
+  border-radius:20px; font-size:0.78rem; font-weight:600;
+}
+.dash-badge.verified { background:var(--green-bg); color:var(--green); }
+.dash-badge.free { background:rgba(255,165,0,0.12); color:#FFA500; }
+.dash-annonce {
+  display:flex; gap:16px; align-items:center; padding:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  margin-bottom:10px; transition:all 0.2s;
+}
+.dash-annonce:hover { border-color:var(--orange); }
+.dash-annonce-emoji { font-size:2rem; width:50px; text-align:center; }
+.dash-annonce-info { flex:1; }
+.dash-annonce-name { font-weight:700; font-size:0.95rem; }
+.dash-annonce-meta { font-size:0.78rem; color:var(--muted); margin-top:3px; }
+.dash-annonce-price { font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--orange); font-size:0.95rem; }
+.dash-annonce-actions { display:flex; gap:8px; }
+.dash-action-btn {
+  padding:8px 14px; border-radius:8px; font-size:0.75rem; font-weight:600;
+  border:none; cursor:pointer; transition:all 0.2s;
+}
+.dash-action-btn.edit { background:rgba(255,107,0,0.12); color:var(--orange); }
+.dash-action-btn.delete { background:rgba(255,71,87,0.12); color:var(--red); }
+.dash-action-btn:hover { opacity:0.8; }
+.status-select {
+  padding:6px 10px; border-radius:8px; font-size:0.75rem; font-weight:600;
+  background:var(--bg3); border:1px solid var(--border); color:var(--white);
+  cursor:pointer; outline:none;
+}
+.status-select option { background:var(--bg2); }
+.abonnement-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:24px; display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px;
+}
+.abonnement-info h3 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; }
+.abonnement-info p { color:var(--muted); font-size:0.85rem; margin-top:4px; }
+.abonnement-btn {
+  padding:12px 24px; border-radius:10px; border:none; font-weight:700;
+  font-family:'Space Grotesk',sans-serif; cursor:pointer; transition:all 0.2s;
+}
+.abonnement-btn.upgrade { background:var(--orange); color:#000; }
+.abonnement-btn.active-sub { background:var(--green-bg); color:var(--green); border:1px solid var(--green); }
+
+/* Ajout véhicule */
+.add-vehicle-form { max-width:700px; }
+.photo-upload {
+  display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;
+}
+.photo-slot {
+  width:80px; height:80px; border-radius:10px; border:2px dashed var(--border);
+  display:flex; align-items:center; justify-content:center; cursor:pointer;
+  color:var(--muted); font-size:1.5rem; transition:all 0.2s;
+  background:var(--bg3);
+}
+.photo-slot:hover { border-color:var(--orange); color:var(--orange); }
+.photo-slot.filled { border-style:solid; border-color:var(--green); }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .sidebar { display:none; position:fixed; top:54px; left:0; bottom:0; z-index:50; width:85%; }
+  .sidebar.open { display:flex; }
+  .nav-links .desktop-only { display:none; }
+  .msg { max-width:95%; }
+  .modal { margin:10px; max-height:90vh; }
+  .annonces-header { padding:20px; }
+  .annonces-grid { padding:0 16px 30px; grid-template-columns:1fr; }
+  .annonces-chips { padding:0 16px 12px; }
+  .tarifs-cards { grid-template-columns:1fr; }
+  .vendeur-page { padding:20px 16px; }
+  .form-row { grid-template-columns:1fr; }
+  .inscription-card { padding:22px; }
+  .dash-stats { grid-template-columns:1fr 1fr; }
+  .dash-annonce { flex-direction:column; text-align:center; }
+  .dash-annonce-actions { justify-content:center; }
+  .abonnement-card { flex-direction:column; gap:14px; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#" class="nav-brand">
+    <span class="car-icon">🚗</span> Voiture<span>Sen</span>
+  </a>
+  <div class="nav-links">
+    <a href="#" class="nav-link active" id="navFatou" onclick="showPage('chat')">👩🏾 Fatou</a>
+    <a href="#" class="nav-link" id="navAnnonces" onclick="showPage('annonces')">🚘 Annonces</a>
+    <a href="#" class="nav-link" id="navTarifs" onclick="showPage('tarifs')">💰 Tarifs</a>
+    <a href="#" class="nav-link" id="navVendeur" onclick="showPage('vendeur')">🏢 Espace Pro</a>
+    <a href="#" class="nav-link cta" onclick="showPage('annonces')">Voir les voitures</a>
+    <a href="voituresen-admin.html" class="nav-link desktop-only" style="font-size:0.72rem;color:var(--muted);">🔐 Admin</a>
+  </div>
+</nav>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">🚘 Annonces Dakar</div>
+      <input class="sidebar-search" placeholder="Rechercher une voiture..." oninput="filterCars(this.value)">
+    </div>
+    <div class="sidebar-filters">
+      <span class="filter-chip active" onclick="setFilter('all',this)">Tout</span>
+      <span class="filter-chip" onclick="setFilter('verified',this)">✅ Vérifiées</span>
+      <span class="filter-chip" onclick="setFilter('suv',this)">SUV</span>
+      <span class="filter-chip" onclick="setFilter('berline',this)">Berline</span>
+      <span class="filter-chip" onclick="setFilter('4x4',this)">4x4</span>
+      <span class="filter-chip" onclick="setFilter('moto',this)">Moto</span>
+      <span class="filter-chip" onclick="setFilter('minibus',this)">Minibus</span>
+    </div>
+    <div class="sidebar-list" id="carList"></div>
+  </aside>
+
+  <!-- CHAT -->
+  <main class="chat-area">
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-bar">
+      <div class="chat-input-wrap">
+        <input class="chat-input" id="chatInput" placeholder="Demandez à Fatou..." onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}">
+        <button class="chat-send" id="sendBtn" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- PAGE ANNONCES -->
+<div class="page" id="pageAnnonces">
+  <div class="annonces-header">
+    <div class="annonces-title">🚘 Annonces <span>Dakar</span></div>
+    <div class="annonces-subtitle">Trouvez votre voiture parmi nos annonces vérifiées et non vérifiées</div>
+    <div class="annonces-toolbar">
+      <input class="annonces-search" id="annonceSearch" placeholder="Rechercher par marque, modèle..." oninput="renderAnnonces()">
+      <select class="annonces-select" id="annonceTri" onchange="renderAnnonces()">
+        <option value="verified">Vérifiées en premier</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+        <option value="recent">Plus récent</option>
+        <option value="km">Kilométrage</option>
+      </select>
+      <select class="annonces-select" id="annoncePriceMax" onchange="renderAnnonces()">
+        <option value="0">Budget max</option>
+        <option value="3000000">3 000 000 FCFA</option>
+        <option value="5000000">5 000 000 FCFA</option>
+        <option value="10000000">10 000 000 FCFA</option>
+        <option value="15000000">15 000 000 FCFA</option>
+        <option value="20000000">20 000 000 FCFA</option>
+      </select>
+    </div>
+  </div>
+  <div class="annonces-chips" id="annonceChips">
+    <span class="annonces-chip active" onclick="setAnnonceFilter('all',this)">Tout</span>
+    <span class="annonces-chip" onclick="setAnnonceFilter('verified',this)">✅ Vérifiées</span>
+    <span class="annonces-chip" onclick="setAnnonceFilter('berline',this)">Berline</span>
+    <span class="annonces-chip" onclick="setAnnonceFilter('suv',this)">SUV</span>
+    <span class="annonces-chip" onclick="setAnnonceFilter('4x4',this)">4x4</span>
+    <span class="annonces-chip" onclick="setAnnonceFilter('minibus',this)">Minibus</span>
+    <span class="annonces-chip" onclick="setAnnonceFilter('moto',this)">Moto</span>
+  </div>
+  <div class="annonces-grid" id="annoncesGrid"></div>
+</div>
+
+<!-- PAGE TARIFS -->
+<div class="page" id="pageTarifs">
+  <div class="tarifs-page">
+    <div class="tarifs-heading">
+      <h1>Tarifs <span>VoitureSen</span></h1>
+      <p>Transparence totale. Payez uniquement ce dont vous avez besoin.</p>
+    </div>
+    <div class="tarifs-cards">
+      <div class="tarif-card">
+        <div style="font-size:2rem;">💬</div>
+        <div class="tarif-price free">Gratuit</div>
+        <div class="tarif-name">Conseils Fatou</div>
+        <ul class="tarif-features">
+          <li>✅ Conversation illimitée avec Fatou</li>
+          <li>✅ Recommandations IA personnalisées</li>
+          <li>✅ Accès à toutes les annonces</li>
+          <li>✅ Filtres et recherche avancée</li>
+          <li>❌ Rapport VIN non inclus</li>
+          <li>❌ Contact vendeur non inclus</li>
+        </ul>
+        <button class="tarif-btn secondary" onclick="showPage('chat')">Parler à Fatou →</button>
+      </div>
+      <div class="tarif-card">
+        <div style="font-size:2rem;">📋</div>
+        <div class="tarif-price">500 FCFA</div>
+        <div class="tarif-name">Rapport VIN Basique</div>
+        <ul class="tarif-features">
+          <li>✅ Tout du plan Gratuit</li>
+          <li>✅ Kilométrage certifié</li>
+          <li>✅ Pays d'origine du véhicule</li>
+          <li>✅ Nombre de propriétaires</li>
+          <li>✅ Statut vol (oui/non)</li>
+          <li>❌ Contact vendeur non inclus</li>
+        </ul>
+        <button class="tarif-btn secondary" onclick="showPage('annonces')">Choisir une voiture →</button>
+      </div>
+      <div class="tarif-card popular">
+        <div style="font-size:2rem;">🔓</div>
+        <div class="tarif-price">2 000 FCFA</div>
+        <div class="tarif-name">Rapport VIN Complet</div>
+        <ul class="tarif-features">
+          <li>✅ Tout du plan Basique</li>
+          <li>✅ Accidents déclarés</li>
+          <li>✅ Historique d'entretien</li>
+          <li>✅ Rapport téléchargeable PDF</li>
+          <li>✅ Contact WhatsApp vendeur</li>
+          <li>✅ Assistance prioritaire Fatou</li>
+        </ul>
+        <button class="tarif-btn primary" onclick="showPage('annonces')">Choisir une voiture →</button>
+      </div>
+      <div class="tarif-card">
+        <div style="font-size:2rem;">🏢</div>
+        <div class="tarif-price">15 000 <span style="font-size:0.8rem;color:var(--muted);">FCFA/mois</span></div>
+        <div class="tarif-name">Badge Concessionnaire Vérifié</div>
+        <ul class="tarif-features">
+          <li>✅ Badge vert ✅ Vérifié</li>
+          <li>✅ Priorité en tête de liste</li>
+          <li>✅ Recommandé par Fatou</li>
+          <li>✅ Dashboard vendeur complet</li>
+          <li>✅ Statistiques avancées</li>
+          <li>✅ Support WhatsApp dédié</li>
+        </ul>
+        <button class="tarif-btn secondary" onclick="showPage('vendeur')">S'inscrire →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE ESPACE VENDEUR -->
+<div class="page" id="pageVendeur">
+  <div class="vendeur-page">
+    <!-- Si pas connecté : inscription -->
+    <div id="vendeurAuth">
+      <div class="inscription-card">
+        <div class="inscription-title">🏢 Espace <span>Concessionnaire</span></div>
+        <div class="inscription-subtitle">Inscrivez-vous pour publier vos annonces et rejoindre le réseau VoitureSen Dakar.</div>
+        <div class="form-group">
+          <label class="form-label">Nom de l'agence *</label>
+          <input class="form-input" id="vNom" placeholder="Ex: Auto Prestige Dakar">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Ville *</label>
+            <select class="form-select" id="vVille">
+              <option value="Dakar">Dakar</option>
+              <option value="Saint-Louis">Saint-Louis</option>
+              <option value="Thiès">Thiès</option>
+              <option value="Ziguinchor">Ziguinchor</option>
+              <option value="Touba">Touba</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Numéro WhatsApp *</label>
+            <input class="form-input" id="vWhatsApp" placeholder="+221 77 000 00 00">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adresse</label>
+          <input class="form-input" id="vAdresse" placeholder="Quartier, rue...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" id="vEmail" type="email" placeholder="contact@monagence.sn">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description de votre activité</label>
+          <textarea class="form-textarea" id="vDesc" placeholder="Décrivez votre agence en quelques lignes..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Logo (emoji pour la démo)</label>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="photo-slot" onclick="selectLogo(this,'🏢')" style="font-size:1.8rem;">🏢</span>
+            <span class="photo-slot" onclick="selectLogo(this,'🚗')" style="font-size:1.8rem;">🚗</span>
+            <span class="photo-slot" onclick="selectLogo(this,'🏎️')" style="font-size:1.8rem;">🏎️</span>
+            <span class="photo-slot" onclick="selectLogo(this,'🛻')" style="font-size:1.8rem;">🛻</span>
+            <span class="photo-slot" onclick="selectLogo(this,'⭐')" style="font-size:1.8rem;">⭐</span>
+            <span class="photo-slot" onclick="selectLogo(this,'🔑')" style="font-size:1.8rem;">🔑</span>
+          </div>
+        </div>
+        <button class="form-submit" onclick="registerVendeur()">🚀 Créer mon espace vendeur</button>
+        <div style="text-align:center;margin-top:14px;font-size:0.82rem;color:var(--muted);">
+          Déjà inscrit ? <a href="#" onclick="loginVendeur()" style="color:var(--orange);text-decoration:none;">Se connecter (démo)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard vendeur (affiché après connexion) -->
+    <div id="vendeurDashboard" style="display:none;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;" id="dashWelcome">🏢 Mon Espace Vendeur</div>
+          <div style="color:var(--muted);font-size:0.88rem;margin-top:4px;" id="dashAgence"></div>
+        </div>
+        <div id="dashBadge"></div>
+      </div>
+
+      <!-- Onglets -->
+      <div class="vendeur-tabs">
+        <span class="vendeur-tab active" onclick="showVendeurTab('dashboard',this)">📊 Dashboard</span>
+        <span class="vendeur-tab" onclick="showVendeurTab('mesAnnonces',this)">🚗 Mes annonces</span>
+        <span class="vendeur-tab" onclick="showVendeurTab('ajouterVehicule',this)">➕ Ajouter véhicule</span>
+        <span class="vendeur-tab" onclick="showVendeurTab('abonnement',this)">💎 Abonnement</span>
+      </div>
+
+      <!-- Tab: Dashboard -->
+      <div class="vendeur-section active" id="tabDashboard">
+        <div class="dash-stats">
+          <div class="dash-stat">
+            <div class="dash-stat-value" id="statAnnonces">0</div>
+            <div class="dash-stat-label">Annonces actives</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-value" id="statVues">0</div>
+            <div class="dash-stat-label">Vues totales</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-value" id="statContacts">0</div>
+            <div class="dash-stat-label">Contacts reçus</div>
+          </div>
+          <div class="dash-stat">
+            <div class="dash-stat-value" id="statRapports">0</div>
+            <div class="dash-stat-label">Rapports achetés</div>
+          </div>
+        </div>
+        <div class="dash-heading">📈 Activité récente</div>
+        <div id="dashActivity" style="color:var(--muted);font-size:0.88rem;"></div>
+      </div>
+
+      <!-- Tab: Mes annonces -->
+      <div class="vendeur-section" id="tabMesAnnonces">
+        <div class="dash-heading">🚗 Mes véhicules en ligne</div>
+        <div id="mesAnnoncesListe"></div>
+      </div>
+
+      <!-- Tab: Ajouter véhicule -->
+      <div class="vendeur-section" id="tabAjouterVehicule">
+        <div class="dash-heading">➕ Publier un nouveau véhicule</div>
+        <div class="add-vehicle-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Marque *</label>
+              <select class="form-select" id="addBrand">
+                <option value="">Choisir...</option>
+                <option>Toyota</option><option>Mercedes</option><option>BMW</option>
+                <option>Renault</option><option>Peugeot</option><option>Hyundai</option>
+                <option>Honda</option><option>Nissan</option><option>Volkswagen</option>
+                <option>Kia</option><option>Ford</option><option>Autre</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Modèle *</label>
+              <input class="form-input" id="addModel" placeholder="Ex: Corolla, RAV4...">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Année *</label>
+              <input class="form-input" id="addYear" type="number" placeholder="2020" min="1990" max="2026">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Prix (FCFA) *</label>
+              <input class="form-input" id="addPrice" type="number" placeholder="5000000">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Kilométrage *</label>
+              <input class="form-input" id="addKm" type="number" placeholder="45000">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Type *</label>
+              <select class="form-select" id="addType">
+                <option value="berline">Berline</option>
+                <option value="suv">SUV</option>
+                <option value="4x4">4x4</option>
+                <option value="minibus">Minibus</option>
+                <option value="moto">Moto</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Carburant</label>
+              <select class="form-select" id="addFuel">
+                <option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Transmission</label>
+              <select class="form-select" id="addTrans">
+                <option>Automatique</option><option>Manuelle</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Couleur</label>
+              <input class="form-input" id="addColor" placeholder="Noir, Blanc, Gris...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Nombre de places</label>
+              <input class="form-input" id="addSeats" type="number" placeholder="5" value="5">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Numéro VIN</label>
+            <input class="form-input" id="addVin" placeholder="Ex: VF1RFE00X60123456 (17 caractères)">
+            <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Le VIN est obligatoire pour les annonces vérifiées (badge vert)</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pays d'origine</label>
+            <select class="form-select" id="addOrigin">
+              <option value="France|🇫🇷">🇫🇷 France</option>
+              <option value="USA|🇺🇸">🇺🇸 USA</option>
+              <option value="Japon|🇯🇵">🇯🇵 Japon</option>
+              <option value="Allemagne|🇩🇪">🇩🇪 Allemagne</option>
+              <option value="Corée|🇰🇷">🇰🇷 Corée du Sud</option>
+              <option value="Sénégal|🇸🇳">🇸🇳 Sénégal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Photos (émojis pour la démo)</label>
+            <div class="photo-upload">
+              <span class="photo-slot" onclick="selectCarEmoji(this,'🚗')">🚗</span>
+              <span class="photo-slot" onclick="selectCarEmoji(this,'🚙')">🚙</span>
+              <span class="photo-slot" onclick="selectCarEmoji(this,'🏎️')">🏎️</span>
+              <span class="photo-slot" onclick="selectCarEmoji(this,'🏍️')">🏍️</span>
+              <span class="photo-slot" onclick="selectCarEmoji(this,'🚌')">🚌</span>
+              <span class="photo-slot" onclick="selectCarEmoji(this,'🏔️')">🏔️</span>
+              <span class="photo-slot" onclick="selectCarEmoji(this,'✨')">✨</span>
+              <span class="photo-slot" onclick="selectCarEmoji(this,'🛻')">🛻</span>
+            </div>
+          </div>
+          <button class="form-submit" onclick="addVehicle()">📤 Publier l'annonce</button>
+        </div>
+      </div>
+
+      <!-- Tab: Abonnement -->
+      <div class="vendeur-section" id="tabAbonnement">
+        <div class="dash-heading">💎 Mon abonnement</div>
+        <div id="abonnementStatus"></div>
+        <div style="margin-top:20px;">
+          <div class="dash-heading">Avantages du Badge Vérifié ✅</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="dash-stat" style="text-align:left;padding:16px;">
+              <div style="font-size:1.2rem;margin-bottom:6px;">🏆</div>
+              <div style="font-weight:600;font-size:0.88rem;">Priorité en tête de liste</div>
+              <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Vos annonces apparaissent avant les non vérifiées</div>
+            </div>
+            <div class="dash-stat" style="text-align:left;padding:16px;">
+              <div style="font-size:1.2rem;margin-bottom:6px;">🤖</div>
+              <div style="font-weight:600;font-size:0.88rem;">Recommandé par Fatou</div>
+              <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Fatou propose vos voitures en priorité</div>
+            </div>
+            <div class="dash-stat" style="text-align:left;padding:16px;">
+              <div style="font-size:1.2rem;margin-bottom:6px;">✅</div>
+              <div style="font-weight:600;font-size:0.88rem;">Badge de confiance</div>
+              <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Les acheteurs voient que vous êtes vérifié</div>
+            </div>
+            <div class="dash-stat" style="text-align:left;padding:16px;">
+              <div style="font-size:1.2rem;margin-bottom:6px;">📊</div>
+              <div style="font-weight:600;font-size:0.88rem;">Statistiques avancées</div>
+              <div style="font-size:0.78rem;color:var(--muted);margin-top:4px;">Vues, contacts, rapports détaillés</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FICHE VOITURE -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="pay-overlay" id="payOverlay" onclick="if(event.target===this)closePayment()">
+  <div class="pay-modal" style="position:relative;">
+    <button class="pay-close" onclick="closePayment()">✕</button>
+
+    <!-- Step 1: Choose method -->
+    <div id="payStep1">
+      <div class="pay-header">
+        <div class="pay-title">📋 Rapport VIN</div>
+        <div class="pay-amount" id="payAmountDisplay">2 000 FCFA</div>
+        <div class="pay-desc" id="payPlanDesc">Rapport complet + Contact WhatsApp vendeur</div>
+      </div>
+      <div class="pay-body">
+        <div style="font-weight:600;font-size:0.85rem;margin-bottom:12px;">Choisissez votre moyen de paiement :</div>
+        <div class="pay-methods">
+          <div class="pay-method selected" onclick="selectPayMethod('wave',this)">
+            <div class="pay-method-icon">🌊</div>
+            <div>
+              <div class="pay-method-name">Wave</div>
+              <div class="pay-method-desc">Paiement mobile instantané</div>
+            </div>
+            <div class="pay-method-radio"></div>
+          </div>
+          <div class="pay-method" onclick="selectPayMethod('orange',this)">
+            <div class="pay-method-icon">🟠</div>
+            <div>
+              <div class="pay-method-name">Orange Money</div>
+              <div class="pay-method-desc">Paiement via Orange Money</div>
+            </div>
+            <div class="pay-method-radio"></div>
+          </div>
+          <div class="pay-method" onclick="selectPayMethod('stripe',this)">
+            <div class="pay-method-icon">💳</div>
+            <div>
+              <div class="pay-method-name">Carte bancaire (Stripe)</div>
+              <div class="pay-method-desc">Visa, Mastercard, carte virtuelle Wave/OM</div>
+            </div>
+            <div class="pay-method-radio"></div>
+          </div>
+        </div>
+
+        <!-- Phone input for Wave/OM -->
+        <input class="pay-phone-input visible" id="payPhone" placeholder="Numéro de téléphone (ex: 77 000 00 00)" type="tel">
+
+        <!-- Stripe card inputs -->
+        <div class="pay-card-inputs" id="payCardInputs">
+          <input class="pay-card-input" id="payCardNum" placeholder="Numéro de carte" maxlength="19" oninput="formatCardNumber(this)">
+          <div class="pay-card-row">
+            <input class="pay-card-input" id="payCardExp" placeholder="MM/AA" maxlength="5" oninput="formatExpiry(this)">
+            <input class="pay-card-input" id="payCardCvc" placeholder="CVC" maxlength="4" type="password">
+          </div>
+        </div>
+
+        <button class="pay-submit" id="paySubmitBtn" onclick="processPayment()">🔒 Payer maintenant</button>
+        <div class="pay-secure">🔒 Paiement sécurisé · Données chiffrées SSL</div>
+      </div>
+    </div>
+
+    <!-- Step 2: Processing -->
+    <div class="pay-processing" id="payStep2">
+      <div class="pay-spinner"></div>
+      <div class="pay-processing-text" id="payProcessText">Connexion à Wave...</div>
+      <div class="pay-processing-sub">Veuillez patienter quelques instants</div>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div class="pay-success" id="payStep3">
+      <div class="pay-success-icon">✅</div>
+      <div class="pay-success-title">Paiement réussi !</div>
+      <div class="pay-success-text" id="paySuccessText">Votre rapport VIN est prêt.</div>
+      <button class="pay-submit" style="margin-top:20px;" onclick="closePaymentAndShowReport()">📋 Voir le rapport</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// === DONNÉES VOITURES (Section 8) ===
+const cars = [
+  { id:1, name:"Toyota Corolla 2019", brand:"Toyota", type:"berline", year:2019, km:45000, price:4500000, origin:"France", originFlag:"🇫🇷", fuel:"Essence", transmission:"Automatique", color:"Gris", seats:5, vin:"VF1RFE00X60123456", verified:true, emoji:"🚗", seller:"Auto Prestige Dakar", sellerPhone:"+221770001122" },
+  { id:2, name:"Toyota RAV4 2020", brand:"Toyota", type:"suv", year:2020, km:32000, price:9800000, origin:"USA", originFlag:"🇺🇸", fuel:"Essence", transmission:"Automatique", color:"Noir", seats:5, vin:"2T3RFREV5LW123456", verified:true, emoji:"🚙", seller:"Japan Auto Import", sellerPhone:"+221770002233" },
+  { id:3, name:"Land Cruiser V8 2018", brand:"Toyota", type:"4x4", year:2018, km:68000, price:18500000, origin:"Japon", originFlag:"🇯🇵", fuel:"Diesel", transmission:"Automatique", color:"Blanc", seats:7, vin:"JTMHY7AJ4J4123456", verified:true, emoji:"🏔️", seller:"Africa Motors SARL", sellerPhone:"+221770003344" },
+  { id:4, name:"Mercedes C200 2019", brand:"Mercedes", type:"berline", year:2019, km:41000, price:14000000, origin:"Allemagne", originFlag:"🇩🇪", fuel:"Essence", transmission:"Automatique", color:"Noir", seats:5, vin:"WDD2050201R123456", verified:true, emoji:"✨", seller:"Premium Cars Dakar", sellerPhone:"+221770004455" },
+  { id:5, name:"Toyota HiAce 2020", brand:"Toyota", type:"minibus", year:2020, km:52000, price:11500000, origin:"Japon", originFlag:"🇯🇵", fuel:"Diesel", transmission:"Manuelle", color:"Blanc", seats:15, vin:"JTFSK22P200123456", verified:true, emoji:"🚌", seller:"Transport Plus Sénégal", sellerPhone:"+221770005566" },
+  { id:6, name:"Honda CB500 2022", brand:"Honda", type:"moto", year:2022, km:8000, price:2100000, origin:"Japon", originFlag:"🇯🇵", fuel:"Essence", transmission:"Manuelle", color:"Rouge", seats:2, vin:"MLHPC5607N5123456", verified:true, emoji:"🏍️", seller:"Moto City Dakar", sellerPhone:"+221770006677" },
+  { id:7, name:"Hyundai Tucson 2020", brand:"Hyundai", type:"suv", year:2020, km:55000, price:7200000, origin:"Corée", originFlag:"🇰🇷", fuel:"Essence", transmission:"Automatique", color:"Bleu", seats:5, vin:"KMHJ3814GLU123456", verified:false, emoji:"🚙", seller:"Particulier - Moussa", sellerPhone:"+221770007788" },
+  { id:8, name:"Renault Logan 2021", brand:"Renault", type:"berline", year:2021, km:28000, price:3200000, origin:"France", originFlag:"🇫🇷", fuel:"Essence", transmission:"Manuelle", color:"Blanc", seats:5, vin:"UU1LSDAAH4D123456", verified:false, emoji:"🚗", seller:"Particulier - Awa", sellerPhone:"+221770008899" },
+];
+
+function formatPrice(p) {
+  return new Intl.NumberFormat('fr-FR').format(p) + ' FCFA';
+}
+
+// === PAGE NAVIGATION ===
+function showPage(page) {
+  document.getElementById('sidebar').classList.remove('open');
+  document.querySelector('.app').style.display = page === 'chat' ? 'flex' : 'none';
+  document.getElementById('pageAnnonces').classList.remove('active');
+  document.getElementById('pageTarifs').classList.remove('active');
+  document.getElementById('pageVendeur').classList.remove('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  if (page === 'chat') {
+    document.querySelector('.app').style.display = 'flex';
+    document.getElementById('navFatou').classList.add('active');
+  } else if (page === 'annonces') {
+    document.getElementById('pageAnnonces').classList.add('active');
+    document.getElementById('navAnnonces').classList.add('active');
+    renderAnnonces();
+  } else if (page === 'tarifs') {
+    document.getElementById('pageTarifs').classList.add('active');
+    document.getElementById('navTarifs').classList.add('active');
+  } else if (page === 'vendeur') {
+    document.getElementById('pageVendeur').classList.add('active');
+    document.getElementById('navVendeur').classList.add('active');
+    if (currentVendeur) renderVendeurDashboard();
+  }
+}
+
+// === ANNONCES GRID ===
+let annonceFilter = 'all';
+function setAnnonceFilter(f, el) {
+  annonceFilter = f;
+  document.querySelectorAll('.annonces-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderAnnonces();
+}
+function renderAnnonces() {
+  let list = [...cars];
+  // Filter type
+  if (annonceFilter === 'verified') list = list.filter(c => c.verified);
+  else if (annonceFilter !== 'all') list = list.filter(c => c.type === annonceFilter);
+  // Search
+  const q = (document.getElementById('annonceSearch')?.value || '').toLowerCase();
+  if (q) list = list.filter(c => c.name.toLowerCase().includes(q) || c.brand.toLowerCase().includes(q));
+  // Price max
+  const pmax = parseInt(document.getElementById('annoncePriceMax')?.value || '0');
+  if (pmax > 0) list = list.filter(c => c.price <= pmax);
+  // Sort
+  const tri = document.getElementById('annonceTri')?.value || 'verified';
+  if (tri === 'verified') list.sort((a,b) => b.verified - a.verified);
+  else if (tri === 'price-asc') list.sort((a,b) => a.price - b.price);
+  else if (tri === 'price-desc') list.sort((a,b) => b.price - a.price);
+  else if (tri === 'recent') list.sort((a,b) => b.year - a.year);
+  else if (tri === 'km') list.sort((a,b) => a.km - b.km);
+
+  const grid = document.getElementById('annoncesGrid');
+  if (list.length === 0) {
+    grid.innerHTML = '<div class="annonces-empty">Aucune voiture ne correspond à vos critères.<br>Essayez de modifier vos filtres.</div>';
+    return;
+  }
+  grid.innerHTML = list.map(c => `
+    <div class="grid-card" onclick="openModal(${c.id})">
+      <div class="grid-card-img">
+        ${c.emoji}
+        <span class="grid-card-badge ${c.verified?'verified':'unverified'}">${c.verified?'✅ Vérifié':'⚠️ Non vérifié'}</span>
+      </div>
+      <div class="grid-card-body">
+        <div class="grid-card-name">${c.name}</div>
+        <div class="grid-card-specs">
+          <span>📅 ${c.year}</span>
+          <span>🛣️ ${c.km.toLocaleString('fr')} km</span>
+          <span>${c.originFlag} ${c.origin}</span>
+          <span>⛽ ${c.fuel}</span>
+          <span>🔧 ${c.transmission}</span>
+        </div>
+        <div class="grid-card-footer">
+          <div class="grid-card-price">${formatPrice(c.price)}</div>
+          <button class="grid-card-btn">Voir détails →</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// === SIDEBAR ===
+let currentFilter = 'all';
+function renderSidebar(list) {
+  const el = document.getElementById('carList');
+  el.innerHTML = list.map(c => `
+    <div class="car-item" onclick="openModal(${c.id})">
+      <div class="car-item-img">${c.emoji}</div>
+      <div class="car-item-info">
+        <div class="car-item-name">${c.name}
+          <span class="car-badge ${c.verified?'badge-verified':'badge-unverified'}">${c.verified?'✅ Vérifié':'⚠️'}</span>
+        </div>
+        <div class="car-item-details">${c.km.toLocaleString('fr')} km · ${c.fuel} · ${c.originFlag} ${c.origin}</div>
+        <div class="car-item-price">${formatPrice(c.price)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+function filterCars(q) {
+  let list = cars;
+  if (currentFilter === 'verified') list = list.filter(c => c.verified);
+  else if (currentFilter !== 'all') list = list.filter(c => c.type === currentFilter);
+  if (q) {
+    const s = q.toLowerCase();
+    list = list.filter(c => c.name.toLowerCase().includes(s) || c.brand.toLowerCase().includes(s) || c.type.includes(s));
+  }
+  renderSidebar(list);
+}
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  filterCars(document.querySelector('.sidebar-search').value);
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+renderSidebar(cars);
+
+// === MODAL ===
+function openModal(id) {
+  const c = cars.find(x => x.id === id);
+  if (!c) return;
+  const m = document.getElementById('modal');
+  m.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-emoji">${c.emoji}</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="modal-title">${c.name}</span>
+      <span class="car-badge ${c.verified?'badge-verified':'badge-unverified'}" style="font-size:0.75rem;padding:4px 8px;">
+        ${c.verified?'✅ Vérifié VoitureSen':'⚠️ Non vérifié'}
+      </span>
+    </div>
+    <div class="modal-specs">
+      <div class="spec-item"><div class="spec-label">Kilométrage</div><div class="spec-value">${c.km.toLocaleString('fr')} km</div></div>
+      <div class="spec-item"><div class="spec-label">Année</div><div class="spec-value">${c.year}</div></div>
+      <div class="spec-item"><div class="spec-label">Carburant</div><div class="spec-value">${c.fuel}</div></div>
+      <div class="spec-item"><div class="spec-label">Transmission</div><div class="spec-value">${c.transmission}</div></div>
+      <div class="spec-item"><div class="spec-label">Couleur</div><div class="spec-value">${c.color}</div></div>
+      <div class="spec-item"><div class="spec-label">Places</div><div class="spec-value">${c.seats}</div></div>
+      <div class="spec-item"><div class="spec-label">Origine</div><div class="spec-value">${c.originFlag} ${c.origin}</div></div>
+      <div class="spec-item"><div class="spec-label">Vendeur</div><div class="spec-value">${c.seller}</div></div>
+    </div>
+    <div style="font-size:0.78rem;color:var(--muted);margin-bottom:4px;">VIN: ${c.vin}</div>
+    <div class="modal-price">${formatPrice(c.price)}</div>
+    ${c.verified ? `
+    <div class="modal-vin">
+      <div class="modal-vin-title">📋 Rapport Historique VIN</div>
+      <div class="modal-vin-plans">
+        <div class="vin-plan" onclick="simulateVIN(${c.id},'basic')">
+          <div class="vin-plan-price">500 FCFA</div>
+          <div class="vin-plan-desc">Basique : km, origine, propriétaires</div>
+        </div>
+        <div class="vin-plan" onclick="simulateVIN(${c.id},'full')">
+          <div class="vin-plan-price">2 000 FCFA</div>
+          <div class="vin-plan-desc">Complet + Contact WhatsApp vendeur</div>
+        </div>
+      </div>
+    </div>
+    ` : '<div style="background:rgba(255,165,0,0.1);border:1px solid rgba(255,165,0,0.3);border-radius:10px;padding:14px;margin-top:12px;font-size:0.85rem;color:#FFA500;">⚠️ Cette annonce n\'est pas vérifiée. Le rapport VIN n\'est pas disponible.</div>'}
+    <div id="vinReport-${c.id}"></div>
+    <div id="waBtn-${c.id}"></div>
+  `;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+// =============================
+// === PAYMENT SYSTEM (Étape 6) ===
+// =============================
+let currentPayment = { carId:0, plan:'', amount:0, method:'wave' };
+
+function simulateVIN(id, plan) {
+  const c = cars.find(x => x.id === id);
+  if (!c) return;
+  const amount = plan === 'full' ? 2000 : 500;
+  currentPayment = { carId:id, plan, amount, method:'wave' };
+
+  // Update payment modal
+  document.getElementById('payAmountDisplay').textContent = formatPrice(amount);
+  document.getElementById('payPlanDesc').textContent = plan === 'full'
+    ? `Rapport VIN complet — ${c.name} + Contact WhatsApp`
+    : `Rapport VIN basique — ${c.name}`;
+
+  // Reset to step 1
+  document.getElementById('payStep1').style.display = 'block';
+  document.getElementById('payStep2').className = 'pay-processing';
+  document.getElementById('payStep3').className = 'pay-success';
+
+  // Show payment modal
+  document.getElementById('payOverlay').classList.add('active');
+}
+
+function selectPayMethod(method, el) {
+  currentPayment.method = method;
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+
+  const phoneInput = document.getElementById('payPhone');
+  const cardInputs = document.getElementById('payCardInputs');
+
+  if (method === 'wave' || method === 'orange') {
+    phoneInput.classList.add('visible');
+    cardInputs.classList.remove('visible');
+    phoneInput.placeholder = method === 'wave' ? 'Numéro Wave (ex: 77 000 00 00)' : 'Numéro Orange Money (ex: 78 000 00 00)';
+  } else {
+    phoneInput.classList.remove('visible');
+    cardInputs.classList.add('visible');
+  }
+
+  // Update button text
+  const btn = document.getElementById('paySubmitBtn');
+  if (method === 'wave') btn.textContent = '🌊 Payer avec Wave — ' + formatPrice(currentPayment.amount);
+  else if (method === 'orange') btn.textContent = '🟠 Payer avec Orange Money — ' + formatPrice(currentPayment.amount);
+  else btn.textContent = '💳 Payer par carte — ' + formatPrice(currentPayment.amount);
+}
+
+function formatCardNumber(input) {
+  let v = input.value.replace(/\D/g, '');
+  v = v.replace(/(\d{4})/g, '$1 ').trim();
+  input.value = v;
+}
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length >= 2) v = v.slice(0,2) + '/' + v.slice(2);
+  input.value = v;
+}
+
+function processPayment() {
+  const method = currentPayment.method;
+
+  // Validate inputs
+  if (method === 'wave' || method === 'orange') {
+    const phone = document.getElementById('payPhone').value.replace(/\s/g, '');
+    if (phone.length < 7) { alert('Veuillez entrer un numéro de téléphone valide.'); return; }
+  } else {
+    const cardNum = document.getElementById('payCardNum').value.replace(/\s/g, '');
+    const cardExp = document.getElementById('payCardExp').value;
+    const cardCvc = document.getElementById('payCardCvc').value;
+    if (cardNum.length < 13 || !cardExp || !cardCvc) { alert('Veuillez remplir tous les champs de carte.'); return; }
+  }
+
+  // Step 2: Processing
+  document.getElementById('payStep1').style.display = 'none';
+  document.getElementById('payStep2').className = 'pay-processing active';
+
+  const processText = document.getElementById('payProcessText');
+  if (method === 'wave') processText.textContent = '🌊 Connexion à Wave...';
+  else if (method === 'orange') processText.textContent = '🟠 Connexion à Orange Money...';
+  else processText.textContent = '💳 Traitement par Stripe...';
+
+  // Simulate payment processing steps
+  setTimeout(() => {
+    processText.textContent = '🔄 Vérification du paiement...';
+  }, 1200);
+
+  setTimeout(() => {
+    processText.textContent = '📋 Génération du rapport VIN...';
+  }, 2400);
+
+  setTimeout(() => {
+    // Step 3: Success
+    document.getElementById('payStep2').className = 'pay-processing';
+    document.getElementById('payStep3').className = 'pay-success active';
+
+    const c = cars.find(x => x.id === currentPayment.carId);
+    const methodName = method === 'wave' ? 'Wave' : method === 'orange' ? 'Orange Money' : 'Carte bancaire';
+    document.getElementById('paySuccessText').innerHTML = `
+      ${formatPrice(currentPayment.amount)} débité via ${methodName}<br>
+      <span style="font-size:0.78rem;">Réf: VS-${Date.now().toString(36).toUpperCase()}</span>
+    `;
+  }, 3500);
+}
+
+function closePayment() {
+  document.getElementById('payOverlay').classList.remove('active');
+}
+
+function closePaymentAndShowReport() {
+  closePayment();
+  // Now show the actual VIN report in the modal
+  const id = currentPayment.carId;
+  const plan = currentPayment.plan;
+  const c = cars.find(x => x.id === id);
+  if (!c) return;
+
+  const el = document.getElementById('vinReport-'+id);
+  if (el) {
+    el.innerHTML = `
+      <div style="background:var(--bg3);border-radius:12px;padding:16px;margin-top:14px;border:1px solid var(--green);border-left:4px solid var(--green);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div style="font-weight:700;color:var(--green);">✅ Rapport VIN ${plan==='full'?'Complet':'Basique'}</div>
+          <span style="font-size:0.7rem;background:var(--green-bg);color:var(--green);padding:3px 8px;border-radius:4px;">PAYÉ</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:0.82rem;">
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">Kilométrage certifié</span><b>${c.km.toLocaleString('fr')} km</b> ✓</div>
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">Pays d'origine</span><b>${c.originFlag} ${c.origin}</b></div>
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">Propriétaires</span><b>${Math.floor(Math.random()*2)+1}</b> propriétaire(s)</div>
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">Vol déclaré</span><b style="color:var(--green);">Non</b> ✓</div>
+          ${plan==='full' ? `
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">Accidents</span><b style="color:var(--green);">Aucun déclaré</b> ✓</div>
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">Entretien</span><b style="color:var(--green);">À jour</b> ✓</div>
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">1ère immatriculation</span><b>${c.year - 1}</b></div>
+          <div style="padding:8px;background:var(--bg);border-radius:8px;"><span style="color:var(--muted);font-size:0.72rem;display:block;">Contrôle technique</span><b style="color:var(--green);">Valide</b> ✓</div>
+          ` : ''}
+        </div>
+        <div style="margin-top:12px;padding:10px;background:rgba(255,107,0,0.08);border-radius:8px;font-size:0.78rem;color:var(--muted);">
+          📄 VIN: ${c.vin} · Source: ${c.origin==='France'?'HistoVec + AutoDNA':c.origin==='USA'?'NHTSA + Carfax':c.origin==='Japon'||c.origin==='Corée'?'CarVertical':'AutoDNA'}
+          · Généré le ${new Date().toLocaleDateString('fr-FR')}
+        </div>
+      </div>
+    `;
+  }
+
+  // Show WhatsApp button for full plan
+  if (plan === 'full') {
+    const waEl = document.getElementById('waBtn-'+id);
+    if (waEl) {
+      waEl.innerHTML = `
+        <button class="wa-contact-btn" onclick="window.open('https://wa.me/${c.sellerPhone.replace('+','')}?text=Bonjour, je suis intéressé par votre ${c.name} sur VoitureSen. J\\'ai acheté le rapport VIN.','_blank')">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          📱 Contacter ${c.seller} sur WhatsApp
+        </button>
+      `;
+    }
+  }
+}
+
+// === CHAT / FATOU ===
+const chatEl = document.getElementById('chatMessages');
+let chatHistory = [];
+
+function addMessage(text, type, extra='') {
+  const div = document.createElement('div');
+  div.className = `msg msg-${type}`;
+  div.innerHTML = `
+    <div class="msg-avatar">${type==='bot'?'👩🏾':'👤'}</div>
+    <div>
+      <div class="msg-bubble">${text}</div>
+      ${extra}
+    </div>
+  `;
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return div;
+}
+
+function addCarCards(carIds) {
+  const cards = carIds.map(id => {
+    const c = cars.find(x => x.id === id);
+    if (!c) return '';
+    return `
+      <div class="car-card" onclick="openModal(${c.id})">
+        <div class="car-card-top">
+          <div class="car-card-emoji">${c.emoji}</div>
+          <div class="car-card-info">
+            <div class="car-card-name">${c.name}
+              <span class="car-badge ${c.verified?'badge-verified':'badge-unverified'}">${c.verified?'✅ Vérifié':'⚠️'}</span>
+            </div>
+            <div class="car-card-specs">
+              <span>📅 ${c.year}</span>
+              <span>🛣️ ${c.km.toLocaleString('fr')} km</span>
+              <span>${c.originFlag} ${c.origin}</span>
+              <span>⛽ ${c.fuel}</span>
+            </div>
+          </div>
+        </div>
+        <div class="car-card-bottom">
+          <div class="car-card-price">${formatPrice(c.price)}</div>
+          <button class="car-card-btn" onclick="event.stopPropagation();openModal(${c.id})">Voir détails →</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'msg msg-bot';
+  wrapper.style.maxWidth = '90%';
+  wrapper.innerHTML = `<div class="msg-avatar">👩🏾</div><div><div class="car-cards">${cards}</div></div>`;
+  chatEl.appendChild(wrapper);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function addSuggestions(options) {
+  const div = document.createElement('div');
+  div.className = 'suggestions';
+  div.innerHTML = options.map(o => `<button class="suggest-btn" onclick="handleSuggestion('${o}')">${o}</button>`).join('');
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+function showTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg msg-bot';
+  div.id = 'typingIndicator';
+  div.innerHTML = `<div class="msg-avatar">👩🏾</div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(div);
+  chatEl.scrollTop = chatEl.scrollHeight;
+}
+function removeTyping() {
+  const el = document.getElementById('typingIndicator');
+  if (el) el.remove();
+}
+
+// FATOU INTELLIGENCE (réponses de base — legacy)
+function fatouRespond_legacy(userMsg) {
+  const msg = userMsg.toLowerCase();
+  showTyping();
+
+  setTimeout(() => {
+    removeTyping();
+
+    // Recherche par budget
+    if (msg.includes('million') || msg.includes('fcfa') || msg.includes('budget')) {
+      let budget = 0;
+      const nums = msg.match(/(\d+)/g);
+      if (nums) {
+        budget = parseInt(nums[0]);
+        if (msg.includes('million')) budget *= 1000000;
+        else if (budget < 1000) budget *= 1000000;
+      }
+      if (budget > 0) {
+        const matches = cars.filter(c => c.price <= budget * 1.15).sort((a,b) => b.verified - a.verified);
+        if (matches.length > 0) {
+          addMessage(`Waaw, bonne recherche ! Pour un budget de ${formatPrice(budget)}, voici ce que j'ai trouvé pour vous :`);
+          addCarCards(matches.slice(0,3).map(c=>c.id));
+          addSuggestions(["Voir le rapport VIN","Autres voitures","Voiture familiale"]);
+        } else {
+          addMessage(`Hmm, je n'ai pas de voiture dans ce budget pour le moment. Le plus abordable chez nous c'est la Honda CB500 à 2 100 000 FCFA. Voulez-vous voir d'autres options ?`);
+          addSuggestions(["Voir toutes les voitures","Augmenter mon budget"]);
+        }
+        return;
+      }
+    }
+
+    // Familiale
+    if (msg.includes('famil') || msg.includes('famille') || msg.includes('enfant')) {
+      const familyCars = cars.filter(c => c.seats >= 5 && ['berline','suv','4x4'].includes(c.type));
+      addMessage("Une voiture familiale, excellent choix ! 👨‍👩‍👧‍👦 Combien de personnes dans votre famille ? En attendant, voici mes meilleures recommandations :");
+      addCarCards(familyCars.slice(0,3).map(c=>c.id));
+      addSuggestions(["Budget 5 millions","Budget 10 millions","Avec 7 places"]);
+      return;
+    }
+
+    // SUV / 4x4
+    if (msg.includes('suv') || msg.includes('4x4') || msg.includes('voyage') || msg.includes('route')) {
+      const suvs = cars.filter(c => ['suv','4x4'].includes(c.type));
+      addMessage("Pour rouler partout au Sénégal, il vous faut du solide ! 💪 Voici mes SUV et 4x4 disponibles :");
+      addCarCards(suvs.map(c=>c.id));
+      addSuggestions(["Voir le rapport VIN","Diesel uniquement","Budget max ?"]);
+      return;
+    }
+
+    // Taxi
+    if (msg.includes('taxi') || msg.includes('transport') || msg.includes('minibus') || msg.includes('bus')) {
+      const taxis = cars.filter(c => ['minibus','berline'].includes(c.type) && c.price < 12000000);
+      addMessage("Pour le transport, il faut une voiture fiable et économique ! 🚕 Voici ce que je recommande :");
+      addCarCards(taxis.slice(0,3).map(c=>c.id));
+      addSuggestions(["Voir les minibus","Voiture pas cher","Diesel"]);
+      return;
+    }
+
+    // Moto
+    if (msg.includes('moto') || msg.includes('2 roues') || msg.includes('scooter')) {
+      const motos = cars.filter(c => c.type === 'moto');
+      addMessage("Les 2 roues c'est pratique à Dakar ! 🏍️ Voilà ce que j'ai :");
+      addCarCards(motos.map(c=>c.id));
+      addSuggestions(["Voir les voitures","Budget 3 millions"]);
+      return;
+    }
+
+    // Pas cher / moins de 5M
+    if (msg.includes('pas cher') || msg.includes('moins') || msg.includes('abordable') || msg.includes('petit prix')) {
+      const cheap = cars.filter(c => c.price <= 5000000).sort((a,b) => a.price - b.price);
+      addMessage("Je comprends, on cherche le meilleur rapport qualité-prix ! 💰 Voici les plus abordables :");
+      addCarCards(cheap.map(c=>c.id));
+      addSuggestions(["Voir le rapport VIN","Toutes les voitures"]);
+      return;
+    }
+
+    // Marque spécifique
+    const brands = ['toyota','mercedes','renault','hyundai','honda','land cruiser'];
+    const foundBrand = brands.find(b => msg.includes(b));
+    if (foundBrand) {
+      const brandCars = cars.filter(c => c.name.toLowerCase().includes(foundBrand) || c.brand.toLowerCase().includes(foundBrand));
+      if (brandCars.length > 0) {
+        addMessage(`${foundBrand.charAt(0).toUpperCase()+foundBrand.slice(1)}, très bon choix ! Voilà ce que j'ai en stock :`);
+        addCarCards(brandCars.map(c=>c.id));
+        addSuggestions(["Rapport VIN","Voir tout","Autre marque"]);
+        return;
+      }
+    }
+
+    // VIN / rapport
+    if (msg.includes('vin') || msg.includes('rapport') || msg.includes('historique') || msg.includes('vérif')) {
+      addMessage("Le rapport VIN vous donne l'historique complet du véhicule : kilométrage certifié, origine, accidents, vol... 📋<br><br>Deux options :<br>• <b>500 FCFA</b> — Rapport basique<br>• <b>2 000 FCFA</b> — Rapport complet + contact WhatsApp du vendeur<br><br>Cliquez sur une voiture pour commander le rapport !");
+      addSuggestions(["Voir les voitures vérifiées","C'est quoi le VIN ?"]);
+      return;
+    }
+
+    // Salutations
+    if (msg.includes('bonjour') || msg.includes('salut') || msg.includes('hello') || msg.includes('salam') || msg.includes('nanga def')) {
+      addMessage("Salam ! 👋🏾 Bienvenue sur VoitureSen. Je suis Fatou, votre conseillère automobile. Dites-moi ce que vous cherchez et je vous trouve la perle rare à Dakar !");
+      addSuggestions(["Voiture familiale budget 5M","4x4 pour voyager","Voiture pas chère","Minibus transport"]);
+      return;
+    }
+
+    // Wolof
+    if (msg.includes('nanga') || msg.includes('jere') || msg.includes('man') || msg.includes('wolof')) {
+      addMessage("Waaw nanga def ! 😊 Maa ngi fi, Fatou la tudd. Ndax danga bëgg woto ? Wax ma sa budget ak lan la bëgg, ma topp la ci annonces yi !");
+      addSuggestions(["Voiture familiale","SUV solide","Moins de 3 millions"]);
+      return;
+    }
+
+    // Toutes les voitures
+    if (msg.includes('tout') || msg.includes('voir') || msg.includes('annonce') || msg.includes('liste') || msg.includes('catalogue')) {
+      addMessage("Voilà toutes nos voitures disponibles à Dakar ! Les vérifiées sont en tête 👇");
+      const sorted = [...cars].sort((a,b) => b.verified - a.verified);
+      addCarCards(sorted.map(c=>c.id));
+      addSuggestions(["Vérifiées uniquement","Par prix croissant"]);
+      return;
+    }
+
+    // Merci
+    if (msg.includes('merci') || msg.includes('thanks') || msg.includes('jere')) {
+      addMessage("De rien ! 😊 C'est un plaisir de vous aider. N'hésitez pas si vous avez d'autres questions. Bonne recherche sur VoitureSen !");
+      return;
+    }
+
+    // Default
+    addMessage("Intéressant ! Pour mieux vous aider, dites-moi :<br>• Quel <b>type</b> de voiture ? (berline, SUV, 4x4, minibus, moto)<br>• Quel <b>budget</b> ?<br>• Pour quel <b>usage</b> ? (famille, taxi, voyage...)<br><br>Je connais toutes les voitures disponibles à Dakar ! 🚗");
+    addSuggestions(["Voiture familiale 5M","SUV solide","Taxi pas cher","Voir tout"]);
+
+  }, 800 + Math.random() * 600);
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  // Remove previous suggestions
+  document.querySelectorAll('.suggestions').forEach(s => s.remove());
+  addMessage(msg, 'user');
+  chatHistory.push({ role:'user', content:msg });
+  fatouSmartRespond(msg);
+}
+
+function handleSuggestion(text) {
+  document.querySelectorAll('.suggestions').forEach(s => s.remove());
+  addMessage(text, 'user');
+  chatHistory.push({ role:'user', content:text });
+  fatouSmartRespond(text);
+}
+
+// =======================================
+// === ESPACE VENDEUR / CONCESSIONNAIRE ===
+// =======================================
+let currentVendeur = null;
+let vendeurAnnonces = [];
+let selectedLogo = '🏢';
+let selectedCarEmoji = '🚗';
+
+function selectLogo(el, emoji) {
+  document.querySelectorAll('.inscription-card .photo-slot').forEach(s => s.classList.remove('filled'));
+  el.classList.add('filled');
+  selectedLogo = emoji;
+}
+
+function selectCarEmoji(el, emoji) {
+  document.querySelectorAll('.add-vehicle-form .photo-slot').forEach(s => s.classList.remove('filled'));
+  el.classList.add('filled');
+  selectedCarEmoji = emoji;
+}
+
+function registerVendeur() {
+  const nom = document.getElementById('vNom').value.trim();
+  const ville = document.getElementById('vVille').value;
+  const whatsapp = document.getElementById('vWhatsApp').value.trim();
+  const adresse = document.getElementById('vAdresse').value.trim();
+  const email = document.getElementById('vEmail').value.trim();
+  const desc = document.getElementById('vDesc').value.trim();
+  if (!nom || !whatsapp) {
+    alert('Veuillez remplir le nom et le numéro WhatsApp.');
+    return;
+  }
+  currentVendeur = { nom, ville, whatsapp, adresse, email, desc, logo:selectedLogo, verified:false, plan:'Gratuit', since: new Date().toLocaleDateString('fr-FR') };
+  // Add some demo annonces from existing cars
+  vendeurAnnonces = [
+    { ...cars[0], status:'disponible', vues:128, contacts:12, rapports:3 },
+    { ...cars[1], status:'disponible', vues:95, contacts:8, rapports:2 },
+  ];
+  document.getElementById('vendeurAuth').style.display = 'none';
+  document.getElementById('vendeurDashboard').style.display = 'block';
+  renderVendeurDashboard();
+}
+
+function loginVendeur() {
+  currentVendeur = { nom:'Auto Prestige Dakar', ville:'Dakar', whatsapp:'+221770001122', adresse:'Almadies, Dakar', email:'contact@autoprestige.sn', desc:'Spécialiste véhicules importés depuis 2015', logo:'🏢', verified:true, plan:'Badge Vérifié', since:'15/01/2025' };
+  vendeurAnnonces = [
+    { ...cars[0], status:'disponible', vues:342, contacts:28, rapports:8 },
+    { ...cars[1], status:'disponible', vues:215, contacts:19, rapports:5 },
+    { ...cars[2], status:'réservé', vues:567, contacts:45, rapports:12 },
+    { ...cars[3], status:'vendu', vues:189, contacts:14, rapports:4 },
+  ];
+  document.getElementById('vendeurAuth').style.display = 'none';
+  document.getElementById('vendeurDashboard').style.display = 'block';
+  renderVendeurDashboard();
+}
+
+function renderVendeurDashboard() {
+  if (!currentVendeur) return;
+  document.getElementById('dashWelcome').textContent = currentVendeur.logo + ' ' + currentVendeur.nom;
+  document.getElementById('dashAgence').textContent = currentVendeur.ville + ' · Membre depuis ' + currentVendeur.since;
+  document.getElementById('dashBadge').innerHTML = currentVendeur.verified
+    ? '<span class="dash-badge verified">✅ Badge Vérifié VoitureSen</span>'
+    : '<span class="dash-badge free">⚠️ Compte Gratuit</span>';
+
+  // Stats
+  const activeAnnonces = vendeurAnnonces.filter(a => a.status === 'disponible').length;
+  const totalVues = vendeurAnnonces.reduce((s,a) => s + (a.vues||0), 0);
+  const totalContacts = vendeurAnnonces.reduce((s,a) => s + (a.contacts||0), 0);
+  const totalRapports = vendeurAnnonces.reduce((s,a) => s + (a.rapports||0), 0);
+  document.getElementById('statAnnonces').textContent = activeAnnonces;
+  document.getElementById('statVues').textContent = totalVues;
+  document.getElementById('statContacts').textContent = totalContacts;
+  document.getElementById('statRapports').textContent = totalRapports;
+
+  // Activity
+  document.getElementById('dashActivity').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.2rem;">👁️</span>
+        <span>+${Math.floor(Math.random()*20+5)} vues aujourd'hui sur vos annonces</span>
+      </div>
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.2rem;">📱</span>
+        <span>${Math.floor(Math.random()*5+1)} contacts WhatsApp reçus cette semaine</span>
+      </div>
+      <div style="padding:12px;background:var(--bg3);border-radius:10px;display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.2rem;">📋</span>
+        <span>${Math.floor(Math.random()*3+1)} rapports VIN achetés sur vos véhicules</span>
+      </div>
+      ${currentVendeur.verified ? '' : '<div style="padding:12px;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.3);border-radius:10px;display:flex;align-items:center;gap:10px;"><span style="font-size:1.2rem;">💡</span><span>Passez au <b style=color:var(--orange)>Badge Vérifié</b> pour plus de visibilité !</span></div>'}
+    </div>
+  `;
+
+  // Mes annonces
+  const listEl = document.getElementById('mesAnnoncesListe');
+  if (vendeurAnnonces.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">Aucune annonce pour le moment.<br>Ajoutez votre premier véhicule !</div>';
+  } else {
+    listEl.innerHTML = vendeurAnnonces.map((a, i) => {
+      const statusColor = a.status === 'disponible' ? 'var(--green)' : a.status === 'réservé' ? 'var(--orange)' : 'var(--muted)';
+      return `
+        <div class="dash-annonce">
+          <div class="dash-annonce-emoji">${a.emoji}</div>
+          <div class="dash-annonce-info">
+            <div class="dash-annonce-name">${a.name}</div>
+            <div class="dash-annonce-meta">${a.year} · ${a.km.toLocaleString('fr')} km · ${a.vues||0} vues · ${a.contacts||0} contacts</div>
+          </div>
+          <div class="dash-annonce-price">${formatPrice(a.price)}</div>
+          <select class="status-select" onchange="changeAnnonceStatus(${i},this.value)" style="border-color:${statusColor};">
+            <option value="disponible" ${a.status==='disponible'?'selected':''}>🟢 Disponible</option>
+            <option value="réservé" ${a.status==='réservé'?'selected':''}>🟠 Réservé</option>
+            <option value="vendu" ${a.status==='vendu'?'selected':''}>⚪ Vendu</option>
+          </select>
+          <div class="dash-annonce-actions">
+            <button class="dash-action-btn edit" onclick="openModal(${a.id})">👁️</button>
+            <button class="dash-action-btn delete" onclick="deleteAnnonce(${i})">🗑️</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Abonnement
+  const abEl = document.getElementById('abonnementStatus');
+  if (currentVendeur.verified) {
+    abEl.innerHTML = `
+      <div class="abonnement-card" style="border-color:var(--green);">
+        <div class="abonnement-info">
+          <h3>✅ Badge Vérifié — Actif</h3>
+          <p>15 000 FCFA/mois · Prochain renouvellement: 15/04/2026</p>
+        </div>
+        <button class="abonnement-btn active-sub">✅ Actif</button>
+      </div>
+    `;
+  } else {
+    abEl.innerHTML = `
+      <div class="abonnement-card">
+        <div class="abonnement-info">
+          <h3>⚠️ Compte Gratuit</h3>
+          <p>Passez au Badge Vérifié pour booster vos annonces</p>
+        </div>
+        <button class="abonnement-btn upgrade" onclick="alert('Paiement simulé : 15 000 FCFA/mois via Wave ou Orange Money. Fonctionnalité bientôt disponible !')">Passer au Vérifié — 15 000 FCFA/mois</button>
+      </div>
+    `;
+  }
+}
+
+function showVendeurTab(tab, el) {
+  document.querySelectorAll('.vendeur-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.vendeur-section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  const tabMap = { dashboard:'tabDashboard', mesAnnonces:'tabMesAnnonces', ajouterVehicule:'tabAjouterVehicule', abonnement:'tabAbonnement' };
+  document.getElementById(tabMap[tab]).classList.add('active');
+}
+
+function changeAnnonceStatus(idx, status) {
+  vendeurAnnonces[idx].status = status;
+  renderVendeurDashboard();
+}
+
+function deleteAnnonce(idx) {
+  if (confirm('Supprimer cette annonce ?')) {
+    vendeurAnnonces.splice(idx, 1);
+    renderVendeurDashboard();
+  }
+}
+
+function addVehicle() {
+  const brand = document.getElementById('addBrand').value;
+  const model = document.getElementById('addModel').value.trim();
+  const year = parseInt(document.getElementById('addYear').value);
+  const price = parseInt(document.getElementById('addPrice').value);
+  const km = parseInt(document.getElementById('addKm').value);
+  const type = document.getElementById('addType').value;
+  const fuel = document.getElementById('addFuel').value;
+  const trans = document.getElementById('addTrans').value;
+  const color = document.getElementById('addColor').value || 'Non précisé';
+  const seats = parseInt(document.getElementById('addSeats').value) || 5;
+  const vin = document.getElementById('addVin').value.trim();
+  const originVal = document.getElementById('addOrigin').value.split('|');
+
+  if (!brand || !model || !year || !price || !km) {
+    alert('Veuillez remplir tous les champs obligatoires (*).');
+    return;
+  }
+
+  const newCar = {
+    id: cars.length + 1,
+    name: brand + ' ' + model + ' ' + year,
+    brand: brand,
+    type: type,
+    year: year,
+    km: km,
+    price: price,
+    origin: originVal[0],
+    originFlag: originVal[1] || '🌍',
+    fuel: fuel,
+    transmission: trans,
+    color: color,
+    seats: seats,
+    vin: vin || 'Non renseigné',
+    verified: currentVendeur.verified && vin.length >= 10,
+    emoji: selectedCarEmoji,
+    seller: currentVendeur.nom,
+    sellerPhone: currentVendeur.whatsapp,
+    status: 'disponible',
+    vues: 0,
+    contacts: 0,
+    rapports: 0
+  };
+
+  cars.push(newCar);
+  vendeurAnnonces.push(newCar);
+
+  // Reset form
+  document.getElementById('addModel').value = '';
+  document.getElementById('addYear').value = '';
+  document.getElementById('addPrice').value = '';
+  document.getElementById('addKm').value = '';
+  document.getElementById('addVin').value = '';
+  document.getElementById('addColor').value = '';
+
+  alert('✅ Annonce publiée avec succès ! Votre ' + newCar.name + ' est maintenant visible sur VoitureSen.');
+  renderSidebar(cars);
+  // Switch to mes annonces tab
+  const tab = document.querySelector('.vendeur-tab:nth-child(2)');
+  showVendeurTab('mesAnnonces', tab);
+  renderVendeurDashboard();
+}
+
+// ===================================
+// === FATOU AMÉLIORÉE — QUESTIONNAIRE INTELLIGENT ===
+// ===================================
+let fatouContext = { step:null, budget:0, usage:'', passengers:0, type:'', preferences:[] };
+
+function fatouSmartRespond(userMsg) {
+  const msg = userMsg.toLowerCase();
+
+  // Si on est dans un questionnaire guidé
+  if (fatouContext.step) {
+    showTyping();
+    setTimeout(() => { removeTyping(); handleGuidedStep(msg); }, 800 + Math.random() * 400);
+    return;
+  }
+
+  // Détecter l'intention de commencer une recherche guidée
+  if (msg.includes('aide') || msg.includes('conseill') || msg.includes('cherche') || msg.includes('besoin') ||
+      msg.includes('quelle voiture') || msg.includes('recommand') || msg.includes('guide')) {
+    showTyping();
+    setTimeout(() => { removeTyping(); startGuidedSearch(); }, 800 + Math.random() * 400);
+    return;
+  }
+
+  // Garder les réponses rapides existantes (qui gèrent leur propre typing)
+  fatouRespond_legacy(userMsg);
+}
+
+function startGuidedSearch() {
+  fatouContext = { step:'usage', budget:0, usage:'', passengers:0, type:'', preferences:[] };
+  addMessage("Parfait, je vais vous guider étape par étape pour trouver LA voiture idéale ! 🎯<br><br>D'abord, <b>quel sera l'usage principal</b> de cette voiture ?", 'bot');
+  addSuggestions(["🏠 Famille / quotidien", "🚕 Taxi / transport", "🏖️ Voyage / aventure", "💼 Professionnel", "🏍️ Deux roues"]);
+}
+
+function handleGuidedStep(msg) {
+  switch(fatouContext.step) {
+    case 'usage':
+      if (msg.includes('famil') || msg.includes('quotidien') || msg.includes('maison') || msg.includes('🏠')) {
+        fatouContext.usage = 'famille';
+        fatouContext.step = 'passengers';
+        addMessage("Très bien, une voiture familiale ! 👨‍👩‍👧‍👦<br><br><b>Combien de personnes</b> voyagent régulièrement avec vous ?", 'bot');
+        addSuggestions(["2-3 personnes", "4-5 personnes", "6+ personnes (grande famille)"]);
+      } else if (msg.includes('taxi') || msg.includes('transport') || msg.includes('🚕')) {
+        fatouContext.usage = 'taxi';
+        fatouContext.step = 'budget';
+        addMessage("Taxi ou transport, il faut du solide et de l'économique ! 🚕<br><br><b>Quel est votre budget maximum ?</b>", 'bot');
+        addSuggestions(["Moins de 3 millions", "3 à 5 millions", "5 à 10 millions", "Plus de 10 millions"]);
+      } else if (msg.includes('voyage') || msg.includes('aventure') || msg.includes('🏖️')) {
+        fatouContext.usage = 'voyage';
+        fatouContext.step = 'budget';
+        addMessage("Pour l'aventure au Sénégal, il faut un véhicule robuste ! 🌍<br><br><b>Quel est votre budget ?</b>", 'bot');
+        addSuggestions(["5 à 10 millions", "10 à 15 millions", "Plus de 15 millions"]);
+      } else if (msg.includes('professionnel') || msg.includes('💼') || msg.includes('travail')) {
+        fatouContext.usage = 'pro';
+        fatouContext.step = 'budget';
+        addMessage("Un véhicule professionnel, classe et fiable ! 💼<br><br><b>Quel budget avez-vous en tête ?</b>", 'bot');
+        addSuggestions(["5 à 10 millions", "10 à 15 millions", "Plus de 15 millions"]);
+      } else if (msg.includes('moto') || msg.includes('deux roues') || msg.includes('🏍️')) {
+        fatouContext.usage = 'moto';
+        fatouContext.step = 'result';
+        handleGuidedResult();
+        return;
+      } else {
+        fatouContext.usage = 'general';
+        fatouContext.step = 'budget';
+        addMessage("D'accord ! <b>Quel est votre budget maximum ?</b> 💰", 'bot');
+        addSuggestions(["Moins de 3 millions", "3 à 5 millions", "5 à 10 millions", "10 à 15 millions", "Plus de 15 millions"]);
+      }
+      break;
+
+    case 'passengers':
+      const nums = msg.match(/(\d+)/);
+      if (nums) fatouContext.passengers = parseInt(nums[0]);
+      if (msg.includes('6') || msg.includes('grande') || msg.includes('+')) {
+        fatouContext.passengers = 7;
+      } else if (msg.includes('4') || msg.includes('5')) {
+        fatouContext.passengers = 5;
+      } else {
+        fatouContext.passengers = 3;
+      }
+      fatouContext.step = 'budget';
+      addMessage(`${fatouContext.passengers >= 6 ? 'Grande famille, il faut de l\'espace ! 🚙' : 'Parfait !'}<br><br><b>Et votre budget maximum ?</b> 💰`, 'bot');
+      addSuggestions(["Moins de 3 millions", "3 à 5 millions", "5 à 10 millions", "10 à 15 millions", "Plus de 15 millions"]);
+      break;
+
+    case 'budget':
+      let budget = 0;
+      if (msg.includes('moins de 3') || msg.includes('3 million')) budget = 3000000;
+      else if (msg.includes('3') && msg.includes('5')) budget = 5000000;
+      else if (msg.includes('5') && msg.includes('10')) budget = 10000000;
+      else if (msg.includes('10') && msg.includes('15')) budget = 15000000;
+      else if (msg.includes('plus de 15') || msg.includes('15')) budget = 25000000;
+      else {
+        const n = msg.match(/(\d+)/g);
+        if (n) {
+          budget = parseInt(n[n.length-1]);
+          if (budget < 1000) budget *= 1000000;
+        }
+      }
+      fatouContext.budget = budget || 10000000;
+      fatouContext.step = 'preferences';
+      addMessage("Budget noté ! 💰<br><br>Dernière question : <b>qu'est-ce qui est le plus important</b> pour vous ?", 'bot');
+      addSuggestions(["🛡️ Fiabilité avant tout", "⛽ Économie de carburant", "✨ Confort et luxe", "💪 Puissance et robustesse", "💰 Le moins cher possible"]);
+      break;
+
+    case 'preferences':
+      if (msg.includes('fiab') || msg.includes('🛡️')) fatouContext.preferences.push('fiabilité');
+      else if (msg.includes('économi') || msg.includes('carburant') || msg.includes('⛽')) fatouContext.preferences.push('économique');
+      else if (msg.includes('confort') || msg.includes('luxe') || msg.includes('✨')) fatouContext.preferences.push('luxe');
+      else if (msg.includes('puissan') || msg.includes('robust') || msg.includes('💪')) fatouContext.preferences.push('puissance');
+      else if (msg.includes('moins cher') || msg.includes('💰')) fatouContext.preferences.push('prix');
+      else fatouContext.preferences.push('général');
+      fatouContext.step = 'result';
+      handleGuidedResult();
+      break;
+  }
+}
+
+function handleGuidedResult() {
+  let results = [...cars];
+  const ctx = fatouContext;
+
+  // Filter by usage
+  if (ctx.usage === 'moto') {
+    results = results.filter(c => c.type === 'moto');
+  } else if (ctx.usage === 'famille') {
+    if (ctx.passengers >= 6) results = results.filter(c => c.seats >= 7);
+    else results = results.filter(c => ['berline','suv','4x4'].includes(c.type) && c.seats >= 4);
+  } else if (ctx.usage === 'taxi') {
+    results = results.filter(c => ['berline','minibus'].includes(c.type));
+  } else if (ctx.usage === 'voyage') {
+    results = results.filter(c => ['suv','4x4'].includes(c.type));
+  } else if (ctx.usage === 'pro') {
+    results = results.filter(c => ['berline','suv'].includes(c.type));
+  }
+
+  // Filter by budget
+  if (ctx.budget > 0) {
+    results = results.filter(c => c.price <= ctx.budget * 1.15);
+  }
+
+  // Score and sort
+  results = results.map(c => {
+    let score = 0;
+    if (c.verified) score += 30;
+    if (ctx.preferences.includes('fiabilité') && ['Toyota','Honda'].includes(c.brand)) score += 20;
+    if (ctx.preferences.includes('économique') && c.fuel === 'Essence' && c.km < 60000) score += 15;
+    if (ctx.preferences.includes('luxe') && ['Mercedes','BMW'].includes(c.brand)) score += 20;
+    if (ctx.preferences.includes('puissance') && ['4x4','suv'].includes(c.type)) score += 15;
+    if (ctx.preferences.includes('prix')) score += Math.max(0, 20 - (c.price / 1000000));
+    if (c.km < 50000) score += 10;
+    return { ...c, score };
+  }).sort((a,b) => b.score - a.score);
+
+  // Build response
+  let responseText = "🎯 <b>Voici mes recommandations personnalisées !</b><br><br>";
+  responseText += `<div style="background:var(--bg3);padding:12px;border-radius:10px;margin-bottom:10px;font-size:0.82rem;">`;
+  responseText += `<b>Votre profil :</b> ${ctx.usage === 'famille' ? '👨‍👩‍👧‍👦 Famille' : ctx.usage === 'taxi' ? '🚕 Taxi/Transport' : ctx.usage === 'voyage' ? '🌍 Voyage/Aventure' : ctx.usage === 'pro' ? '💼 Professionnel' : ctx.usage === 'moto' ? '🏍️ Deux roues' : '🚗 Général'}`;
+  if (ctx.budget > 0) responseText += ` · Budget: ${formatPrice(ctx.budget)}`;
+  if (ctx.passengers > 0) responseText += ` · ${ctx.passengers}+ places`;
+  responseText += `</div>`;
+
+  if (results.length > 0) {
+    responseText += `J'ai trouvé <b>${results.length} véhicule${results.length>1?'s':''}</b> qui ${results.length>1?'correspondent':'correspond'} à vos critères. Voici les meilleurs :`;
+    addMessage(responseText, 'bot');
+    addCarCards(results.slice(0,3).map(c=>c.id));
+
+    // Explain each recommendation
+    results.slice(0,3).forEach((c,i) => {
+      let why = [];
+      if (c.verified) why.push('vérifié VoitureSen');
+      if (c.km < 50000) why.push('faible kilométrage');
+      if (ctx.preferences.includes('fiabilité') && ['Toyota','Honda'].includes(c.brand)) why.push(c.brand + ' = fiabilité reconnue');
+      if (ctx.preferences.includes('luxe') && ['Mercedes','BMW'].includes(c.brand)) why.push('haut de gamme');
+      if (why.length > 0) {
+        // Small explanation after cards
+      }
+    });
+
+    addSuggestions(["Voir le rapport VIN","Comparer ces voitures","Autres critères","Parler à un vendeur"]);
+  } else {
+    responseText += "Malheureusement, je n'ai pas de véhicule qui correspond exactement. Voulez-vous élargir vos critères ?";
+    addMessage(responseText, 'bot');
+    addSuggestions(["Augmenter le budget","Voir toutes les voitures","Changer le type"]);
+  }
+
+  // Reset context
+  fatouContext = { step:null, budget:0, usage:'', passengers:0, type:'', preferences:[] };
+}
+
+// === INIT : Message d'accueil Fatou ===
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    addMessage("Salam ! 👋🏾 Je suis <b>Fatou</b>, votre conseillère automobile à Dakar.<br><br>Dites-moi ce que vous cherchez — type de voiture, budget, usage — et je vous trouve les meilleures offres vérifiées.<br><br>💡 <b>Nouveau :</b> Dites « <i>aide-moi à choisir</i> » et je vous guide étape par étape ! 🚗", 'bot');
+    addSuggestions([
+      "🎯 Aide-moi à choisir",
+      "Voiture familiale budget 5M",
+      "4x4 pour voyager au Sénégal",
+      "Voiture de taxi solide",
+      "Moins de 3 millions FCFA"
+    ]);
+  }, 500);
+});
+</script>
+</body>
+</html>

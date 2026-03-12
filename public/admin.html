@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoitureSen — Panel Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05070F;
+  --bg2: #0A0E1A;
+  --bg3: #111627;
+  --card: #12172A;
+  --border: rgba(255,255,255,0.08);
+  --orange: #FF6B00;
+  --orange-light: #FF8C33;
+  --green: #00D46A;
+  --green-bg: rgba(0,212,106,0.12);
+  --red: #FF4757;
+  --yellow: #FFA500;
+  --white: #FFFFFF;
+  --text: rgba(255,255,255,0.88);
+  --muted: rgba(255,255,255,0.45);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg); color:var(--white); font-family:'Inter',sans-serif;
+  min-height:100vh;
+}
+
+/* LOGIN */
+.login-page {
+  display:flex; align-items:center; justify-content:center; min-height:100vh;
+  padding:20px;
+}
+.login-card {
+  background:var(--card); border:1px solid var(--border); border-radius:20px;
+  padding:40px; max-width:400px; width:100%; text-align:center;
+}
+.login-logo { font-size:2.5rem; margin-bottom:12px; }
+.login-title {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.4rem; margin-bottom:6px;
+}
+.login-title span { color:var(--orange); }
+.login-sub { color:var(--muted); font-size:0.85rem; margin-bottom:28px; }
+.login-input {
+  width:100%; padding:14px 18px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:12px; color:var(--white); font-size:0.9rem; outline:none;
+  font-family:'Inter',sans-serif; margin-bottom:12px; transition:border-color 0.2s;
+}
+.login-input:focus { border-color:var(--orange); }
+.login-btn {
+  width:100%; padding:14px; border:none; border-radius:12px;
+  background:var(--orange); color:#000; font-weight:700; font-size:0.95rem;
+  cursor:pointer; font-family:'Space Grotesk',sans-serif; margin-top:8px;
+  transition:all 0.2s;
+}
+.login-btn:hover { background:var(--orange-light); }
+.login-hint { font-size:0.72rem; color:var(--muted); margin-top:16px; }
+
+/* ADMIN LAYOUT */
+.admin { display:none; }
+.admin.active { display:flex; min-height:100vh; }
+
+/* SIDEBAR */
+.admin-sidebar {
+  width:260px; min-width:260px; background:var(--bg2);
+  border-right:1px solid var(--border); padding:20px 0;
+  display:flex; flex-direction:column;
+  position:fixed; top:0; bottom:0; left:0; z-index:50;
+  overflow-y:auto;
+}
+.admin-brand {
+  display:flex; align-items:center; gap:10px; padding:0 20px 20px;
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.1rem;
+  border-bottom:1px solid var(--border);
+}
+.admin-brand span { color:var(--orange); }
+.admin-nav { flex:1; padding:16px 12px; }
+.admin-nav-item {
+  display:flex; align-items:center; gap:10px; padding:12px 16px;
+  border-radius:10px; font-size:0.85rem; font-weight:500;
+  color:var(--muted); cursor:pointer; transition:all 0.2s; margin-bottom:4px;
+}
+.admin-nav-item:hover { background:rgba(255,255,255,0.04); color:var(--text); }
+.admin-nav-item.active { background:rgba(255,107,0,0.12); color:var(--orange); font-weight:600; }
+.admin-nav-item .nav-icon { font-size:1.1rem; width:24px; text-align:center; }
+.admin-logout {
+  padding:16px 20px; border-top:1px solid var(--border);
+}
+.admin-logout-btn {
+  width:100%; padding:10px; border:1px solid var(--border); border-radius:10px;
+  background:none; color:var(--muted); font-size:0.82rem; cursor:pointer;
+  font-family:'Inter',sans-serif; transition:all 0.2s;
+}
+.admin-logout-btn:hover { border-color:var(--red); color:var(--red); }
+
+/* MAIN */
+.admin-main {
+  flex:1; margin-left:260px; padding:30px;
+  overflow-y:auto; min-height:100vh;
+}
+.admin-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:28px; flex-wrap:wrap; gap:12px;
+}
+.admin-page-title {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.6rem;
+}
+.admin-page-title span { color:var(--orange); }
+.admin-date { color:var(--muted); font-size:0.85rem; }
+
+/* SECTION */
+.admin-section { display:none; }
+.admin-section.active { display:block; }
+
+/* STATS GRID */
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:28px; }
+.stat-card {
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:22px; position:relative; overflow:hidden;
+}
+.stat-card::after {
+  content:''; position:absolute; top:0; right:0; width:60px; height:60px;
+  border-radius:0 0 0 60px; opacity:0.06;
+}
+.stat-card.orange::after { background:var(--orange); }
+.stat-card.green::after { background:var(--green); }
+.stat-card.red::after { background:var(--red); }
+.stat-card.blue::after { background:#4FC3F7; }
+.stat-icon { font-size:1.4rem; margin-bottom:10px; }
+.stat-value {
+  font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1.8rem;
+}
+.stat-label { color:var(--muted); font-size:0.78rem; margin-top:4px; }
+.stat-change { font-size:0.72rem; font-weight:600; margin-top:6px; }
+.stat-change.up { color:var(--green); }
+.stat-change.down { color:var(--red); }
+
+/* TABLE */
+.admin-table-wrap {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  overflow:hidden; margin-bottom:24px;
+}
+.admin-table-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 20px; border-bottom:1px solid var(--border); flex-wrap:wrap; gap:10px;
+}
+.admin-table-title { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; }
+.admin-table-actions { display:flex; gap:8px; }
+.admin-btn {
+  padding:8px 16px; border-radius:8px; font-size:0.78rem; font-weight:600;
+  border:none; cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif;
+}
+.admin-btn.primary { background:var(--orange); color:#000; }
+.admin-btn.secondary { background:rgba(255,255,255,0.08); color:var(--white); }
+.admin-btn.success { background:var(--green-bg); color:var(--green); }
+.admin-btn.danger { background:rgba(255,71,87,0.12); color:var(--red); }
+.admin-btn:hover { opacity:0.85; }
+table { width:100%; border-collapse:collapse; }
+thead { background:var(--bg3); }
+th {
+  padding:12px 16px; text-align:left; font-size:0.72rem; font-weight:600;
+  color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;
+}
+td {
+  padding:14px 16px; border-bottom:1px solid var(--border); font-size:0.85rem;
+}
+tr:last-child td { border:none; }
+tr:hover td { background:rgba(255,255,255,0.02); }
+
+/* BADGES */
+.badge {
+  display:inline-flex; align-items:center; gap:4px; padding:4px 10px;
+  border-radius:6px; font-size:0.72rem; font-weight:600;
+}
+.badge.active { background:var(--green-bg); color:var(--green); }
+.badge.pending { background:rgba(255,165,0,0.12); color:var(--yellow); }
+.badge.rejected { background:rgba(255,71,87,0.12); color:var(--red); }
+.badge.expired { background:rgba(255,255,255,0.08); color:var(--muted); }
+.badge.success { background:var(--green-bg); color:var(--green); }
+.badge.failed { background:rgba(255,71,87,0.12); color:var(--red); }
+
+/* CHARTS */
+.chart-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:24px; margin-bottom:20px;
+}
+.chart-title { font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:1rem; margin-bottom:16px; }
+.chart-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+.chart-bar-label { width:100px; font-size:0.78rem; color:var(--muted); text-align:right; flex-shrink:0; }
+.chart-bar-track { flex:1; height:24px; background:var(--bg3); border-radius:6px; overflow:hidden; }
+.chart-bar-fill { height:100%; border-radius:6px; transition:width 0.6s ease; display:flex; align-items:center; padding-left:8px; font-size:0.7rem; font-weight:600; }
+.chart-bar-fill.orange { background:linear-gradient(90deg,var(--orange),var(--orange-light)); color:#000; }
+.chart-bar-fill.green { background:linear-gradient(90deg,var(--green),#2ECC71); color:#000; }
+.chart-bar-fill.blue { background:linear-gradient(90deg,#4FC3F7,#03A9F4); color:#000; }
+
+/* CONFIG */
+.config-card {
+  background:var(--card); border:1px solid var(--border); border-radius:16px;
+  padding:24px; margin-bottom:16px;
+}
+.config-title { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:0.95rem; margin-bottom:16px; }
+.config-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 0; border-bottom:1px solid var(--border);
+}
+.config-row:last-child { border:none; }
+.config-label { font-size:0.85rem; }
+.config-label small { display:block; color:var(--muted); font-size:0.75rem; margin-top:2px; }
+.config-input {
+  padding:8px 14px; background:var(--bg3); border:1px solid var(--border);
+  border-radius:8px; color:var(--white); font-size:0.85rem; outline:none;
+  font-family:'Inter',sans-serif; width:160px; text-align:right;
+}
+.config-input:focus { border-color:var(--orange); }
+.toggle {
+  width:44px; height:24px; border-radius:12px; background:var(--bg3);
+  border:1px solid var(--border); cursor:pointer; position:relative; transition:all 0.2s;
+}
+.toggle.on { background:var(--green); border-color:var(--green); }
+.toggle::after {
+  content:''; position:absolute; top:2px; left:2px; width:18px; height:18px;
+  border-radius:50%; background:var(--white); transition:all 0.2s;
+}
+.toggle.on::after { left:22px; }
+
+/* ALERTS */
+.alert-card {
+  display:flex; align-items:center; gap:14px; padding:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:12px;
+  margin-bottom:10px;
+}
+.alert-card.warning { border-left:4px solid var(--yellow); }
+.alert-card.error { border-left:4px solid var(--red); }
+.alert-card.info { border-left:4px solid #4FC3F7; }
+.alert-icon { font-size:1.3rem; }
+.alert-text { flex:1; font-size:0.85rem; }
+.alert-time { font-size:0.72rem; color:var(--muted); }
+
+/* TWO COL */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+
+/* MOBILE */
+@media (max-width:768px) {
+  .admin-sidebar { width:100%; position:relative; min-width:auto; }
+  .admin.active { flex-direction:column; }
+  .admin-main { margin-left:0; padding:20px; }
+  .stats-grid { grid-template-columns:1fr 1fr; }
+  .two-col { grid-template-columns:1fr; }
+  table { font-size:0.78rem; }
+  th, td { padding:10px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div class="login-page" id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">🚗</div>
+    <div class="login-title">Voiture<span>Sen</span> Admin</div>
+    <div class="login-sub">Panel d'administration — Accès restreint</div>
+    <input class="login-input" id="loginUser" placeholder="Identifiant" value="admin">
+    <input class="login-input" id="loginPass" type="password" placeholder="Mot de passe" value="voituresen2025">
+    <button class="login-btn" onclick="doLogin()">🔐 Se connecter</button>
+    <div class="login-hint">Demo : admin / voituresen2025</div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin" id="adminPanel">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">🚗 Voiture<span>Sen</span> Admin</div>
+    <nav class="admin-nav">
+      <div class="admin-nav-item active" onclick="showAdmin('dashboard',this)">
+        <span class="nav-icon">📊</span> Dashboard
+      </div>
+      <div class="admin-nav-item" onclick="showAdmin('annonces',this)">
+        <span class="nav-icon">🚘</span> Annonces
+      </div>
+      <div class="admin-nav-item" onclick="showAdmin('concessionnaires',this)">
+        <span class="nav-icon">🏢</span> Concessionnaires
+      </div>
+      <div class="admin-nav-item" onclick="showAdmin('rapportsVin',this)">
+        <span class="nav-icon">📋</span> Rapports VIN
+      </div>
+      <div class="admin-nav-item" onclick="showAdmin('paiements',this)">
+        <span class="nav-icon">💰</span> Paiements
+      </div>
+      <div class="admin-nav-item" onclick="showAdmin('stats',this)">
+        <span class="nav-icon">📈</span> Statistiques
+      </div>
+      <div class="admin-nav-item" onclick="showAdmin('config',this)">
+        <span class="nav-icon">⚙️</span> Configuration
+      </div>
+    </nav>
+    <div class="admin-logout">
+      <button class="admin-logout-btn" onclick="doLogout()">🚪 Déconnexion</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="admin-main">
+
+    <!-- ====== DASHBOARD ====== -->
+    <div class="admin-section active" id="secDashboard">
+      <div class="admin-header">
+        <div class="admin-page-title">📊 Dashboard <span>VoitureSen</span></div>
+        <div class="admin-date" id="adminDate"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card orange">
+          <div class="stat-icon">💰</div>
+          <div class="stat-value" id="revenuJour">127 500</div>
+          <div class="stat-label">Revenus aujourd'hui (FCFA)</div>
+          <div class="stat-change up">↑ +23% vs hier</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">👥</div>
+          <div class="stat-value">342</div>
+          <div class="stat-label">Visiteurs actifs</div>
+          <div class="stat-change up">↑ +12% vs hier</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon">💬</div>
+          <div class="stat-value">89</div>
+          <div class="stat-label">Conversations Fatou</div>
+          <div class="stat-change up">↑ +8%</div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">📋</div>
+          <div class="stat-value">24</div>
+          <div class="stat-label">Rapports VIN vendus</div>
+          <div class="stat-change up">↑ +15%</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">📈</div>
+          <div class="stat-value">7.2%</div>
+          <div class="stat-label">Taux de conversion</div>
+          <div class="stat-change up">↑ +1.3%</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">🏢</div>
+          <div class="stat-value">3</div>
+          <div class="stat-label">Inscriptions en attente</div>
+          <div class="stat-change down">À traiter</div>
+        </div>
+      </div>
+
+      <!-- Alerts -->
+      <div style="margin-bottom:24px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;margin-bottom:12px;">🔔 Alertes</div>
+        <div class="alert-card warning">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-text"><b>3 inscriptions concessionnaires</b> en attente d'approbation</div>
+          <div class="alert-time">Il y a 2h</div>
+        </div>
+        <div class="alert-card error">
+          <div class="alert-icon">🚨</div>
+          <div class="alert-text"><b>1 annonce signalée</b> — Mercedes C200 potentiellement frauduleuse</div>
+          <div class="alert-time">Il y a 5h</div>
+        </div>
+        <div class="alert-card info">
+          <div class="alert-icon">ℹ️</div>
+          <div class="alert-text"><b>2 paiements échoués</b> Wave/Orange Money à relancer</div>
+          <div class="alert-time">Aujourd'hui</div>
+        </div>
+      </div>
+
+      <!-- Revenue chart -->
+      <div class="chart-card">
+        <div class="chart-title">💰 Revenus de la semaine (FCFA)</div>
+        <div id="revenueChart"></div>
+      </div>
+    </div>
+
+    <!-- ====== ANNONCES ====== -->
+    <div class="admin-section" id="secAnnonces">
+      <div class="admin-header">
+        <div class="admin-page-title">🚘 Gestion des <span>Annonces</span></div>
+      </div>
+
+      <div class="stats-grid" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-value">6</div><div class="stat-label">Actives</div></div>
+        <div class="stat-card orange"><div class="stat-value">2</div><div class="stat-label">En attente</div></div>
+        <div class="stat-card red"><div class="stat-value">1</div><div class="stat-label">Signalées</div></div>
+        <div class="stat-card blue"><div class="stat-value">8</div><div class="stat-label">Total</div></div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Toutes les annonces</div>
+          <div class="admin-table-actions">
+            <select class="config-input" style="width:auto;" id="annonceStatusFilter" onchange="renderAdminAnnonces()">
+              <option value="all">Tous les statuts</option>
+              <option value="active">Actives</option>
+              <option value="pending">En attente</option>
+              <option value="rejected">Rejetées</option>
+              <option value="flagged">Signalées</option>
+            </select>
+            <button class="admin-btn secondary" onclick="alert('Import depuis URL — Bientôt disponible')">📥 Importer</button>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Véhicule</th>
+              <th>Vendeur</th>
+              <th>Prix</th>
+              <th>Statut</th>
+              <th>Vues</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminAnnoncesBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== CONCESSIONNAIRES ====== -->
+    <div class="admin-section" id="secConcessionnaires">
+      <div class="admin-header">
+        <div class="admin-page-title">🏢 Gestion des <span>Concessionnaires</span></div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Tous les concessionnaires</div>
+          <div class="admin-table-actions">
+            <select class="config-input" style="width:auto;" id="dealerStatusFilter" onchange="renderDealers()">
+              <option value="all">Tous</option>
+              <option value="active">Actifs</option>
+              <option value="pending">En attente</option>
+              <option value="suspended">Suspendus</option>
+              <option value="expired">Abonnement expiré</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Agence</th>
+              <th>Ville</th>
+              <th>WhatsApp</th>
+              <th>Statut</th>
+              <th>Abonnement</th>
+              <th>Annonces</th>
+              <th>Revenus</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminDealersBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== RAPPORTS VIN ====== -->
+    <div class="admin-section" id="secRapportsVin">
+      <div class="admin-header">
+        <div class="admin-page-title">📋 Rapports <span>VIN</span></div>
+        <button class="admin-btn secondary" onclick="exportCSV('vin')">📥 Export CSV</button>
+      </div>
+
+      <div class="stats-grid" style="margin-bottom:20px;">
+        <div class="stat-card green"><div class="stat-value">48</div><div class="stat-label">Rapports générés</div></div>
+        <div class="stat-card orange"><div class="stat-value">3</div><div class="stat-label">En attente</div></div>
+        <div class="stat-card red"><div class="stat-value">2</div><div class="stat-label">Échoués</div></div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Historique des rapports</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Véhicule</th>
+              <th>Acheteur</th>
+              <th>Plan</th>
+              <th>Montant</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminVinBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ====== PAIEMENTS ====== -->
+    <div class="admin-section" id="secPaiements">
+      <div class="admin-header">
+        <div class="admin-page-title">💰 Gestion des <span>Paiements</span></div>
+        <button class="admin-btn secondary" onclick="exportCSV('paiements')">📥 Export CSV/Excel</button>
+      </div>
+
+      <div class="stats-grid" style="margin-bottom:20px;">
+        <div class="stat-card orange"><div class="stat-value">892 500</div><div class="stat-label">Revenus du mois (FCFA)</div></div>
+        <div class="stat-card green"><div class="stat-value">53</div><div class="stat-label">Transactions réussies</div></div>
+        <div class="stat-card red"><div class="stat-value">4</div><div class="stat-label">Remboursements</div></div>
+      </div>
+
+      <div class="admin-table-wrap">
+        <div class="admin-table-header">
+          <div class="admin-table-title">Toutes les transactions</div>
+          <div class="admin-table-actions">
+            <select class="config-input" style="width:auto;" id="payFilter" onchange="renderPayments()">
+              <option value="all">Tous</option>
+              <option value="rapport">Rapports VIN</option>
+              <option value="abonnement">Abonnements</option>
+            </select>
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Détails</th>
+              <th>Montant</th>
+              <th>Méthode</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody id="adminPayBody"></tbody>
+        </table>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">📊 Revenus mensuels (FCFA)</div>
+        <div id="monthlyRevenueChart"></div>
+      </div>
+    </div>
+
+    <!-- ====== STATISTIQUES ====== -->
+    <div class="admin-section" id="secStats">
+      <div class="admin-header">
+        <div class="admin-page-title">📈 Statistiques <span>Avancées</span></div>
+      </div>
+
+      <div class="two-col">
+        <div class="chart-card">
+          <div class="chart-title">🚗 Voitures les plus consultées</div>
+          <div id="topCarsChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">💬 Requêtes fréquentes à Fatou</div>
+          <div id="topQueriesChart"></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="chart-card">
+          <div class="chart-title">📈 Taux de conversion par type</div>
+          <div id="conversionChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">🌍 Villes d'origine des visiteurs</div>
+          <div id="citiesChart"></div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">⏰ Heures de pointe d'utilisation</div>
+        <div id="hoursChart"></div>
+      </div>
+    </div>
+
+    <!-- ====== CONFIGURATION ====== -->
+    <div class="admin-section" id="secConfig">
+      <div class="admin-header">
+        <div class="admin-page-title">⚙️ <span>Configuration</span> Globale</div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-title">💰 Prix des plans</div>
+        <div class="config-row">
+          <div class="config-label">Rapport VIN basique<small>Prix par rapport</small></div>
+          <input class="config-input" value="500" id="prixBasique"> FCFA
+        </div>
+        <div class="config-row">
+          <div class="config-label">Rapport VIN complet<small>Avec contact WhatsApp</small></div>
+          <input class="config-input" value="2 000" id="prixComplet"> FCFA
+        </div>
+        <div class="config-row">
+          <div class="config-label">Badge Concessionnaire Vérifié<small>Abonnement mensuel</small></div>
+          <input class="config-input" value="15 000" id="prixBadge"> FCFA/mois
+        </div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-title">🤖 Message d'accueil Fatou</div>
+        <textarea class="login-input" style="min-height:80px;resize:vertical;margin:0;" id="fatouWelcome">Salam ! 👋🏾 Je suis Fatou, votre conseillère automobile à Dakar. Dites-moi ce que vous cherchez — type de voiture, budget, usage — et je vous trouve les meilleures offres vérifiées.</textarea>
+        <button class="admin-btn primary" style="margin-top:10px;" onclick="alert('Message Fatou mis à jour !')">Sauvegarder</button>
+      </div>
+
+      <div class="config-card">
+        <div class="config-title">🔧 Fonctionnalités</div>
+        <div class="config-row">
+          <div class="config-label">Chat Fatou IA<small>Activer le bot conversationnel</small></div>
+          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-label">Rapports VIN<small>Activer l'achat de rapports</small></div>
+          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-label">Inscription concessionnaires<small>Permettre les nouvelles inscriptions</small></div>
+          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+        </div>
+        <div class="config-row">
+          <div class="config-label">Mode maintenance<small>Afficher une page de maintenance</small></div>
+          <div class="toggle" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-title">🔑 Clés API</div>
+        <div class="config-row">
+          <div class="config-label">Claude API<small>claude-sonnet-4-20250514</small></div>
+          <input class="config-input" type="password" value="sk-ant-xxxx" style="width:240px;">
+        </div>
+        <div class="config-row">
+          <div class="config-label">Stripe / PayDunya<small>Paiement en ligne</small></div>
+          <input class="config-input" type="password" value="pk_test_xxxx" style="width:240px;">
+        </div>
+        <div class="config-row">
+          <div class="config-label">WhatsApp Business API<small>Twilio / 360dialog</small></div>
+          <input class="config-input" type="password" value="whatsapp_xxxx" style="width:240px;">
+        </div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-title">📢 Bannière d'annonce</div>
+        <input class="login-input" style="margin:0;" id="bannerText" placeholder="Ex: Nouveau ! VoitureSen disponible à Saint-Louis" value="">
+        <div style="display:flex;gap:10px;margin-top:10px;">
+          <button class="admin-btn primary" onclick="alert('Bannière activée !')">Activer</button>
+          <button class="admin-btn secondary" onclick="alert('Bannière désactivée')">Désactiver</button>
+        </div>
+      </div>
+
+      <div class="config-card">
+        <div class="config-title">👤 Utilisateurs Admin</div>
+        <div class="config-row">
+          <div class="config-label">admin<small>Propriétaire · Accès complet</small></div>
+          <span class="badge active">Actif</span>
+        </div>
+        <button class="admin-btn secondary" style="margin-top:10px;" onclick="alert('Ajout collaborateur — Bientôt disponible')">+ Ajouter un collaborateur</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ====== DATA ======
+const adminAnnonces = [
+  { id:1, name:"Toyota Corolla 2019", seller:"Auto Prestige Dakar", price:4500000, status:"active", verified:true, vues:342, contacts:28 },
+  { id:2, name:"Toyota RAV4 2020", seller:"Japan Auto Import", price:9800000, status:"active", verified:true, vues:215, contacts:19 },
+  { id:3, name:"Land Cruiser V8 2018", seller:"Africa Motors SARL", price:18500000, status:"active", verified:true, vues:567, contacts:45 },
+  { id:4, name:"Mercedes C200 2019", seller:"Premium Cars Dakar", price:14000000, status:"flagged", verified:true, vues:189, contacts:14 },
+  { id:5, name:"Toyota HiAce 2020", seller:"Transport Plus", price:11500000, status:"active", verified:true, vues:134, contacts:11 },
+  { id:6, name:"Honda CB500 2022", seller:"Moto City Dakar", price:2100000, status:"active", verified:true, vues:98, contacts:7 },
+  { id:7, name:"Hyundai Tucson 2020", seller:"Particulier - Moussa", price:7200000, status:"pending", verified:false, vues:76, contacts:5 },
+  { id:8, name:"Renault Logan 2021", seller:"Particulier - Awa", price:3200000, status:"pending", verified:false, vues:45, contacts:3 },
+];
+
+const dealers = [
+  { name:"Auto Prestige Dakar", ville:"Dakar", phone:"+221770001122", status:"active", plan:"Badge Vérifié", annonces:4, revenus:285000 },
+  { name:"Japan Auto Import", ville:"Dakar", phone:"+221770002233", status:"active", plan:"Badge Vérifié", annonces:3, revenus:195000 },
+  { name:"Africa Motors SARL", ville:"Dakar", phone:"+221770003344", status:"active", plan:"Badge Vérifié", annonces:2, revenus:420000 },
+  { name:"Premium Cars Dakar", ville:"Dakar", phone:"+221770004455", status:"suspended", plan:"Expiré", annonces:1, revenus:85000 },
+  { name:"Transport Plus Sénégal", ville:"Thiès", phone:"+221770005566", status:"pending", plan:"En attente", annonces:0, revenus:0 },
+  { name:"Moto City Dakar", ville:"Dakar", phone:"+221770006677", status:"active", plan:"Gratuit", annonces:2, revenus:45000 },
+  { name:"Sénégal Auto Express", ville:"Saint-Louis", phone:"+221770009900", status:"pending", plan:"En attente", annonces:0, revenus:0 },
+  { name:"Dakar Premium Motors", ville:"Dakar", phone:"+221770011100", status:"pending", plan:"En attente", annonces:0, revenus:0 },
+];
+
+const vinReports = [
+  { date:"12/03/2026", vehicle:"Toyota Corolla 2019", buyer:"Mamadou Diop", plan:"Complet", amount:2000, status:"success" },
+  { date:"12/03/2026", vehicle:"RAV4 2020", buyer:"Awa Ndiaye", plan:"Basique", amount:500, status:"success" },
+  { date:"11/03/2026", vehicle:"Land Cruiser V8", buyer:"Ibrahima Fall", plan:"Complet", amount:2000, status:"success" },
+  { date:"11/03/2026", vehicle:"Mercedes C200", buyer:"Fatou Sow", plan:"Complet", amount:2000, status:"pending" },
+  { date:"10/03/2026", vehicle:"Toyota Corolla", buyer:"Ousmane Ba", plan:"Basique", amount:500, status:"success" },
+  { date:"10/03/2026", vehicle:"Hyundai Tucson", buyer:"Cheikh Diallo", plan:"Complet", amount:2000, status:"failed" },
+  { date:"09/03/2026", vehicle:"Honda CB500", buyer:"Moussa Sarr", plan:"Basique", amount:500, status:"success" },
+  { date:"09/03/2026", vehicle:"RAV4 2020", buyer:"Aissatou Diallo", plan:"Complet", amount:2000, status:"failed" },
+];
+
+const payments = [
+  { date:"12/03/2026 14:23", type:"rapport", details:"VIN Complet — Toyota Corolla", amount:2000, method:"Wave", status:"success" },
+  { date:"12/03/2026 11:05", type:"rapport", details:"VIN Basique — RAV4 2020", amount:500, method:"Orange Money", status:"success" },
+  { date:"12/03/2026 09:12", type:"abonnement", details:"Badge Vérifié — Japan Auto", amount:15000, method:"Stripe", status:"success" },
+  { date:"11/03/2026 16:45", type:"rapport", details:"VIN Complet — Land Cruiser", amount:2000, method:"Wave", status:"success" },
+  { date:"11/03/2026 10:30", type:"rapport", details:"VIN Complet — Mercedes C200", amount:2000, method:"Orange Money", status:"failed" },
+  { date:"10/03/2026 15:20", type:"abonnement", details:"Badge Vérifié — Africa Motors", amount:15000, method:"Stripe", status:"success" },
+  { date:"10/03/2026 12:10", type:"rapport", details:"VIN Basique — Corolla", amount:500, method:"Wave", status:"success" },
+  { date:"09/03/2026 14:00", type:"rapport", details:"VIN Complet — Tucson", amount:2000, method:"Wave", status:"refunded" },
+];
+
+function fmt(p) { return new Intl.NumberFormat('fr-FR').format(p); }
+
+// ====== LOGIN ======
+function doLogin() {
+  const user = document.getElementById('loginUser').value;
+  const pass = document.getElementById('loginPass').value;
+  if (user === 'admin' && pass === 'voituresen2025') {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('adminPanel').classList.add('active');
+    initAdmin();
+  } else {
+    alert('Identifiants incorrects !');
+  }
+}
+function doLogout() {
+  document.getElementById('adminPanel').classList.remove('active');
+  document.getElementById('loginPage').style.display = 'flex';
+}
+
+// ====== NAVIGATION ======
+function showAdmin(section, el) {
+  document.querySelectorAll('.admin-nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  const map = { dashboard:'secDashboard', annonces:'secAnnonces', concessionnaires:'secConcessionnaires',
+    rapportsVin:'secRapportsVin', paiements:'secPaiements', stats:'secStats', config:'secConfig' };
+  document.getElementById(map[section]).classList.add('active');
+}
+
+// ====== INIT ======
+function initAdmin() {
+  document.getElementById('adminDate').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  renderRevenueChart();
+  renderAdminAnnonces();
+  renderDealers();
+  renderVinReports();
+  renderPayments();
+  renderMonthlyRevenue();
+  renderStats();
+}
+
+// ====== ANNONCES TABLE ======
+function renderAdminAnnonces() {
+  const filter = document.getElementById('annonceStatusFilter').value;
+  let list = filter === 'all' ? adminAnnonces : adminAnnonces.filter(a => a.status === filter);
+  document.getElementById('adminAnnoncesBody').innerHTML = list.map(a => {
+    const statusBadge = a.status === 'active' ? '<span class="badge active">✅ Active</span>'
+      : a.status === 'pending' ? '<span class="badge pending">⏳ En attente</span>'
+      : a.status === 'flagged' ? '<span class="badge rejected">🚨 Signalée</span>'
+      : '<span class="badge rejected">❌ Rejetée</span>';
+    return `<tr>
+      <td><b>${a.name}</b> ${a.verified?'<span class="badge active" style="font-size:0.65rem;">✅</span>':''}</td>
+      <td>${a.seller}</td>
+      <td style="font-family:'Space Grotesk';font-weight:700;color:var(--orange);">${fmt(a.price)} FCFA</td>
+      <td>${statusBadge}</td>
+      <td>${a.vues}</td>
+      <td>
+        ${a.status==='pending'?'<button class="admin-btn success" onclick="changeStatus('+a.id+',\'active\')">✅ Approuver</button>':''}
+        ${a.status==='pending'?'<button class="admin-btn danger" onclick="changeStatus('+a.id+',\'rejected\')">❌ Rejeter</button>':''}
+        ${a.status==='flagged'?'<button class="admin-btn danger" onclick="changeStatus('+a.id+',\'rejected\')">🗑️ Supprimer</button>':''}
+        ${a.status==='active'?'<button class="admin-btn secondary" onclick="alert(\'Modification annonce\')">✏️</button>':''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+function changeStatus(id, newStatus) {
+  const a = adminAnnonces.find(x => x.id === id);
+  if (a) { a.status = newStatus; renderAdminAnnonces(); }
+}
+
+// ====== DEALERS TABLE ======
+function renderDealers() {
+  const filter = document.getElementById('dealerStatusFilter').value;
+  let list = filter === 'all' ? dealers : dealers.filter(d => d.status === filter);
+  document.getElementById('adminDealersBody').innerHTML = list.map((d,i) => {
+    const statusBadge = d.status === 'active' ? '<span class="badge active">Actif</span>'
+      : d.status === 'pending' ? '<span class="badge pending">En attente</span>'
+      : d.status === 'suspended' ? '<span class="badge rejected">Suspendu</span>'
+      : '<span class="badge expired">Expiré</span>';
+    const planBadge = d.plan === 'Badge Vérifié' ? '<span class="badge active">✅ Vérifié</span>'
+      : d.plan === 'Gratuit' ? '<span class="badge expired">Gratuit</span>'
+      : '<span class="badge pending">'+d.plan+'</span>';
+    return `<tr>
+      <td><b>${d.name}</b></td>
+      <td>${d.ville}</td>
+      <td style="font-size:0.8rem;">${d.phone}</td>
+      <td>${statusBadge}</td>
+      <td>${planBadge}</td>
+      <td>${d.annonces}</td>
+      <td style="font-family:'Space Grotesk';font-weight:600;color:var(--orange);">${fmt(d.revenus)}</td>
+      <td>
+        ${d.status==='pending'?'<button class="admin-btn success" onclick="activateDealer('+i+')">✅ Activer</button>':''}
+        ${d.status==='active'?'<button class="admin-btn danger" onclick="suspendDealer('+i+')">⏸️</button>':''}
+        ${d.status==='suspended'?'<button class="admin-btn success" onclick="activateDealer('+i+')">▶️ Réactiver</button>':''}
+        <button class="admin-btn secondary" onclick="window.open('https://wa.me/'+encodeURIComponent('${d.phone}'),'_blank')">📱 WhatsApp</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function activateDealer(i) { dealers[i].status = 'active'; renderDealers(); }
+function suspendDealer(i) { dealers[i].status = 'suspended'; renderDealers(); }
+
+// ====== VIN REPORTS TABLE ======
+function renderVinReports() {
+  document.getElementById('adminVinBody').innerHTML = vinReports.map(r => {
+    const statusBadge = r.status === 'success' ? '<span class="badge success">✅ Généré</span>'
+      : r.status === 'pending' ? '<span class="badge pending">⏳ En attente</span>'
+      : '<span class="badge failed">❌ Échoué</span>';
+    return `<tr>
+      <td>${r.date}</td>
+      <td>${r.vehicle}</td>
+      <td>${r.buyer}</td>
+      <td>${r.plan}</td>
+      <td style="font-family:'Space Grotesk';font-weight:600;">${fmt(r.amount)} FCFA</td>
+      <td>${statusBadge}</td>
+      <td>${r.status==='failed'?'<button class="admin-btn primary" onclick="alert(\'Rapport relancé !\')">🔄 Relancer</button>':''}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ====== PAYMENTS TABLE ======
+function renderPayments() {
+  const filter = document.getElementById('payFilter').value;
+  let list = filter === 'all' ? payments : payments.filter(p => p.type === filter);
+  document.getElementById('adminPayBody').innerHTML = list.map(p => {
+    const statusBadge = p.status === 'success' ? '<span class="badge success">✅ Réussi</span>'
+      : p.status === 'failed' ? '<span class="badge failed">❌ Échoué</span>'
+      : '<span class="badge pending">↩️ Remboursé</span>';
+    const typeBadge = p.type === 'rapport' ? '<span class="badge" style="background:rgba(79,195,247,0.12);color:#4FC3F7;">📋 Rapport</span>'
+      : '<span class="badge" style="background:rgba(255,107,0,0.12);color:var(--orange);">🏢 Abonnement</span>';
+    return `<tr>
+      <td style="font-size:0.8rem;">${p.date}</td>
+      <td>${typeBadge}</td>
+      <td>${p.details}</td>
+      <td style="font-family:'Space Grotesk';font-weight:700;color:var(--orange);">${fmt(p.amount)} FCFA</td>
+      <td>${p.method}</td>
+      <td>${statusBadge}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ====== CHARTS ======
+function renderRevenueChart() {
+  const data = [
+    { label:'Lun', value:85000 },
+    { label:'Mar', value:62000 },
+    { label:'Mer', value:127500 },
+    { label:'Jeu', value:95000 },
+    { label:'Ven', value:143000 },
+    { label:'Sam', value:178000 },
+    { label:'Dim', value:52000 },
+  ];
+  const max = Math.max(...data.map(d=>d.value));
+  document.getElementById('revenueChart').innerHTML = data.map(d => `
+    <div class="chart-bar-row">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill orange" style="width:${(d.value/max*100).toFixed(0)}%">${fmt(d.value)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderMonthlyRevenue() {
+  const data = [
+    { label:'Oct 2025', value:245000 },
+    { label:'Nov 2025', value:380000 },
+    { label:'Déc 2025', value:520000 },
+    { label:'Jan 2026', value:615000 },
+    { label:'Fév 2026', value:745000 },
+    { label:'Mar 2026', value:892500 },
+  ];
+  const max = Math.max(...data.map(d=>d.value));
+  document.getElementById('monthlyRevenueChart').innerHTML = data.map(d => `
+    <div class="chart-bar-row">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill green" style="width:${(d.value/max*100).toFixed(0)}%">${fmt(d.value)}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderStats() {
+  // Top cars
+  const topCars = [
+    { label:'Land Cruiser V8', value:567 },
+    { label:'Toyota Corolla', value:342 },
+    { label:'RAV4 2020', value:215 },
+    { label:'Mercedes C200', value:189 },
+    { label:'HiAce 2020', value:134 },
+  ];
+  const maxCar = Math.max(...topCars.map(d=>d.value));
+  document.getElementById('topCarsChart').innerHTML = topCars.map(d => `
+    <div class="chart-bar-row">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill orange" style="width:${(d.value/maxCar*100).toFixed(0)}%">${d.value} vues</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Top queries
+  const topQueries = [
+    { label:'Voiture familiale', value:145 },
+    { label:'Budget 5M', value:112 },
+    { label:'SUV / 4x4', value:98 },
+    { label:'Taxi pas cher', value:76 },
+    { label:'Rapport VIN', value:64 },
+  ];
+  const maxQ = Math.max(...topQueries.map(d=>d.value));
+  document.getElementById('topQueriesChart').innerHTML = topQueries.map(d => `
+    <div class="chart-bar-row">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill blue" style="width:${(d.value/maxQ*100).toFixed(0)}%">${d.value}</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Conversion by type
+  const convData = [
+    { label:'SUV', value:9.2 },
+    { label:'Berline', value:7.5 },
+    { label:'4x4', value:6.8 },
+    { label:'Minibus', value:5.1 },
+    { label:'Moto', value:3.4 },
+  ];
+  const maxConv = Math.max(...convData.map(d=>d.value));
+  document.getElementById('conversionChart').innerHTML = convData.map(d => `
+    <div class="chart-bar-row">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill green" style="width:${(d.value/maxConv*100).toFixed(0)}%">${d.value}%</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Cities
+  const cities = [
+    { label:'Dakar', value:78 },
+    { label:'Thiès', value:8 },
+    { label:'Saint-Louis', value:5 },
+    { label:'Touba', value:4 },
+    { label:'Autres', value:5 },
+  ];
+  const maxCity = Math.max(...cities.map(d=>d.value));
+  document.getElementById('citiesChart').innerHTML = cities.map(d => `
+    <div class="chart-bar-row">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill orange" style="width:${(d.value/maxCity*100).toFixed(0)}%">${d.value}%</div>
+      </div>
+    </div>
+  `).join('');
+
+  // Hours
+  const hours = [
+    { label:'6h-9h', value:12 },
+    { label:'9h-12h', value:28 },
+    { label:'12h-14h', value:18 },
+    { label:'14h-17h', value:22 },
+    { label:'17h-20h', value:35 },
+    { label:'20h-23h', value:25 },
+    { label:'23h-6h', value:5 },
+  ];
+  const maxH = Math.max(...hours.map(d=>d.value));
+  document.getElementById('hoursChart').innerHTML = hours.map(d => `
+    <div class="chart-bar-row">
+      <div class="chart-bar-label">${d.label}</div>
+      <div class="chart-bar-track">
+        <div class="chart-bar-fill blue" style="width:${(d.value/maxH*100).toFixed(0)}%">${d.value}%</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ====== EXPORT CSV ======
+function exportCSV(type) {
+  let csv = '';
+  if (type === 'vin') {
+    csv = 'Date,Véhicule,Acheteur,Plan,Montant,Statut\n';
+    vinReports.forEach(r => { csv += `${r.date},${r.vehicle},${r.buyer},${r.plan},${r.amount},${r.status}\n`; });
+  } else {
+    csv = 'Date,Type,Détails,Montant,Méthode,Statut\n';
+    payments.forEach(p => { csv += `${p.date},${p.type},${p.details},${p.amount},${p.method},${p.status}\n`; });
+  }
+  const blob = new Blob([csv], { type:'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = type === 'vin' ? 'voituresen-rapports-vin.csv' : 'voituresen-paiements.csv';
+  a.click();
+}
+
+// Auto-login for demo
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin(); });
+</script>
+</body>
+</html>
