@@ -1203,7 +1203,7 @@ function renderAnnonces() {
   grid.innerHTML = list.map(c => `
     <div class="grid-card" onclick="openModal(${c.id})">
       <div class="grid-card-img">
-        ${c.emoji}
+        ${c.image ? '<img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">' : (c.emoji||'🚗')}
         <span class="grid-card-badge ${c.verified?'verified':'unverified'}">${c.verified?'✅ Vérifié':'⚠️ Non vérifié'}</span>
       </div>
       <div class="grid-card-body">
@@ -1230,7 +1230,7 @@ function renderSidebar(list) {
   const el = document.getElementById('carList');
   el.innerHTML = list.map(c => `
     <div class="car-item" onclick="openModal(${c.id})">
-      <div class="car-item-img">${c.emoji}</div>
+      <div class="car-item-img">${c.image ? '<img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">' : (c.emoji||'🚗')}</div>
       <div class="car-item-info">
         <div class="car-item-name">${c.name}
           <span class="car-badge ${c.verified?'badge-verified':'badge-unverified'}">${c.verified?'✅ Vérifié':'⚠️'}</span>
@@ -1269,7 +1269,7 @@ function openModal(id) {
   const m = document.getElementById('modal');
   m.innerHTML = `
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-emoji">${c.emoji}</div>
+    <div class="modal-emoji">${c.image ? '<img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">' : (c.emoji||'🚗')}</div>
     <div style="display:flex;align-items:center;gap:8px;">
       <span class="modal-title">${c.name}</span>
       <span class="car-badge ${c.verified?'badge-verified':'badge-unverified'}" style="font-size:0.75rem;padding:4px 8px;">
@@ -1498,7 +1498,7 @@ function addCarCards(carIds) {
     return `
       <div class="car-card" onclick="openModal(${c.id})">
         <div class="car-card-top">
-          <div class="car-card-emoji">${c.emoji}</div>
+          <div class="car-card-emoji">${c.image ? '<img src="'+c.image+'" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">' : (c.emoji||'🚗')}</div>
           <div class="car-card-info">
             <div class="car-card-name">${c.name}
               <span class="car-badge ${c.verified?'badge-verified':'badge-unverified'}">${c.verified?'✅ Vérifié':'⚠️'}</span>
