@@ -477,7 +477,15 @@ app.post('/api/payment/paydunya/webhook', (req, res) => {
 // ============================================
 // API ROUTES UTILITAIRES
 // ============================================
-app.get('/api/cars', (req, res) => res.json(db.cars));
+app.get('/api/cars', async (req, res) => {
+  try {
+    if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY) {
+      const cars = await querySupabase('cars', '?order=verified.desc,id.asc');
+      return res.json(cars);
+    }
+  } catch(e) { console.error('Supabase error:', e.message); }
+  res.json(db.cars);
+});
 app.get('/api/cars/:id', (req, res) => {
   const car = db.cars.find(c => c.id === parseInt(req.params.id));
   if (!car) return res.status(404).json({ error: 'Voiture non trouv\u00e9e' });
@@ -500,7 +508,7 @@ app.get('/api/admin/stats', (req, res) => {
 
 // SPA fallback - serve index.html for all non-API routes
 app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
+  if (!req.path.startsWith('/api') && !req.path.startsWith('/images/')) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
   }
 });
