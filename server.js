@@ -15,8 +15,8 @@ const app = express();
 // ============================================
 require('dotenv').config();
 
-const SUPABASE_URL = process.env.SUPABASE_URL || 'https://euorvuxpwrfesgyufwiq.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || 'sb_secret_qMOM3XmxJ1C-yjSd57KdIQ_mQwNjA-J';
+const SUPABASE_URL = process.env.SUPABASE_URL || '';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || '';
 
 async function querySupabase(table, params = '') {
   const res = await require('axios').get(`${SUPABASE_URL}/rest/v1/${table}${params}`, {
