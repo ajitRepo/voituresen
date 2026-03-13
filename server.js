@@ -15,6 +15,54 @@ const app = express();
 // ============================================
 require('dotenv').config();
 
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://euorvuxpwrfesgyufwiq.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || 'sb_secret_qMOM3XmxJ1C-yjSd57KdIQ_mQwNjA-J';
+
+async function querySupabase(table, params = '') {
+  const res = await require('axios').get(`${SUPABASE_URL}/rest/v1/${table}${params}`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  return res.data;
+}
+
+async function insertSupabase(table, data) {
+  const res = await require('axios').post(`${SUPABASE_URL}/rest/v1/${table}`, data, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    }
+  });
+  return res.data;
+}
+
+async function updateSupabase(table, id, data) {
+  const res = await require('axios').patch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, data, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    }
+  });
+  return res.data;
+}
+
+async function deleteSupabase(table, id) {
+  await require('axios').delete(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`
+    }
+  });
+}
+
+
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
   methods: ['GET', 'POST'],
@@ -460,6 +508,37 @@ app.get('*', (req, res) => {
 // ============================================
 // LANCEMENT
 // ============================================
+
+// ADMIN - Ajouter une voiture
+app.post('/api/admin/cars', async (req, res) => {
+  try {
+    const car = await insertSupabase('cars', req.body);
+    res.json({ success: true, car: car[0] });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ADMIN - Modifier une voiture
+app.put('/api/admin/cars/:id', async (req, res) => {
+  try {
+    const car = await updateSupabase('cars', req.params.id, req.body);
+    res.json({ success: true, car: car[0] });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ADMIN - Supprimer une voiture
+app.delete('/api/admin/cars/:id', async (req, res) => {
+  try {
+    await deleteSupabase('cars', req.params.id);
+    res.json({ success: true });
+  } catch(e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`VoitureSen Server running on port ${PORT}`);
   console.log(`Frontend: http://localhost:${PORT}`);
