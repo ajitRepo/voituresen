@@ -402,6 +402,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
               <option value="flagged">Signalées</option>
             </select>
             <button class="admin-btn secondary" onclick="alert('Import depuis URL — Bientôt disponible')">📥 Importer</button>
+            <button class="admin-btn primary" onclick="openAddCarModal()" style="background:#FF6B00;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;">➕ Ajouter une voiture</button>
           </div>
         </div>
         <table>
@@ -999,5 +1000,280 @@ function exportCSV(type) {
 // Auto-login for demo
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('loginPage').style.display !== 'none') doLogin(); });
 </script>
+
+<!-- MODAL AJOUT/MODIFICATION VOITURE -->
+<div id="carModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;overflow-y:auto;">
+  <div style="background:#0d1117;border:1px solid #2d3748;border-radius:16px;max-width:600px;margin:40px auto;padding:32px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <h2 id="modalTitle" style="color:white;font-size:1.4rem;">➕ Ajouter une voiture</h2>
+      <button onclick="closeCarModal()" style="background:none;border:none;color:#aaa;font-size:1.5rem;cursor:pointer;">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="grid-column:1/-1;">
+        <label style="color:#aaa;font-size:0.85rem;">Nom de la voiture *</label>
+        <input id="carName" placeholder="Ex: Toyota Corolla 2019" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Marque *</label>
+        <input id="carBrand" placeholder="Toyota" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Type *</label>
+        <select id="carType" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+          <option value="berline">Berline</option>
+          <option value="suv">SUV</option>
+          <option value="4x4">4x4</option>
+          <option value="minibus">Minibus</option>
+          <option value="moto">Moto</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Année *</label>
+        <input id="carYear" type="number" placeholder="2020" min="1990" max="2026" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Kilométrage</label>
+        <input id="carKm" type="number" placeholder="45000" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Prix (FCFA) *</label>
+        <input id="carPrice" type="number" placeholder="4500000" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Carburant</label>
+        <select id="carFuel" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+          <option value="Essence">Essence</option>
+          <option value="Diesel">Diesel</option>
+          <option value="Hybride">Hybride</option>
+          <option value="Electrique">Électrique</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Transmission</label>
+        <select id="carTransmission" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+          <option value="Automatique">Automatique</option>
+          <option value="Manuelle">Manuelle</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Origine</label>
+        <select id="carOrigin" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+          <option value="France">🇫🇷 France</option>
+          <option value="Japon">🇯🇵 Japon</option>
+          <option value="USA">🇺🇸 USA</option>
+          <option value="Allemagne">🇩🇪 Allemagne</option>
+          <option value="Corée">🇰🇷 Corée</option>
+          <option value="Maroc">🇲🇦 Maroc</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Couleur</label>
+        <input id="carColor" placeholder="Blanc" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">Vendeur *</label>
+        <input id="carSeller" placeholder="Auto Prestige Dakar" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div>
+        <label style="color:#aaa;font-size:0.85rem;">WhatsApp vendeur</label>
+        <input id="carPhone" placeholder="+221770001122" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div style="grid-column:1/-1;">
+        <label style="color:#aaa;font-size:0.85rem;">VIN</label>
+        <input id="carVin" placeholder="VF1RFE00X60123456" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div style="grid-column:1/-1;">
+        <label style="color:#aaa;font-size:0.85rem;">URL Photo</label>
+        <input id="carImage" placeholder="https://... ou /images/corolla.jpg" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+      </div>
+      <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;">
+        <input type="checkbox" id="carVerified" style="width:18px;height:18px;cursor:pointer;">
+        <label for="carVerified" style="color:white;cursor:pointer;">✅ Voiture vérifiée VoitureSen</label>
+      </div>
+    </div>
+    <div id="carModalError" style="color:#ff4444;margin-top:12px;display:none;"></div>
+    <div style="display:flex;gap:12px;margin-top:24px;justify-content:flex-end;">
+      <button onclick="closeCarModal()" style="padding:10px 20px;background:#2d3748;color:white;border:none;border-radius:8px;cursor:pointer;">Annuler</button>
+      <button onclick="saveCarModal()" id="saveCarBtn" style="padding:10px 24px;background:#FF6B00;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">💾 Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CRUD VOITURES - Admin Panel connecté à l'API
+// ============================================================
+let editingCarId = null;
+
+function openAddCarModal() {
+  editingCarId = null;
+  document.getElementById('modalTitle').textContent = '➕ Ajouter une voiture';
+  document.getElementById('carName').value = '';
+  document.getElementById('carBrand').value = '';
+  document.getElementById('carType').value = 'berline';
+  document.getElementById('carYear').value = '';
+  document.getElementById('carKm').value = '';
+  document.getElementById('carPrice').value = '';
+  document.getElementById('carFuel').value = 'Essence';
+  document.getElementById('carTransmission').value = 'Automatique';
+  document.getElementById('carOrigin').value = 'France';
+  document.getElementById('carColor').value = '';
+  document.getElementById('carSeller').value = '';
+  document.getElementById('carPhone').value = '';
+  document.getElementById('carVin').value = '';
+  document.getElementById('carImage').value = '';
+  document.getElementById('carVerified').checked = false;
+  document.getElementById('carModalError').style.display = 'none';
+  document.getElementById('carModal').style.display = 'block';
+}
+
+function openEditCarModal(car) {
+  editingCarId = car.id;
+  document.getElementById('modalTitle').textContent = '✏️ Modifier la voiture';
+  document.getElementById('carName').value = car.name || '';
+  document.getElementById('carBrand').value = car.brand || '';
+  document.getElementById('carType').value = car.type || 'berline';
+  document.getElementById('carYear').value = car.year || '';
+  document.getElementById('carKm').value = car.km || '';
+  document.getElementById('carPrice').value = car.price || '';
+  document.getElementById('carFuel').value = car.fuel || 'Essence';
+  document.getElementById('carTransmission').value = car.transmission || 'Automatique';
+  document.getElementById('carOrigin').value = car.origin || 'France';
+  document.getElementById('carColor').value = car.color || '';
+  document.getElementById('carSeller').value = car.seller || '';
+  document.getElementById('carPhone').value = car.seller_phone || car.sellerPhone || '';
+  document.getElementById('carVin').value = car.vin || '';
+  document.getElementById('carImage').value = car.image || '';
+  document.getElementById('carVerified').checked = car.verified || false;
+  document.getElementById('carModalError').style.display = 'none';
+  document.getElementById('carModal').style.display = 'block';
+}
+
+function closeCarModal() {
+  document.getElementById('carModal').style.display = 'none';
+}
+
+async function saveCarModal() {
+  const name = document.getElementById('carName').value.trim();
+  const price = document.getElementById('carPrice').value;
+  const seller = document.getElementById('carSeller').value.trim();
+
+  if (!name || !price || !seller) {
+    const err = document.getElementById('carModalError');
+    err.textContent = '⚠️ Nom, prix et vendeur sont obligatoires';
+    err.style.display = 'block';
+    return;
+  }
+
+  const originMap = { 'France': '🇫🇷', 'Japon': '🇯🇵', 'USA': '🇺🇸', 'Allemagne': '🇩🇪', 'Corée': '🇰🇷', 'Maroc': '🇲🇦' };
+  const origin = document.getElementById('carOrigin').value;
+
+  const carData = {
+    name, 
+    brand: document.getElementById('carBrand').value,
+    type: document.getElementById('carType').value,
+    year: parseInt(document.getElementById('carYear').value) || null,
+    km: parseInt(document.getElementById('carKm').value) || 0,
+    price: parseInt(price),
+    origin,
+    origin_flag: originMap[origin] || '🌍',
+    fuel: document.getElementById('carFuel').value,
+    transmission: document.getElementById('carTransmission').value,
+    color: document.getElementById('carColor').value,
+    seller,
+    seller_phone: document.getElementById('carPhone').value,
+    vin: document.getElementById('carVin').value,
+    image: document.getElementById('carImage').value || null,
+    verified: document.getElementById('carVerified').checked,
+    seats: 5
+  };
+
+  const btn = document.getElementById('saveCarBtn');
+  btn.textContent = '⏳ Sauvegarde...';
+  btn.disabled = true;
+
+  try {
+    const url = editingCarId ? `/api/admin/cars/${editingCarId}` : '/api/admin/cars';
+    const method = editingCarId ? 'PUT' : 'POST';
+    
+    const resp = await fetch(url, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(carData)
+    });
+    const data = await resp.json();
+
+    if (data.success) {
+      closeCarModal();
+      alert(editingCarId ? '✅ Voiture modifiée avec succès !' : '✅ Voiture ajoutée avec succès !');
+      location.reload();
+    } else {
+      throw new Error(data.error || 'Erreur inconnue');
+    }
+  } catch(e) {
+    document.getElementById('carModalError').textContent = '❌ Erreur: ' + e.message;
+    document.getElementById('carModalError').style.display = 'block';
+  } finally {
+    btn.textContent = '💾 Sauvegarder';
+    btn.disabled = false;
+  }
+}
+
+async function deleteCarAdmin(carId, carName) {
+  if (!confirm(`Supprimer "${carName}" ? Cette action est irréversible.`)) return;
+  try {
+    const resp = await fetch(`/api/admin/cars/${carId}`, { method: 'DELETE' });
+    const data = await resp.json();
+    if (data.success) {
+      alert('✅ Voiture supprimée');
+      location.reload();
+    }
+  } catch(e) {
+    alert('❌ Erreur: ' + e.message);
+  }
+}
+
+// Charger les vraies voitures dans le tableau admin
+async function loadAdminCars() {
+  try {
+    const resp = await fetch('/api/cars');
+    const cars = await resp.json();
+    const tbody = document.querySelector('#annoncesTable tbody, table tbody');
+    if (!tbody || !cars.length) return;
+    
+    tbody.innerHTML = cars.map(car => `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:10px;">
+            ${car.image ? `<img src="${car.image}" style="width:50px;height:40px;object-fit:cover;border-radius:6px;">` : '<span style="font-size:1.5rem;">🚗</span>'}
+            <div>
+              <strong style="color:white;">${car.name}</strong>
+              <div style="color:#aaa;font-size:0.8rem;">${car.type} · ${car.fuel}</div>
+            </div>
+          </div>
+        </td>
+        <td style="color:#aaa;">${car.seller || '-'}</td>
+        <td style="color:#FF6B00;font-weight:600;">${(car.price||0).toLocaleString('fr-FR')} FCFA</td>
+        <td><span style="background:${car.verified ? '#00D46A22' : '#FF6B0022'};color:${car.verified ? '#00D46A' : '#FF6B00'};padding:4px 10px;border-radius:6px;font-size:0.8rem;">${car.verified ? '✅ Active' : '⚠️ Non vérifiée'}</span></td>
+        <td style="color:#aaa;">${car.km ? car.km.toLocaleString('fr-FR') + ' km' : '-'}</td>
+        <td>
+          <div style="display:flex;gap:8px;">
+            <button onclick='openEditCarModal(${JSON.stringify(car)})' style="background:#2d3748;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.85rem;">✏️ Modifier</button>
+            <button onclick="deleteCarAdmin(${car.id}, '${car.name}')" style="background:#ff444422;color:#ff4444;border:1px solid #ff4444;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.85rem;">🗑️ Supprimer</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    console.error('Erreur chargement cars admin:', e);
+  }
+}
+
+// Lancer au chargement
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(loadAdminCars, 500);
+});
+</script>
+
 </body>
 </html>
