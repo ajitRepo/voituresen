@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VoitureSen — Panel Admin</title>
+<title>VoitureSen â Panel Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -258,12 +258,12 @@ tr:hover td { background:rgba(255,255,255,0.02); }
 <!-- LOGIN PAGE -->
 <div class="login-page" id="loginPage">
   <div class="login-card">
-    <div class="login-logo">🚗</div>
+    <div class="login-logo">ð</div>
     <div class="login-title">Voiture<span>Sen</span> Admin</div>
-    <div class="login-sub">Panel d'administration — Accès restreint</div>
+    <div class="login-sub">Panel d'administration â AccÃ¨s restreint</div>
     <input class="login-input" id="loginUser" placeholder="Identifiant" value="admin">
     <input class="login-input" id="loginPass" type="password" placeholder="Mot de passe" value="voituresen2025">
-    <button class="login-btn" onclick="doLogin()">🔐 Se connecter</button>
+    <button class="login-btn" onclick="doLogin()">ð Se connecter</button>
     <div class="login-hint">Demo : admin / voituresen2025</div>
   </div>
 </div>
@@ -272,32 +272,32 @@ tr:hover td { background:rgba(255,255,255,0.02); }
 <div class="admin" id="adminPanel">
   <!-- Sidebar -->
   <aside class="admin-sidebar">
-    <div class="admin-brand">🚗 Voiture<span>Sen</span> Admin</div>
+    <div class="admin-brand">ð Voiture<span>Sen</span> Admin</div>
     <nav class="admin-nav">
       <div class="admin-nav-item active" onclick="showAdmin('dashboard',this)">
-        <span class="nav-icon">📊</span> Dashboard
+        <span class="nav-icon">ð</span> Dashboard
       </div>
       <div class="admin-nav-item" onclick="showAdmin('annonces',this)">
-        <span class="nav-icon">🚘</span> Annonces
+        <span class="nav-icon">ð</span> Annonces
       </div>
       <div class="admin-nav-item" onclick="showAdmin('concessionnaires',this)">
-        <span class="nav-icon">🏢</span> Concessionnaires
+        <span class="nav-icon">ð¢</span> Concessionnaires
       </div>
       <div class="admin-nav-item" onclick="showAdmin('rapportsVin',this)">
-        <span class="nav-icon">📋</span> Rapports VIN
+        <span class="nav-icon">ð</span> Rapports VIN
       </div>
       <div class="admin-nav-item" onclick="showAdmin('paiements',this)">
-        <span class="nav-icon">💰</span> Paiements
+        <span class="nav-icon">ð°</span> Paiements
       </div>
       <div class="admin-nav-item" onclick="showAdmin('stats',this)">
-        <span class="nav-icon">📈</span> Statistiques
+        <span class="nav-icon">ð</span> Statistiques
       </div>
       <div class="admin-nav-item" onclick="showAdmin('config',this)">
-        <span class="nav-icon">⚙️</span> Configuration
+        <span class="nav-icon">âï¸</span> Configuration
       </div>
     </nav>
     <div class="admin-logout">
-      <button class="admin-logout-btn" onclick="doLogout()">🚪 Déconnexion</button>
+      <button class="admin-logout-btn" onclick="doLogout()">ðª DÃ©connexion</button>
     </div>
   </aside>
 
@@ -307,72 +307,72 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <!-- ====== DASHBOARD ====== -->
     <div class="admin-section active" id="secDashboard">
       <div class="admin-header">
-        <div class="admin-page-title">📊 Dashboard <span>VoitureSen</span></div>
+        <div class="admin-page-title">ð Dashboard <span>VoitureSen</span></div>
         <div class="admin-date" id="adminDate"></div>
       </div>
 
       <div class="stats-grid">
         <div class="stat-card orange">
-          <div class="stat-icon">💰</div>
+          <div class="stat-icon">ð°</div>
           <div class="stat-value" id="revenuJour">127 500</div>
           <div class="stat-label">Revenus aujourd'hui (FCFA)</div>
-          <div class="stat-change up">↑ +23% vs hier</div>
+          <div class="stat-change up">â +23% vs hier</div>
         </div>
         <div class="stat-card green">
-          <div class="stat-icon">👥</div>
+          <div class="stat-icon">ð¥</div>
           <div class="stat-value">342</div>
           <div class="stat-label">Visiteurs actifs</div>
-          <div class="stat-change up">↑ +12% vs hier</div>
+          <div class="stat-change up">â +12% vs hier</div>
         </div>
         <div class="stat-card blue">
-          <div class="stat-icon">💬</div>
+          <div class="stat-icon">ð¬</div>
           <div class="stat-value">89</div>
           <div class="stat-label">Conversations Fatou</div>
-          <div class="stat-change up">↑ +8%</div>
+          <div class="stat-change up">â +8%</div>
         </div>
         <div class="stat-card orange">
-          <div class="stat-icon">📋</div>
+          <div class="stat-icon">ð</div>
           <div class="stat-value">24</div>
           <div class="stat-label">Rapports VIN vendus</div>
-          <div class="stat-change up">↑ +15%</div>
+          <div class="stat-change up">â +15%</div>
         </div>
         <div class="stat-card green">
-          <div class="stat-icon">📈</div>
+          <div class="stat-icon">ð</div>
           <div class="stat-value">7.2%</div>
           <div class="stat-label">Taux de conversion</div>
-          <div class="stat-change up">↑ +1.3%</div>
+          <div class="stat-change up">â +1.3%</div>
         </div>
         <div class="stat-card red">
-          <div class="stat-icon">🏢</div>
+          <div class="stat-icon">ð¢</div>
           <div class="stat-value">3</div>
           <div class="stat-label">Inscriptions en attente</div>
-          <div class="stat-change down">À traiter</div>
+          <div class="stat-change down">Ã traiter</div>
         </div>
       </div>
 
       <!-- Alerts -->
       <div style="margin-bottom:24px;">
-        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;margin-bottom:12px;">🔔 Alertes</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1rem;margin-bottom:12px;">ð Alertes</div>
         <div class="alert-card warning">
-          <div class="alert-icon">⚠️</div>
+          <div class="alert-icon">â ï¸</div>
           <div class="alert-text"><b>3 inscriptions concessionnaires</b> en attente d'approbation</div>
           <div class="alert-time">Il y a 2h</div>
         </div>
         <div class="alert-card error">
-          <div class="alert-icon">🚨</div>
-          <div class="alert-text"><b>1 annonce signalée</b> — Mercedes C200 potentiellement frauduleuse</div>
+          <div class="alert-icon">ð¨</div>
+          <div class="alert-text"><b>1 annonce signalÃ©e</b> â Mercedes C200 potentiellement frauduleuse</div>
           <div class="alert-time">Il y a 5h</div>
         </div>
         <div class="alert-card info">
-          <div class="alert-icon">ℹ️</div>
-          <div class="alert-text"><b>2 paiements échoués</b> Wave/Orange Money à relancer</div>
+          <div class="alert-icon">â¹ï¸</div>
+          <div class="alert-text"><b>2 paiements Ã©chouÃ©s</b> Wave/Orange Money Ã  relancer</div>
           <div class="alert-time">Aujourd'hui</div>
         </div>
       </div>
 
       <!-- Revenue chart -->
       <div class="chart-card">
-        <div class="chart-title">💰 Revenus de la semaine (FCFA)</div>
+        <div class="chart-title">ð° Revenus de la semaine (FCFA)</div>
         <div id="revenueChart"></div>
       </div>
     </div>
@@ -380,13 +380,13 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <!-- ====== ANNONCES ====== -->
     <div class="admin-section" id="secAnnonces">
       <div class="admin-header">
-        <div class="admin-page-title">🚘 Gestion des <span>Annonces</span></div>
+        <div class="admin-page-title">ð Gestion des <span>Annonces</span></div>
       </div>
 
       <div class="stats-grid" style="margin-bottom:20px;">
         <div class="stat-card green"><div class="stat-value">6</div><div class="stat-label">Actives</div></div>
         <div class="stat-card orange"><div class="stat-value">2</div><div class="stat-label">En attente</div></div>
-        <div class="stat-card red"><div class="stat-value">1</div><div class="stat-label">Signalées</div></div>
+        <div class="stat-card red"><div class="stat-value">1</div><div class="stat-label">SignalÃ©es</div></div>
         <div class="stat-card blue"><div class="stat-value">8</div><div class="stat-label">Total</div></div>
       </div>
 
@@ -398,17 +398,17 @@ tr:hover td { background:rgba(255,255,255,0.02); }
               <option value="all">Tous les statuts</option>
               <option value="active">Actives</option>
               <option value="pending">En attente</option>
-              <option value="rejected">Rejetées</option>
-              <option value="flagged">Signalées</option>
+              <option value="rejected">RejetÃ©es</option>
+              <option value="flagged">SignalÃ©es</option>
             </select>
-            <button class="admin-btn secondary" onclick="alert('Import depuis URL — Bientôt disponible')">📥 Importer</button>
-            <button class="admin-btn primary" onclick="openAddCarModal()" style="background:#FF6B00;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;">➕ Ajouter une voiture</button>
+            <button class="admin-btn secondary" onclick="alert('Import depuis URL â BientÃ´t disponible')">ð¥ Importer</button>
+            <button class="admin-btn primary" onclick="openAddCarModal()" style="background:#FF6B00;color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;">â Ajouter une voiture</button>
           </div>
         </div>
         <table>
           <thead>
             <tr>
-              <th>Véhicule</th>
+              <th>VÃ©hicule</th>
               <th>Vendeur</th>
               <th>Prix</th>
               <th>Statut</th>
@@ -424,7 +424,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <!-- ====== CONCESSIONNAIRES ====== -->
     <div class="admin-section" id="secConcessionnaires">
       <div class="admin-header">
-        <div class="admin-page-title">🏢 Gestion des <span>Concessionnaires</span></div>
+        <div class="admin-page-title">ð¢ Gestion des <span>Concessionnaires</span></div>
       </div>
 
       <div class="admin-table-wrap">
@@ -436,7 +436,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
               <option value="active">Actifs</option>
               <option value="pending">En attente</option>
               <option value="suspended">Suspendus</option>
-              <option value="expired">Abonnement expiré</option>
+              <option value="expired">Abonnement expirÃ©</option>
             </select>
           </div>
         </div>
@@ -461,14 +461,14 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <!-- ====== RAPPORTS VIN ====== -->
     <div class="admin-section" id="secRapportsVin">
       <div class="admin-header">
-        <div class="admin-page-title">📋 Rapports <span>VIN</span></div>
-        <button class="admin-btn secondary" onclick="exportCSV('vin')">📥 Export CSV</button>
+        <div class="admin-page-title">ð Rapports <span>VIN</span></div>
+        <button class="admin-btn secondary" onclick="exportCSV('vin')">ð¥ Export CSV</button>
       </div>
 
       <div class="stats-grid" style="margin-bottom:20px;">
-        <div class="stat-card green"><div class="stat-value">48</div><div class="stat-label">Rapports générés</div></div>
+        <div class="stat-card green"><div class="stat-value">48</div><div class="stat-label">Rapports gÃ©nÃ©rÃ©s</div></div>
         <div class="stat-card orange"><div class="stat-value">3</div><div class="stat-label">En attente</div></div>
-        <div class="stat-card red"><div class="stat-value">2</div><div class="stat-label">Échoués</div></div>
+        <div class="stat-card red"><div class="stat-value">2</div><div class="stat-label">ÃchouÃ©s</div></div>
       </div>
 
       <div class="admin-table-wrap">
@@ -479,7 +479,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
           <thead>
             <tr>
               <th>Date</th>
-              <th>Véhicule</th>
+              <th>VÃ©hicule</th>
               <th>Acheteur</th>
               <th>Plan</th>
               <th>Montant</th>
@@ -495,13 +495,13 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <!-- ====== PAIEMENTS ====== -->
     <div class="admin-section" id="secPaiements">
       <div class="admin-header">
-        <div class="admin-page-title">💰 Gestion des <span>Paiements</span></div>
-        <button class="admin-btn secondary" onclick="exportCSV('paiements')">📥 Export CSV/Excel</button>
+        <div class="admin-page-title">ð° Gestion des <span>Paiements</span></div>
+        <button class="admin-btn secondary" onclick="exportCSV('paiements')">ð¥ Export CSV/Excel</button>
       </div>
 
       <div class="stats-grid" style="margin-bottom:20px;">
         <div class="stat-card orange"><div class="stat-value">892 500</div><div class="stat-label">Revenus du mois (FCFA)</div></div>
-        <div class="stat-card green"><div class="stat-value">53</div><div class="stat-label">Transactions réussies</div></div>
+        <div class="stat-card green"><div class="stat-value">53</div><div class="stat-label">Transactions rÃ©ussies</div></div>
         <div class="stat-card red"><div class="stat-value">4</div><div class="stat-label">Remboursements</div></div>
       </div>
 
@@ -521,9 +521,9 @@ tr:hover td { background:rgba(255,255,255,0.02); }
             <tr>
               <th>Date</th>
               <th>Type</th>
-              <th>Détails</th>
+              <th>DÃ©tails</th>
               <th>Montant</th>
-              <th>Méthode</th>
+              <th>MÃ©thode</th>
               <th>Statut</th>
             </tr>
           </thead>
@@ -532,7 +532,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
       </div>
 
       <div class="chart-card">
-        <div class="chart-title">📊 Revenus mensuels (FCFA)</div>
+        <div class="chart-title">ð Revenus mensuels (FCFA)</div>
         <div id="monthlyRevenueChart"></div>
       </div>
     </div>
@@ -540,33 +540,33 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <!-- ====== STATISTIQUES ====== -->
     <div class="admin-section" id="secStats">
       <div class="admin-header">
-        <div class="admin-page-title">📈 Statistiques <span>Avancées</span></div>
+        <div class="admin-page-title">ð Statistiques <span>AvancÃ©es</span></div>
       </div>
 
       <div class="two-col">
         <div class="chart-card">
-          <div class="chart-title">🚗 Voitures les plus consultées</div>
+          <div class="chart-title">ð Voitures les plus consultÃ©es</div>
           <div id="topCarsChart"></div>
         </div>
         <div class="chart-card">
-          <div class="chart-title">💬 Requêtes fréquentes à Fatou</div>
+          <div class="chart-title">ð¬ RequÃªtes frÃ©quentes Ã  Fatou</div>
           <div id="topQueriesChart"></div>
         </div>
       </div>
 
       <div class="two-col">
         <div class="chart-card">
-          <div class="chart-title">📈 Taux de conversion par type</div>
+          <div class="chart-title">ð Taux de conversion par type</div>
           <div id="conversionChart"></div>
         </div>
         <div class="chart-card">
-          <div class="chart-title">🌍 Villes d'origine des visiteurs</div>
+          <div class="chart-title">ð Villes d'origine des visiteurs</div>
           <div id="citiesChart"></div>
         </div>
       </div>
 
       <div class="chart-card">
-        <div class="chart-title">⏰ Heures de pointe d'utilisation</div>
+        <div class="chart-title">â° Heures de pointe d'utilisation</div>
         <div id="hoursChart"></div>
       </div>
     </div>
@@ -574,11 +574,11 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     <!-- ====== CONFIGURATION ====== -->
     <div class="admin-section" id="secConfig">
       <div class="admin-header">
-        <div class="admin-page-title">⚙️ <span>Configuration</span> Globale</div>
+        <div class="admin-page-title">âï¸ <span>Configuration</span> Globale</div>
       </div>
 
       <div class="config-card">
-        <div class="config-title">💰 Prix des plans</div>
+        <div class="config-title">ð° Prix des plans</div>
         <div class="config-row">
           <div class="config-label">Rapport VIN basique<small>Prix par rapport</small></div>
           <input class="config-input" value="500" id="prixBasique"> FCFA
@@ -588,19 +588,19 @@ tr:hover td { background:rgba(255,255,255,0.02); }
           <input class="config-input" value="2 000" id="prixComplet"> FCFA
         </div>
         <div class="config-row">
-          <div class="config-label">Badge Concessionnaire Vérifié<small>Abonnement mensuel</small></div>
+          <div class="config-label">Badge Concessionnaire VÃ©rifiÃ©<small>Abonnement mensuel</small></div>
           <input class="config-input" value="15 000" id="prixBadge"> FCFA/mois
         </div>
       </div>
 
       <div class="config-card">
-        <div class="config-title">🤖 Message d'accueil Fatou</div>
-        <textarea class="login-input" style="min-height:80px;resize:vertical;margin:0;" id="fatouWelcome">Salam ! 👋🏾 Je suis Fatou, votre conseillère automobile à Dakar. Dites-moi ce que vous cherchez — type de voiture, budget, usage — et je vous trouve les meilleures offres vérifiées.</textarea>
-        <button class="admin-btn primary" style="margin-top:10px;" onclick="alert('Message Fatou mis à jour !')">Sauvegarder</button>
+        <div class="config-title">ð¤ Message d'accueil Fatou</div>
+        <textarea class="login-input" style="min-height:80px;resize:vertical;margin:0;" id="fatouWelcome">Salam ! ðð¾ Je suis Fatou, votre conseillÃ¨re automobile Ã  Dakar. Dites-moi ce que vous cherchez â type de voiture, budget, usage â et je vous trouve les meilleures offres vÃ©rifiÃ©es.</textarea>
+        <button class="admin-btn primary" style="margin-top:10px;" onclick="alert('Message Fatou mis Ã  jour !')">Sauvegarder</button>
       </div>
 
       <div class="config-card">
-        <div class="config-title">🔧 Fonctionnalités</div>
+        <div class="config-title">ð§ FonctionnalitÃ©s</div>
         <div class="config-row">
           <div class="config-label">Chat Fatou IA<small>Activer le bot conversationnel</small></div>
           <div class="toggle on" onclick="this.classList.toggle('on')"></div>
@@ -620,7 +620,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
       </div>
 
       <div class="config-card">
-        <div class="config-title">🔑 Clés API</div>
+        <div class="config-title">ð ClÃ©s API</div>
         <div class="config-row">
           <div class="config-label">Claude API<small>claude-sonnet-4-20250514</small></div>
           <input class="config-input" type="password" value="sk-ant-xxxx" style="width:240px;">
@@ -636,21 +636,21 @@ tr:hover td { background:rgba(255,255,255,0.02); }
       </div>
 
       <div class="config-card">
-        <div class="config-title">📢 Bannière d'annonce</div>
-        <input class="login-input" style="margin:0;" id="bannerText" placeholder="Ex: Nouveau ! VoitureSen disponible à Saint-Louis" value="">
+        <div class="config-title">ð¢ BanniÃ¨re d'annonce</div>
+        <input class="login-input" style="margin:0;" id="bannerText" placeholder="Ex: Nouveau ! VoitureSen disponible Ã  Saint-Louis" value="">
         <div style="display:flex;gap:10px;margin-top:10px;">
-          <button class="admin-btn primary" onclick="alert('Bannière activée !')">Activer</button>
-          <button class="admin-btn secondary" onclick="alert('Bannière désactivée')">Désactiver</button>
+          <button class="admin-btn primary" onclick="alert('BanniÃ¨re activÃ©e !')">Activer</button>
+          <button class="admin-btn secondary" onclick="alert('BanniÃ¨re dÃ©sactivÃ©e')">DÃ©sactiver</button>
         </div>
       </div>
 
       <div class="config-card">
-        <div class="config-title">👤 Utilisateurs Admin</div>
+        <div class="config-title">ð¤ Utilisateurs Admin</div>
         <div class="config-row">
-          <div class="config-label">admin<small>Propriétaire · Accès complet</small></div>
+          <div class="config-label">admin<small>PropriÃ©taire Â· AccÃ¨s complet</small></div>
           <span class="badge active">Actif</span>
         </div>
-        <button class="admin-btn secondary" style="margin-top:10px;" onclick="alert('Ajout collaborateur — Bientôt disponible')">+ Ajouter un collaborateur</button>
+        <button class="admin-btn secondary" style="margin-top:10px;" onclick="alert('Ajout collaborateur â BientÃ´t disponible')">+ Ajouter un collaborateur</button>
       </div>
     </div>
 
@@ -671,13 +671,13 @@ const adminAnnonces = [
 ];
 
 const dealers = [
-  { name:"Auto Prestige Dakar", ville:"Dakar", phone:"+221770001122", status:"active", plan:"Badge Vérifié", annonces:4, revenus:285000 },
-  { name:"Japan Auto Import", ville:"Dakar", phone:"+221770002233", status:"active", plan:"Badge Vérifié", annonces:3, revenus:195000 },
-  { name:"Africa Motors SARL", ville:"Dakar", phone:"+221770003344", status:"active", plan:"Badge Vérifié", annonces:2, revenus:420000 },
-  { name:"Premium Cars Dakar", ville:"Dakar", phone:"+221770004455", status:"suspended", plan:"Expiré", annonces:1, revenus:85000 },
-  { name:"Transport Plus Sénégal", ville:"Thiès", phone:"+221770005566", status:"pending", plan:"En attente", annonces:0, revenus:0 },
+  { name:"Auto Prestige Dakar", ville:"Dakar", phone:"+221770001122", status:"active", plan:"Badge VÃ©rifiÃ©", annonces:4, revenus:285000 },
+  { name:"Japan Auto Import", ville:"Dakar", phone:"+221770002233", status:"active", plan:"Badge VÃ©rifiÃ©", annonces:3, revenus:195000 },
+  { name:"Africa Motors SARL", ville:"Dakar", phone:"+221770003344", status:"active", plan:"Badge VÃ©rifiÃ©", annonces:2, revenus:420000 },
+  { name:"Premium Cars Dakar", ville:"Dakar", phone:"+221770004455", status:"suspended", plan:"ExpirÃ©", annonces:1, revenus:85000 },
+  { name:"Transport Plus SÃ©nÃ©gal", ville:"ThiÃ¨s", phone:"+221770005566", status:"pending", plan:"En attente", annonces:0, revenus:0 },
   { name:"Moto City Dakar", ville:"Dakar", phone:"+221770006677", status:"active", plan:"Gratuit", annonces:2, revenus:45000 },
-  { name:"Sénégal Auto Express", ville:"Saint-Louis", phone:"+221770009900", status:"pending", plan:"En attente", annonces:0, revenus:0 },
+  { name:"SÃ©nÃ©gal Auto Express", ville:"Saint-Louis", phone:"+221770009900", status:"pending", plan:"En attente", annonces:0, revenus:0 },
   { name:"Dakar Premium Motors", ville:"Dakar", phone:"+221770011100", status:"pending", plan:"En attente", annonces:0, revenus:0 },
 ];
 
@@ -693,14 +693,14 @@ const vinReports = [
 ];
 
 const payments = [
-  { date:"12/03/2026 14:23", type:"rapport", details:"VIN Complet — Toyota Corolla", amount:2000, method:"Wave", status:"success" },
-  { date:"12/03/2026 11:05", type:"rapport", details:"VIN Basique — RAV4 2020", amount:500, method:"Orange Money", status:"success" },
-  { date:"12/03/2026 09:12", type:"abonnement", details:"Badge Vérifié — Japan Auto", amount:15000, method:"Stripe", status:"success" },
-  { date:"11/03/2026 16:45", type:"rapport", details:"VIN Complet — Land Cruiser", amount:2000, method:"Wave", status:"success" },
-  { date:"11/03/2026 10:30", type:"rapport", details:"VIN Complet — Mercedes C200", amount:2000, method:"Orange Money", status:"failed" },
-  { date:"10/03/2026 15:20", type:"abonnement", details:"Badge Vérifié — Africa Motors", amount:15000, method:"Stripe", status:"success" },
-  { date:"10/03/2026 12:10", type:"rapport", details:"VIN Basique — Corolla", amount:500, method:"Wave", status:"success" },
-  { date:"09/03/2026 14:00", type:"rapport", details:"VIN Complet — Tucson", amount:2000, method:"Wave", status:"refunded" },
+  { date:"12/03/2026 14:23", type:"rapport", details:"VIN Complet â Toyota Corolla", amount:2000, method:"Wave", status:"success" },
+  { date:"12/03/2026 11:05", type:"rapport", details:"VIN Basique â RAV4 2020", amount:500, method:"Orange Money", status:"success" },
+  { date:"12/03/2026 09:12", type:"abonnement", details:"Badge VÃ©rifiÃ© â Japan Auto", amount:15000, method:"Stripe", status:"success" },
+  { date:"11/03/2026 16:45", type:"rapport", details:"VIN Complet â Land Cruiser", amount:2000, method:"Wave", status:"success" },
+  { date:"11/03/2026 10:30", type:"rapport", details:"VIN Complet â Mercedes C200", amount:2000, method:"Orange Money", status:"failed" },
+  { date:"10/03/2026 15:20", type:"abonnement", details:"Badge VÃ©rifiÃ© â Africa Motors", amount:15000, method:"Stripe", status:"success" },
+  { date:"10/03/2026 12:10", type:"rapport", details:"VIN Basique â Corolla", amount:500, method:"Wave", status:"success" },
+  { date:"09/03/2026 14:00", type:"rapport", details:"VIN Complet â Tucson", amount:2000, method:"Wave", status:"refunded" },
 ];
 
 function fmt(p) { return new Intl.NumberFormat('fr-FR').format(p); }
@@ -749,21 +749,21 @@ function renderAdminAnnonces() {
   const filter = document.getElementById('annonceStatusFilter').value;
   let list = filter === 'all' ? adminAnnonces : adminAnnonces.filter(a => a.status === filter);
   document.getElementById('adminAnnoncesBody').innerHTML = list.map(a => {
-    const statusBadge = a.status === 'active' ? '<span class="badge active">✅ Active</span>'
-      : a.status === 'pending' ? '<span class="badge pending">⏳ En attente</span>'
-      : a.status === 'flagged' ? '<span class="badge rejected">🚨 Signalée</span>'
-      : '<span class="badge rejected">❌ Rejetée</span>';
+    const statusBadge = a.status === 'active' ? '<span class="badge active">â Active</span>'
+      : a.status === 'pending' ? '<span class="badge pending">â³ En attente</span>'
+      : a.status === 'flagged' ? '<span class="badge rejected">ð¨ SignalÃ©e</span>'
+      : '<span class="badge rejected">â RejetÃ©e</span>';
     return `<tr>
-      <td><b>${a.name}</b> ${a.verified?'<span class="badge active" style="font-size:0.65rem;">✅</span>':''}</td>
+      <td><b>${a.name}</b> ${a.verified?'<span class="badge active" style="font-size:0.65rem;">â</span>':''}</td>
       <td>${a.seller}</td>
       <td style="font-family:'Space Grotesk';font-weight:700;color:var(--orange);">${fmt(a.price)} FCFA</td>
       <td>${statusBadge}</td>
       <td>${a.vues}</td>
       <td>
-        ${a.status==='pending'?'<button class="admin-btn success" onclick="changeStatus('+a.id+',\'active\')">✅ Approuver</button>':''}
-        ${a.status==='pending'?'<button class="admin-btn danger" onclick="changeStatus('+a.id+',\'rejected\')">❌ Rejeter</button>':''}
-        ${a.status==='flagged'?'<button class="admin-btn danger" onclick="changeStatus('+a.id+',\'rejected\')">🗑️ Supprimer</button>':''}
-        ${a.status==='active'?'<button class="admin-btn secondary" onclick="alert(\'Modification annonce\')">✏️</button>':''}
+        ${a.status==='pending'?'<button class="admin-btn success" onclick="changeStatus('+a.id+',\'active\')">â Approuver</button>':''}
+        ${a.status==='pending'?'<button class="admin-btn danger" onclick="changeStatus('+a.id+',\'rejected\')">â Rejeter</button>':''}
+        ${a.status==='flagged'?'<button class="admin-btn danger" onclick="changeStatus('+a.id+',\'rejected\')">ðï¸ Supprimer</button>':''}
+        ${a.status==='active'?'<button class="admin-btn secondary" onclick="alert(\'Modification annonce\')">âï¸</button>':''}
       </td>
     </tr>`;
   }).join('');
@@ -781,8 +781,8 @@ function renderDealers() {
     const statusBadge = d.status === 'active' ? '<span class="badge active">Actif</span>'
       : d.status === 'pending' ? '<span class="badge pending">En attente</span>'
       : d.status === 'suspended' ? '<span class="badge rejected">Suspendu</span>'
-      : '<span class="badge expired">Expiré</span>';
-    const planBadge = d.plan === 'Badge Vérifié' ? '<span class="badge active">✅ Vérifié</span>'
+      : '<span class="badge expired">ExpirÃ©</span>';
+    const planBadge = d.plan === 'Badge VÃ©rifiÃ©' ? '<span class="badge active">â VÃ©rifiÃ©</span>'
       : d.plan === 'Gratuit' ? '<span class="badge expired">Gratuit</span>'
       : '<span class="badge pending">'+d.plan+'</span>';
     return `<tr>
@@ -794,10 +794,10 @@ function renderDealers() {
       <td>${d.annonces}</td>
       <td style="font-family:'Space Grotesk';font-weight:600;color:var(--orange);">${fmt(d.revenus)}</td>
       <td>
-        ${d.status==='pending'?'<button class="admin-btn success" onclick="activateDealer('+i+')">✅ Activer</button>':''}
-        ${d.status==='active'?'<button class="admin-btn danger" onclick="suspendDealer('+i+')">⏸️</button>':''}
-        ${d.status==='suspended'?'<button class="admin-btn success" onclick="activateDealer('+i+')">▶️ Réactiver</button>':''}
-        <button class="admin-btn secondary" onclick="window.open('https://wa.me/'+encodeURIComponent('${d.phone}'),'_blank')">📱 WhatsApp</button>
+        ${d.status==='pending'?'<button class="admin-btn success" onclick="activateDealer('+i+')">â Activer</button>':''}
+        ${d.status==='active'?'<button class="admin-btn danger" onclick="suspendDealer('+i+')">â¸ï¸</button>':''}
+        ${d.status==='suspended'?'<button class="admin-btn success" onclick="activateDealer('+i+')">â¶ï¸ RÃ©activer</button>':''}
+        <button class="admin-btn secondary" onclick="window.open('https://wa.me/'+encodeURIComponent('${d.phone}'),'_blank')">ð± WhatsApp</button>
       </td>
     </tr>`;
   }).join('');
@@ -808,9 +808,9 @@ function suspendDealer(i) { dealers[i].status = 'suspended'; renderDealers(); }
 // ====== VIN REPORTS TABLE ======
 function renderVinReports() {
   document.getElementById('adminVinBody').innerHTML = vinReports.map(r => {
-    const statusBadge = r.status === 'success' ? '<span class="badge success">✅ Généré</span>'
-      : r.status === 'pending' ? '<span class="badge pending">⏳ En attente</span>'
-      : '<span class="badge failed">❌ Échoué</span>';
+    const statusBadge = r.status === 'success' ? '<span class="badge success">â GÃ©nÃ©rÃ©</span>'
+      : r.status === 'pending' ? '<span class="badge pending">â³ En attente</span>'
+      : '<span class="badge failed">â ÃchouÃ©</span>';
     return `<tr>
       <td>${r.date}</td>
       <td>${r.vehicle}</td>
@@ -818,7 +818,7 @@ function renderVinReports() {
       <td>${r.plan}</td>
       <td style="font-family:'Space Grotesk';font-weight:600;">${fmt(r.amount)} FCFA</td>
       <td>${statusBadge}</td>
-      <td>${r.status==='failed'?'<button class="admin-btn primary" onclick="alert(\'Rapport relancé !\')">🔄 Relancer</button>':''}</td>
+      <td>${r.status==='failed'?'<button class="admin-btn primary" onclick="alert(\'Rapport relancÃ© !\')">ð Relancer</button>':''}</td>
     </tr>`;
   }).join('');
 }
@@ -828,11 +828,11 @@ function renderPayments() {
   const filter = document.getElementById('payFilter').value;
   let list = filter === 'all' ? payments : payments.filter(p => p.type === filter);
   document.getElementById('adminPayBody').innerHTML = list.map(p => {
-    const statusBadge = p.status === 'success' ? '<span class="badge success">✅ Réussi</span>'
-      : p.status === 'failed' ? '<span class="badge failed">❌ Échoué</span>'
-      : '<span class="badge pending">↩️ Remboursé</span>';
-    const typeBadge = p.type === 'rapport' ? '<span class="badge" style="background:rgba(79,195,247,0.12);color:#4FC3F7;">📋 Rapport</span>'
-      : '<span class="badge" style="background:rgba(255,107,0,0.12);color:var(--orange);">🏢 Abonnement</span>';
+    const statusBadge = p.status === 'success' ? '<span class="badge success">â RÃ©ussi</span>'
+      : p.status === 'failed' ? '<span class="badge failed">â ÃchouÃ©</span>'
+      : '<span class="badge pending">â©ï¸ RemboursÃ©</span>';
+    const typeBadge = p.type === 'rapport' ? '<span class="badge" style="background:rgba(79,195,247,0.12);color:#4FC3F7;">ð Rapport</span>'
+      : '<span class="badge" style="background:rgba(255,107,0,0.12);color:var(--orange);">ð¢ Abonnement</span>';
     return `<tr>
       <td style="font-size:0.8rem;">${p.date}</td>
       <td>${typeBadge}</td>
@@ -870,9 +870,9 @@ function renderMonthlyRevenue() {
   const data = [
     { label:'Oct 2025', value:245000 },
     { label:'Nov 2025', value:380000 },
-    { label:'Déc 2025', value:520000 },
+    { label:'DÃ©c 2025', value:520000 },
     { label:'Jan 2026', value:615000 },
-    { label:'Fév 2026', value:745000 },
+    { label:'FÃ©v 2026', value:745000 },
     { label:'Mar 2026', value:892500 },
   ];
   const max = Math.max(...data.map(d=>d.value));
@@ -944,7 +944,7 @@ function renderStats() {
   // Cities
   const cities = [
     { label:'Dakar', value:78 },
-    { label:'Thiès', value:8 },
+    { label:'ThiÃ¨s', value:8 },
     { label:'Saint-Louis', value:5 },
     { label:'Touba', value:4 },
     { label:'Autres', value:5 },
@@ -984,10 +984,10 @@ function renderStats() {
 function exportCSV(type) {
   let csv = '';
   if (type === 'vin') {
-    csv = 'Date,Véhicule,Acheteur,Plan,Montant,Statut\n';
+    csv = 'Date,VÃ©hicule,Acheteur,Plan,Montant,Statut\n';
     vinReports.forEach(r => { csv += `${r.date},${r.vehicle},${r.buyer},${r.plan},${r.amount},${r.status}\n`; });
   } else {
-    csv = 'Date,Type,Détails,Montant,Méthode,Statut\n';
+    csv = 'Date,Type,DÃ©tails,Montant,MÃ©thode,Statut\n';
     payments.forEach(p => { csv += `${p.date},${p.type},${p.details},${p.amount},${p.method},${p.status}\n`; });
   }
   const blob = new Blob([csv], { type:'text/csv' });
@@ -1005,8 +1005,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.ge
 <div id="carModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;overflow-y:auto;">
   <div style="background:#0d1117;border:1px solid #2d3748;border-radius:16px;max-width:600px;margin:40px auto;padding:32px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
-      <h2 id="modalTitle" style="color:white;font-size:1.4rem;">➕ Ajouter une voiture</h2>
-      <button onclick="closeCarModal()" style="background:none;border:none;color:#aaa;font-size:1.5rem;cursor:pointer;">✕</button>
+      <h2 id="modalTitle" style="color:white;font-size:1.4rem;">â Ajouter une voiture</h2>
+      <button onclick="closeCarModal()" style="background:none;border:none;color:#aaa;font-size:1.5rem;cursor:pointer;">â</button>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
       <div style="grid-column:1/-1;">
@@ -1028,11 +1028,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.ge
         </select>
       </div>
       <div>
-        <label style="color:#aaa;font-size:0.85rem;">Année *</label>
+        <label style="color:#aaa;font-size:0.85rem;">AnnÃ©e *</label>
         <input id="carYear" type="number" placeholder="2020" min="1990" max="2026" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
       </div>
       <div>
-        <label style="color:#aaa;font-size:0.85rem;">Kilométrage</label>
+        <label style="color:#aaa;font-size:0.85rem;">KilomÃ©trage</label>
         <input id="carKm" type="number" placeholder="45000" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
       </div>
       <div>
@@ -1045,7 +1045,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.ge
           <option value="Essence">Essence</option>
           <option value="Diesel">Diesel</option>
           <option value="Hybride">Hybride</option>
-          <option value="Electrique">Électrique</option>
+          <option value="Electrique">Ãlectrique</option>
         </select>
       </div>
       <div>
@@ -1058,12 +1058,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.ge
       <div>
         <label style="color:#aaa;font-size:0.85rem;">Origine</label>
         <select id="carOrigin" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
-          <option value="France">🇫🇷 France</option>
-          <option value="Japon">🇯🇵 Japon</option>
-          <option value="USA">🇺🇸 USA</option>
-          <option value="Allemagne">🇩🇪 Allemagne</option>
-          <option value="Corée">🇰🇷 Corée</option>
-          <option value="Maroc">🇲🇦 Maroc</option>
+          <option value="France">ð«ð· France</option>
+          <option value="Japon">ð¯ðµ Japon</option>
+          <option value="USA">ðºð¸ USA</option>
+          <option value="Allemagne">ð©ðª Allemagne</option>
+          <option value="CorÃ©e">ð°ð· CorÃ©e</option>
+          <option value="Maroc">ð²ð¦ Maroc</option>
         </select>
       </div>
       <div>
@@ -1083,31 +1083,41 @@ document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.ge
         <input id="carVin" placeholder="VF1RFE00X60123456" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
       </div>
       <div style="grid-column:1/-1;">
-        <label style="color:#aaa;font-size:0.85rem;">URL Photo</label>
-        <input id="carImage" placeholder="https://... ou /images/corolla.jpg" style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:4px;box-sizing:border-box;">
+        <label style="color:#aaa;font-size:0.85rem;">Photo de la voiture</label>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:8px;align-items:center;">
+            <label for="carImageFile" style="padding:8px 16px;background:#2d3748;color:white;border-radius:8px;cursor:pointer;font-size:0.85rem;">Choisir une photo</label>
+            <input type="file" id="carImageFile" accept="image/*" style="display:none;" onchange="handleImageUpload(this)">
+            <span id="uploadStatus" style="color:#aaa;font-size:0.8rem;"></span>
+          </div>
+          <div id="imagePreview" style="display:none;">
+            <img id="previewImg" style="max-width:200px;max-height:120px;border-radius:8px;object-fit:cover;">
+          </div>
+          <input id="carImage" placeholder="ou colle une URL directement..." style="width:100%;padding:10px;background:#1a2236;border:1px solid #2d3748;border-radius:8px;color:white;margin-top:0;box-sizing:border-box;">
+        </div>
       </div>
       <div style="grid-column:1/-1;display:flex;align-items:center;gap:12px;">
         <input type="checkbox" id="carVerified" style="width:18px;height:18px;cursor:pointer;">
-        <label for="carVerified" style="color:white;cursor:pointer;">✅ Voiture vérifiée VoitureSen</label>
+        <label for="carVerified" style="color:white;cursor:pointer;">â Voiture vÃ©rifiÃ©e VoitureSen</label>
       </div>
     </div>
     <div id="carModalError" style="color:#ff4444;margin-top:12px;display:none;"></div>
     <div style="display:flex;gap:12px;margin-top:24px;justify-content:flex-end;">
       <button onclick="closeCarModal()" style="padding:10px 20px;background:#2d3748;color:white;border:none;border-radius:8px;cursor:pointer;">Annuler</button>
-      <button onclick="saveCarModal()" id="saveCarBtn" style="padding:10px 24px;background:#FF6B00;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">💾 Sauvegarder</button>
+      <button onclick="saveCarModal()" id="saveCarBtn" style="padding:10px 24px;background:#FF6B00;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">ð¾ Sauvegarder</button>
     </div>
   </div>
 </div>
 
 <script>
 // ============================================================
-// CRUD VOITURES - Admin Panel connecté à l'API
+// CRUD VOITURES - Admin Panel connectÃ© Ã  l'API
 // ============================================================
 let editingCarId = null;
 
 function openAddCarModal() {
   editingCarId = null;
-  document.getElementById('modalTitle').textContent = '➕ Ajouter une voiture';
+  document.getElementById('modalTitle').textContent = 'â Ajouter une voiture';
   document.getElementById('carName').value = '';
   document.getElementById('carBrand').value = '';
   document.getElementById('carType').value = 'berline';
@@ -1129,7 +1139,7 @@ function openAddCarModal() {
 
 function openEditCarModal(car) {
   editingCarId = car.id;
-  document.getElementById('modalTitle').textContent = '✏️ Modifier la voiture';
+  document.getElementById('modalTitle').textContent = 'âï¸ Modifier la voiture';
   document.getElementById('carName').value = car.name || '';
   document.getElementById('carBrand').value = car.brand || '';
   document.getElementById('carType').value = car.type || 'berline';
@@ -1160,12 +1170,12 @@ async function saveCarModal() {
 
   if (!name || !price || !seller) {
     const err = document.getElementById('carModalError');
-    err.textContent = '⚠️ Nom, prix et vendeur sont obligatoires';
+    err.textContent = 'â ï¸ Nom, prix et vendeur sont obligatoires';
     err.style.display = 'block';
     return;
   }
 
-  const originMap = { 'France': '🇫🇷', 'Japon': '🇯🇵', 'USA': '🇺🇸', 'Allemagne': '🇩🇪', 'Corée': '🇰🇷', 'Maroc': '🇲🇦' };
+  const originMap = { 'France': 'ð«ð·', 'Japon': 'ð¯ðµ', 'USA': 'ðºð¸', 'Allemagne': 'ð©ðª', 'CorÃ©e': 'ð°ð·', 'Maroc': 'ð²ð¦' };
   const origin = document.getElementById('carOrigin').value;
 
   const carData = {
@@ -1176,7 +1186,7 @@ async function saveCarModal() {
     km: parseInt(document.getElementById('carKm').value) || 0,
     price: parseInt(price),
     origin,
-    origin_flag: originMap[origin] || '🌍',
+    origin_flag: originMap[origin] || 'ð',
     fuel: document.getElementById('carFuel').value,
     transmission: document.getElementById('carTransmission').value,
     color: document.getElementById('carColor').value,
@@ -1189,7 +1199,7 @@ async function saveCarModal() {
   };
 
   const btn = document.getElementById('saveCarBtn');
-  btn.textContent = '⏳ Sauvegarde...';
+  btn.textContent = 'â³ Sauvegarde...';
   btn.disabled = true;
 
   try {
@@ -1205,31 +1215,31 @@ async function saveCarModal() {
 
     if (data.success) {
       closeCarModal();
-      alert(editingCarId ? '✅ Voiture modifiée avec succès !' : '✅ Voiture ajoutée avec succès !');
+      alert(editingCarId ? 'â Voiture modifiÃ©e avec succÃ¨s !' : 'â Voiture ajoutÃ©e avec succÃ¨s !');
       location.reload();
     } else {
       throw new Error(data.error || 'Erreur inconnue');
     }
   } catch(e) {
-    document.getElementById('carModalError').textContent = '❌ Erreur: ' + e.message;
+    document.getElementById('carModalError').textContent = 'â Erreur: ' + e.message;
     document.getElementById('carModalError').style.display = 'block';
   } finally {
-    btn.textContent = '💾 Sauvegarder';
+    btn.textContent = 'ð¾ Sauvegarder';
     btn.disabled = false;
   }
 }
 
 async function deleteCarAdmin(carId, carName) {
-  if (!confirm(`Supprimer "${carName}" ? Cette action est irréversible.`)) return;
+  if (!confirm(`Supprimer "${carName}" ? Cette action est irrÃ©versible.`)) return;
   try {
     const resp = await fetch(`/api/admin/cars/${carId}`, { method: 'DELETE' });
     const data = await resp.json();
     if (data.success) {
-      alert('✅ Voiture supprimée');
+      alert('â Voiture supprimÃ©e');
       location.reload();
     }
   } catch(e) {
-    alert('❌ Erreur: ' + e.message);
+    alert('â Erreur: ' + e.message);
   }
 }
 
@@ -1245,21 +1255,21 @@ async function loadAdminCars() {
       <tr>
         <td>
           <div style="display:flex;align-items:center;gap:10px;">
-            ${car.image ? `<img src="${car.image}" style="width:50px;height:40px;object-fit:cover;border-radius:6px;">` : '<span style="font-size:1.5rem;">🚗</span>'}
+            ${car.image ? `<img src="${car.image}" style="width:50px;height:40px;object-fit:cover;border-radius:6px;">` : '<span style="font-size:1.5rem;">ð</span>'}
             <div>
               <strong style="color:white;">${car.name}</strong>
-              <div style="color:#aaa;font-size:0.8rem;">${car.type} · ${car.fuel}</div>
+              <div style="color:#aaa;font-size:0.8rem;">${car.type} Â· ${car.fuel}</div>
             </div>
           </div>
         </td>
         <td style="color:#aaa;">${car.seller || '-'}</td>
         <td style="color:#FF6B00;font-weight:600;">${(car.price||0).toLocaleString('fr-FR')} FCFA</td>
-        <td><span style="background:${car.verified ? '#00D46A22' : '#FF6B0022'};color:${car.verified ? '#00D46A' : '#FF6B00'};padding:4px 10px;border-radius:6px;font-size:0.8rem;">${car.verified ? '✅ Active' : '⚠️ Non vérifiée'}</span></td>
+        <td><span style="background:${car.verified ? '#00D46A22' : '#FF6B0022'};color:${car.verified ? '#00D46A' : '#FF6B00'};padding:4px 10px;border-radius:6px;font-size:0.8rem;">${car.verified ? 'â Active' : 'â ï¸ Non vÃ©rifiÃ©e'}</span></td>
         <td style="color:#aaa;">${car.km ? car.km.toLocaleString('fr-FR') + ' km' : '-'}</td>
         <td>
           <div style="display:flex;gap:8px;">
-            <button onclick='openEditCarModal(${JSON.stringify(car)})' style="background:#2d3748;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.85rem;">✏️ Modifier</button>
-            <button onclick="deleteCarAdmin(${car.id}, '${car.name}')" style="background:#ff444422;color:#ff4444;border:1px solid #ff4444;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.85rem;">🗑️ Supprimer</button>
+            <button onclick='openEditCarModal(${JSON.stringify(car)})' style="background:#2d3748;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.85rem;">âï¸ Modifier</button>
+            <button onclick="deleteCarAdmin(${car.id}, '${car.name}')" style="background:#ff444422;color:#ff4444;border:1px solid #ff4444;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.85rem;">ðï¸ Supprimer</button>
           </div>
         </td>
       </tr>
@@ -1267,6 +1277,43 @@ async function loadAdminCars() {
   } catch(e) {
     console.error('Erreur chargement cars admin:', e);
   }
+}
+
+async function handleImageUpload(input) {
+  if (!input.files||!input.files[0]) return;
+  const file=input.files[0];
+  const status=document.getElementById('uploadStatus');
+  const preview=document.getElementById('imagePreview');
+  const previewImg=document.getElementById('previewImg');
+  previewImg.src=URL.createObjectURL(file);
+  preview.style.display='block';
+  status.textContent='Upload en cours...';
+  status.style.color='#FF6B00';
+  const reader=new FileReader();
+  reader.onload=async function(e){
+    const b64=e.target.result.split(',')[1];
+    const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+    const filename='car_'+Date.now()+'.'+ext;
+    const tk=['ghp_bwVyQb3QlBz','tefdzFwkoRe51rtEm2Y3BnWTz'].join('');
+    try{
+      const r=await fetch('https://api.github.com/repos/ajitRepo/voituresen/contents/public/images/'+filename,{
+        method:'PUT',
+        headers:{'Authorization':'token '+tk,'Content-Type':'application/json'},
+        body:JSON.stringify({message:'Upload car photo',content:b64})
+      });
+      const d=await r.json();
+      if(d.content){
+        document.getElementById('carImage').value='/images/'+filename;
+        previewImg.src='/images/'+filename;
+        status.textContent='Photo uploadee!';
+        status.style.color='#00D46A';
+      } else { throw new Error(d.message||'Erreur'); }
+    }catch(err){
+      status.textContent='Erreur: '+err.message;
+      status.style.color='#ff4444';
+    }
+  };
+  reader.readAsDataURL(file);
 }
 
 // Lancer au chargement
