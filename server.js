@@ -1,7 +1,7 @@
 /**
  * ============================================
- * VoitureSen — Backend Server (Production)
- * Marketplace Automobile Dakar, Sénégal
+ * VoitureSen â Backend Server (Production)
+ * Marketplace Automobile Dakar, SÃ©nÃ©gal
  * ============================================
  */
 
@@ -76,7 +76,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const PORT = process.env.PORT || 3000;
 
 // ============================================
-// BASE DE DONNÉES (en mémoire pour la démo)
+// BASE DE DONNÃES (en mÃ©moire pour la dÃ©mo)
 // En production: Firebase Firestore ou Supabase
 // ============================================
 const db = {
@@ -546,6 +546,19 @@ app.delete('/api/admin/cars/:id', async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+// ADMIN LOGIN SECURISE
+app.post('/api/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
+  const ADMIN_PASS = process.env.ADMIN_PASSWORD || 'voituresen2025';
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    res.json({ success: true, token: 'vs_admin_' + Date.now() });
+  } else {
+    res.status(401).json({ success: false, error: 'Identifiants incorrects' });
+  }
+});
+
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`VoitureSen Server running on port ${PORT}`);
