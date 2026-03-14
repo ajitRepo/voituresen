@@ -1128,7 +1128,7 @@ body {
 
 <script>
 // === DONNÉES VOITURES (Section 8) ===
-const cars = [
+const _staticCars = [
   { id:1, name:"Toyota Corolla 2019", brand:"Toyota", type:"berline", year:2019, km:45000, price:4500000, origin:"France", originFlag:"🇫🇷", fuel:"Essence", transmission:"Automatique", color:"Gris", seats:5, vin:"VF1RFE00X60123456", verified:true, emoji:"🚗", seller:"Auto Prestige Dakar", sellerPhone:"+221770001122", image:"https://voituresen.onrender.com/images/corolla.jpg" },
   { id:2, name:"Toyota RAV4 2020", brand:"Toyota", type:"suv", year:2020, km:32000, price:9800000, origin:"USA", originFlag:"🇺🇸", fuel:"Essence", transmission:"Automatique", color:"Noir", seats:5, vin:"2T3RFREV5LW123456", verified:true, emoji:"🚙", seller:"Japan Auto Import", sellerPhone:"+221770002233", image:"https://voituresen.onrender.com/images/rav4.jpg" },
   { id:3, name:"Land Cruiser V8 2018", brand:"Toyota", type:"4x4", year:2018, km:68000, price:18500000, origin:"Japon", originFlag:"🇯🇵", fuel:"Diesel", transmission:"Automatique", color:"Blanc", seats:7, vin:"JTMHY7AJ4J4123456", verified:true, emoji:"🏔️", seller:"Africa Motors SARL", sellerPhone:"+221770003344", image:"https://voituresen.onrender.com/images/landcruiser.jpg" },
@@ -1138,6 +1138,42 @@ const cars = [
   { id:7, name:"Hyundai Tucson 2020", brand:"Hyundai", type:"suv", year:2020, km:55000, price:7200000, origin:"Corée", originFlag:"🇰🇷", fuel:"Essence", transmission:"Automatique", color:"Bleu", seats:5, vin:"KMHJ3814GLU123456", verified:false, emoji:"🚙", seller:"Particulier - Moussa", sellerPhone:"+221770007788", image:"https://voituresen.onrender.com/images/tucson.jpg" },
   { id:8, name:"Renault Logan 2021", brand:"Renault", type:"berline", year:2021, km:28000, price:3200000, origin:"France", originFlag:"🇫🇷", fuel:"Essence", transmission:"Manuelle", color:"Blanc", seats:5, vin:"UU1LSDAAH4D123456", verified:false, emoji:"🚗", seller:"Particulier - Awa", sellerPhone:"+221770008899", image:"https://voituresen.onrender.com/images/logan.jpg" },
 ];
+let cars = [..._staticCars];
+
+// ======================================================
+// CHARGEMENT AUTOMATIQUE DEPUIS L'API AU DEMARRAGE
+// Remplace les donnees statiques par les donnees Supabase
+// ======================================================
+(function initFromAPI() {
+  function normalize(c) {
+    return Object.assign({}, c, {
+      originFlag: c.origin_flag || c.originFlag || '',
+      sellerPhone: c.seller_phone || c.sellerPhone || '',
+      image: c.image || null,
+      emoji: c.emoji || ''
+    });
+  }
+  function rerender() {
+    if (typeof renderAnnonces === 'function') try { renderAnnonces(); } catch(e) {}
+    if (typeof renderSidebar === 'function') try { renderSidebar(); } catch(e) {}
+  }
+  function load() {
+    fetch('/api/cars')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        cars = data.map(normalize);
+        window.cars = cars;
+        rerender();
+        console.log('API cars loaded:', cars.length);
+      })
+      .catch(function(e) { console.warn('API fallback to static:', e.message); });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(load, 50); });
+  } else {
+    setTimeout(load, 50);
+  }
+})();
 
 function formatPrice(p) {
   return new Intl.NumberFormat('fr-FR').format(p) + ' FCFA';
