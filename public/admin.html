@@ -1326,5 +1326,31 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<script>
+// Login global - expose doLogin dans window
+window.doLogin = async function() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  if (!user || !pass) { alert('Entrez votre identifiant et mot de passe'); return; }
+  try {
+    const r = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username: user, password: pass})
+    });
+    const d = await r.json();
+    if (d.success) {
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'flex';
+      setTimeout(function() { if(typeof loadAdminCars==='function') loadAdminCars(); }, 500);
+    } else {
+      alert('Identifiants incorrects');
+    }
+  } catch(e) {
+    alert('Erreur connexion: ' + e.message);
+  }
+};
+</script>
 </body>
 </html>
