@@ -706,24 +706,18 @@ const payments = [
 function fmt(p) { return new Intl.NumberFormat('fr-FR').format(p); }
 
 // ====== LOGIN ======
-async async function doLogin() {
+async async async function doLogin() {
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value.trim();
   if (!user || !pass) { alert('Entrez votre identifiant et mot de passe'); return; }
   try {
-    const r = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({username: user, password: pass})
-    });
+    const r = await fetch('/api/admin/login', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:user, password:pass})});
     const d = await r.json();
     if (d.success) {
       document.getElementById('loginPage').style.display = 'none';
       document.getElementById('adminPanel').style.display = 'flex';
       setTimeout(() => { if(typeof loadAdminCars==='function') loadAdminCars(); }, 500);
-    } else {
-      alert('Identifiants incorrects');
-    }
+    } else { alert('Identifiants incorrects'); }
   } catch(e) { alert('Erreur: ' + e.message); }
 }
 function doLogin_OLD_UNUSED() {
