@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoitureSen — Devenir Concessionnaire Vérifié</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',sans-serif; background:#0a0f1a; color:white; min-height:100vh; }
+.hero { background:linear-gradient(135deg,#0a0f1a 0%,#1a2236 100%); padding:60px 20px; text-align:center; }
+.logo { font-size:1.5rem; font-weight:700; margin-bottom:40px; }
+.logo span { color:#FF6B00; }
+.hero h1 { font-size:2.5rem; font-weight:800; margin-bottom:16px; }
+.hero h1 span { color:#FF6B00; }
+.hero p { color:#aaa; font-size:1.1rem; max-width:600px; margin:0 auto 40px; }
+.badge-preview { display:inline-flex; align-items:center; gap:8px; background:#00D46A22; border:1px solid #00D46A; padding:8px 20px; border-radius:20px; color:#00D46A; font-weight:600; margin-bottom:48px; }
+.benefits { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:24px; max-width:900px; margin:0 auto 60px; padding:0 20px; }
+.benefit { background:#1a2236; border:1px solid #2d3748; border-radius:16px; padding:28px; text-align:center; }
+.benefit .icon { font-size:2.5rem; margin-bottom:16px; }
+.benefit h3 { font-size:1.1rem; font-weight:700; margin-bottom:8px; }
+.benefit p { color:#aaa; font-size:0.9rem; line-height:1.5; }
+.pricing { background:#1a2236; border:2px solid #FF6B00; border-radius:24px; max-width:500px; margin:0 auto 60px; padding:40px; text-align:center; }
+.pricing .price { font-size:3rem; font-weight:800; color:#FF6B00; }
+.pricing .price span { font-size:1rem; color:#aaa; }
+.pricing .period { color:#aaa; margin-bottom:24px; }
+.pricing ul { list-style:none; text-align:left; margin-bottom:32px; }
+.pricing ul li { padding:8px 0; border-bottom:1px solid #2d3748; display:flex; align-items:center; gap:10px; }
+.pricing ul li:last-child { border:none; }
+.form-section { max-width:500px; margin:0 auto; padding:0 20px 60px; }
+.form-section h2 { font-size:1.5rem; font-weight:700; margin-bottom:24px; text-align:center; }
+.form-group { margin-bottom:16px; }
+.form-group label { display:block; color:#aaa; font-size:0.85rem; margin-bottom:6px; }
+.form-group input, .form-group select { width:100%; padding:12px 16px; background:#1a2236; border:1px solid #2d3748; border-radius:10px; color:white; font-size:1rem; }
+.form-group input:focus, .form-group select:focus { outline:none; border-color:#FF6B00; }
+.wave-btn { width:100%; padding:16px; background:#1DC4A0; color:white; border:none; border-radius:12px; font-size:1.1rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:12px; margin-top:8px; transition:opacity 0.2s; }
+.wave-btn:hover { opacity:0.9; }
+.wave-logo { background:white; border-radius:50%; width:28px; height:28px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#1DC4A0; font-size:0.8rem; }
+.note { color:#aaa; font-size:0.8rem; text-align:center; margin-top:12px; }
+.success { display:none; background:#00D46A22; border:1px solid #00D46A; border-radius:12px; padding:24px; text-align:center; margin-top:16px; }
+.success h3 { color:#00D46A; margin-bottom:8px; }
+footer { text-align:center; padding:24px; color:#aaa; font-size:0.85rem; border-top:1px solid #2d3748; }
+footer a { color:#FF6B00; text-decoration:none; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo">Voiture<span>Sen</span></div>
+  <h1>Devenez Concessionnaire <span>Vérifié</span></h1>
+  <p>Rejoignez le premier marketplace automobile de confiance à Dakar. Touchez des milliers d'acheteurs sérieux chaque mois.</p>
+  <div class="badge-preview">✅ Concessionnaire Vérifié VoitureSen</div>
+</div>
+
+<div class="benefits">
+  <div class="benefit">
+    <div class="icon">🥇</div>
+    <h3>Priorité dans les résultats</h3>
+    <p>Vos voitures apparaissent en premier dans les recherches et recommandations de Fatou</p>
+  </div>
+  <div class="benefit">
+    <div class="icon">🤖</div>
+    <h3>Fatou répond pour vous</h3>
+    <p>Notre IA conseille les acheteurs et leur recommande vos véhicules 24h/24</p>
+  </div>
+  <div class="benefit">
+    <div class="icon">✅</div>
+    <h3>Badge de confiance</h3>
+    <p>Le badge Vérifié rassure les acheteurs et augmente vos contacts de 3x</p>
+  </div>
+  <div class="benefit">
+    <div class="icon">📊</div>
+    <h3>Tableau de bord</h3>
+    <p>Suivez vos vues, contacts et performances en temps réel</p>
+  </div>
+</div>
+
+<div class="pricing">
+  <div class="price">15 000 <span>FCFA</span></div>
+  <div class="period">par mois — résiliable à tout moment</div>
+  <ul>
+    <li>✅ Badge Concessionnaire Vérifié</li>
+    <li>🥇 Priorité dans tous les résultats</li>
+    <li>🤖 Fatou répond à vos clients 24h/24</li>
+    <li>📊 Tableau de bord analytics</li>
+    <li>📞 Support WhatsApp dédié</li>
+    <li>🚗 Annonces illimitées</li>
+  </ul>
+  <p style="color:#FF6B00;font-weight:600;">Paiement sécurisé via Wave 🌊</p>
+</div>
+
+<div class="form-section">
+  <h2>Inscription — 2 minutes</h2>
+  <div class="form-group">
+    <label>Nom du concessionnaire *</label>
+    <input type="text" id="dealerName" placeholder="Ex: Auto Prestige Dakar">
+  </div>
+  <div class="form-group">
+    <label>Votre numéro WhatsApp *</label>
+    <input type="tel" id="dealerPhone" placeholder="+221 77 XXX XX XX">
+  </div>
+  <div class="form-group">
+    <label>Email (optionnel)</label>
+    <input type="email" id="dealerEmail" placeholder="contact@votregarage.com">
+  </div>
+  <div class="form-group">
+    <label>Ville *</label>
+    <select id="dealerCity">
+      <option value="">Choisir une ville</option>
+      <option value="Dakar">Dakar</option>
+      <option value="Pikine">Pikine</option>
+      <option value="Guediawaye">Guédiawaye</option>
+      <option value="Rufisque">Rufisque</option>
+      <option value="Thiès">Thiès</option>
+      <option value="Saint-Louis">Saint-Louis</option>
+      <option value="Ziguinchor">Ziguinchor</option>
+      <option value="Autre">Autre</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>Nombre de voitures en stock</label>
+    <select id="dealerStock">
+      <option value="1-5">1 à 5 voitures</option>
+      <option value="6-15">6 à 15 voitures</option>
+      <option value="16-30">16 à 30 voitures</option>
+      <option value="30+">Plus de 30 voitures</option>
+    </select>
+  </div>
+  <button class="wave-btn" onclick="payerWave()">
+    <div class="wave-logo">W</div>
+    Payer 15 000 FCFA via Wave
+  </button>
+  <p class="note">Après paiement, votre badge sera activé sous 24h.<br>Questions ? WhatsApp: +221 76 639 34 26</p>
+  <div class="success" id="successMsg">
+    <h3>✅ Inscription enregistrée !</h3>
+    <p>Merci ! Vous allez être redirigé vers Wave pour finaliser le paiement.<br>Votre badge sera activé dès confirmation.</p>
+  </div>
+</div>
+
+<footer>
+  <a href="/">← Retour à VoitureSen</a> &nbsp;|&nbsp; 
+  Questions ? <a href="https://wa.me/221766393426">WhatsApp</a>
+</footer>
+
+<script>
+const WAVE_NUMBER = '766393426';
+const AMOUNT = 10; // Test: 10 FCFA — changer à 15000 en production
+
+async function payerWave() {
+  const name = document.getElementById('dealerName').value.trim();
+  const phone = document.getElementById('dealerPhone').value.trim();
+  const city = document.getElementById('dealerCity').value;
+  
+  if (!name || !phone || !city) {
+    alert('Veuillez remplir tous les champs obligatoires (*)');
+    return;
+  }
+  
+  // Sauvegarder la demande dans Supabase
+  try {
+    await fetch('/api/dealers/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name, phone,
+        email: document.getElementById('dealerEmail').value,
+        city,
+        stock: document.getElementById('dealerStock').value,
+        status: 'pending',
+        amount: AMOUNT
+      })
+    });
+  } catch(e) {
+    console.log('Save error:', e);
+  }
+  
+  // Afficher confirmation
+  document.getElementById('successMsg').style.display = 'block';
+  
+  // Rediriger vers Wave après 1.5s
+  const waveUrl = 'https://pay.wave.com/m/' + WAVE_NUMBER + '/c/sn/?amount=' + AMOUNT;
+  setTimeout(() => {
+    window.open(waveUrl, '_blank');
+  }, 1500);
+}
+</script>
+</body>
+</html>
