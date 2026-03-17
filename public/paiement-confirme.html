@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoitureSen — Confirmation Paiement</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',sans-serif; background:#0a0f1a; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; }
+.card { background:#1a2236; border-radius:24px; padding:48px; text-align:center; max-width:480px; width:90%; }
+.icon { font-size:4rem; margin-bottom:24px; }
+h1 { font-size:1.8rem; font-weight:800; margin-bottom:16px; }
+p { color:#aaa; line-height:1.6; margin-bottom:24px; }
+.btn { display:inline-block; padding:14px 32px; background:#FF6B00; color:white; text-decoration:none; border-radius:10px; font-weight:600; }
+.whatsapp-btn { display:inline-block; padding:14px 32px; background:#25D366; color:white; text-decoration:none; border-radius:10px; font-weight:600; margin-top:12px; }
+</style>
+</head>
+<body>
+<div class="card" id="content">
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const status = params.get('status');
+const dealer_id = params.get('dealer_id');
+const card = document.getElementById('content');
+
+if (status === 'success') {
+  card.innerHTML = `
+    <div class="icon">🎉</div>
+    <h1>Paiement confirme !</h1>
+    <p>Merci ! Votre badge <strong>Concessionnaire Verifie VoitureSen</strong> est maintenant actif.<br><br>
+    Vos voitures apparaissent desormais en priorite dans les resultats et Fatou recommande votre garage aux acheteurs.</p>
+    <a href="/" class="btn">Voir VoitureSen</a><br>
+    <a href="https://wa.me/221766393426?text=Mon%20badge%20est%20active%20!" class="whatsapp-btn">Contacter le support</a>
+  `;
+} else if (status === 'cancelled') {
+  card.innerHTML = `
+    <div class="icon">❌</div>
+    <h1>Paiement annule</h1>
+    <p>Votre paiement a ete annule. Vous pouvez reessayer quand vous voulez.</p>
+    <a href="/concessionnaire" class="btn">Reessayer</a>
+  `;
+} else {
+  card.innerHTML = `
+    <div class="icon">⚠️</div>
+    <h1>Une erreur est survenue</h1>
+    <p>Contactez-nous sur WhatsApp pour activer votre badge manuellement.</p>
+    <a href="https://wa.me/221766393426" class="whatsapp-btn">Contacter le support</a>
+  `;
+}
+</script>
+</body>
+</html>
