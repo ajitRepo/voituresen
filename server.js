@@ -547,6 +547,23 @@ app.delete('/api/admin/cars/:id', async (req, res) => {
   }
 });
 
+// INSCRIPTION CONCESSIONNAIRE
+app.post('/api/dealers/register', async (req, res) => {
+  try {
+    const { name, phone, email, city, stock, status, amount } = req.body;
+    const result = await querySupabase('POST', 'dealers', {
+      name, phone, email, city, stock,
+      status: status || 'pending',
+      amount: amount || 15000,
+      created_at: new Date().toISOString()
+    });
+    res.json({ success: true, dealer: result });
+  } catch(e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
+
 // ADMIN LOGIN SECURISE
 app.post('/api/admin/login', (req, res) => {
   const { username, password } = req.body;
