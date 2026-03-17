@@ -422,14 +422,14 @@ tr:hover td { background:rgba(255,255,255,0.02); }
     </div>
 
     <!-- ====== CONCESSIONNAIRES ====== -->
-    <div class="admin-section" id="secConcessionnaires">
+    <div class="admin-section" id="secConcessionnaires" data-onshow="loadAdminDealers">
       <div class="admin-header">
         <div class="admin-page-title">ÃÂ°ÃÂÃÂÃÂ¢ Gestion des <span>Concessionnaires</span></div>
       </div>
 
       <div class="admin-table-wrap">
         <div class="admin-table-header">
-          <div class="admin-table-title">Tous les concessionnaires</div>
+          <div class="admin-table-title">Tous les concessionnaires (<span id="dealerCount">0</span>)</div>
           <div class="admin-table-actions">
             <select class="config-input" style="width:auto;" id="dealerStatusFilter" onchange="renderDealers()">
               <option value="all">Tous</option>
@@ -1352,5 +1352,88 @@ window.doLogin = async function() {
   }
 };
 </script>
+
+
+// ============ CONCESSIONNAIRES SUPABASE ============
+let _allDealers = [];
+
+async function loadAdminDealers() {
+  try {
+    const r = await fetch('/api/admin/dealers');
+    const d = await r.json();
+    if (d.success) {
+      _allDealers = d.dealers || [];
+      renderDealers();
+    }
+  } catch(e) {
+    console.error('Erreur chargement dealers:', e);
+  }
+}
+
+function renderDealers() {
+  const filter = document.getElementById('dealerStatusFilter')?.value || 'all';
+  const tbody = document.getElementById('adminDealersBody');
+  if (!tbody) return;
+  const cnt = document.getElementById("dealerCount"); if(cnt) cnt.textContent = list.length;
+  
+  const list = filter === 'all' ? _allDealers : _allDealers.filter(d => d.status === filter);
+  
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:#aaa;">Aucun concessionnaire inscrit pour l\'instant</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = list.map(d => {
+    const statusColor = d.verified ? '#00D46A' : d.status === 'pending' ? '#FF6B00' : '#aaa';
+    const statusLabel = d.verified ? 'Actif' : d.status === 'pending' ? 'En attente' : d.status || 'Inconnu';
+    const date = d.created_at ? new Date(d.created_at).toLocaleDateString('fr-FR') : '-';
+    return `<tr>
+      <td><strong>${d.name || '-'}</strong></td>
+      <td>${d.phone || '-'}</td>
+      <td>${d.city || 'Dakar'}</td>
+      <td><span style="color:${statusColor};font-weight:600;">${statusLabel}</span></td>
+      <td>${d.amount ? d.amount.toLocaleString('fr-FR') + ' FCFA' : '-'}</td>
+      <td>${date}</td>
+      <td style="display:flex;gap:8px;">
+        ${!d.verified ? `<button onclick="activateDealer(${d.id})" style="background:#00D46A;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;">✅ Activer</button>` : `<button onclick="deactivateDealer(${d.id})" style="background:#ff4444;color:white;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;">Désactiver</button>`}
+        <button onclick="deleteDealer(${d.id})" style="background:#2d3748;color:#aaa;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;">🗑</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function activateDealer(id) {
+  try {
+    const r = await fetch('/api/admin/dealers/' + id, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({verified: true, status: 'active'})
+    });
+    const d = await r.json();
+    if (d.success) { await loadAdminDealers(); alert('Badge activé !'); }
+  } catch(e) { alert('Erreur: ' + e.message); }
+}
+
+async function deactivateDealer(id) {
+  try {
+    const r = await fetch('/api/admin/dealers/' + id, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({verified: false, status: 'suspended'})
+    });
+    const d = await r.json();
+    if (d.success) { await loadAdminDealers(); alert('Badge désactivé.'); }
+  } catch(e) { alert('Erreur: ' + e.message); }
+}
+
+async function deleteDealer(id) {
+  if (!confirm('Supprimer ce concessionnaire ?')) return;
+  try {
+    await fetch('/api/admin/dealers/' + id, {method: 'DELETE'});
+    await loadAdminDealers();
+  } catch(e) { alert('Erreur: ' + e.message); }
+}
+// ============ FIN CONCESSIONNAIRES ============
+
 </body>
 </html>
