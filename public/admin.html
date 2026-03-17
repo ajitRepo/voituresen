@@ -1435,5 +1435,46 @@ async function deleteDealer(id) {
 }
 // ============ FIN CONCESSIONNAIRES ============
 
+
+<script>
+// DEALERS SUPABASE
+window._allDealers = [];
+window.loadAdminDealers = async function() {
+  try {
+    const r = await fetch('/api/admin/dealers');
+    const d = await r.json();
+    if (d.success) { window._allDealers = d.dealers || []; window.renderDealers(); }
+  } catch(e) { console.error(e); }
+};
+window.renderDealers = function() {
+  const filter = document.getElementById('dealerStatusFilter')?.value || 'all';
+  const tbody = document.getElementById('adminDealersBody');
+  if (!tbody) return;
+  const list = filter === 'all' ? window._allDealers : window._allDealers.filter(d => d.status === filter);
+  if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:32px;color:#aaa;">Aucun concessionnaire pour linstant</td></tr>'; return; }
+  tbody.innerHTML = list.map(d => {
+    const sc = d.verified ? '#00D46A' : d.status==='pending' ? '#FF6B00' : '#aaa';
+    const sl = d.verified ? 'Actif' : d.status==='pending' ? 'En attente' : d.status || '-';
+    const dt = d.created_at ? new Date(d.created_at).toLocaleDateString('fr-FR') : '-';
+    return '<tr><td><strong>'+(d.name||'-')+'</strong></td><td>'+(d.phone||'-')+'</td><td>'+(d.city||'Dakar')+'</td><td><span style="color:'+sc+';font-weight:600;">'+sl+'</span></td><td>'+(d.amount?d.amount.toLocaleString('fr-FR')+' FCFA':'-')+'</td><td>'+dt+'</td><td style="display:flex;gap:6px;">'+(
+      !d.verified ? '<button onclick="window.activateDealer('+d.id+')" style="background:#00D46A;color:white;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;">Activer</button>' :
+      '<button onclick="window.deactivateDealer('+d.id+')" style="background:#ff4444;color:white;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;">Desactiver</button>'
+    )+'<button onclick="window.deleteDealer('+d.id+')" style="background:#2d3748;color:#aaa;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.75rem;">Suppr.</button></td></tr>';
+  }).join('');
+};
+window.activateDealer = async function(id) {
+  const r = await fetch('/api/admin/dealers/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({verified:true,status:'active'})});
+  const d = await r.json(); if(d.success){await window.loadAdminDealers();alert('Badge active!');}
+};
+window.deactivateDealer = async function(id) {
+  const r = await fetch('/api/admin/dealers/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({verified:false,status:'suspended'})});
+  const d = await r.json(); if(d.success){await window.loadAdminDealers();}
+};
+window.deleteDealer = async function(id) {
+  if(!confirm('Supprimer ?')) return;
+  await fetch('/api/admin/dealers/'+id,{method:'DELETE'});
+  await window.loadAdminDealers();
+};
+</script>
 </body>
 </html>
