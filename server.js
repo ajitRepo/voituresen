@@ -516,6 +516,23 @@ app.get('/concessionnaire.html', (req, res) => {
 });
 
 
+// Page deposer annonce
+app.get('/deposer-annonce', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'deposer-annonce.html'));
+});
+
+// API publique pour poster une voiture
+app.post('/api/cars', async (req, res) => {
+  try {
+    const result = await querySupabase('POST', 'cars', req.body);
+    const car = Array.isArray(result) ? result[0] : result;
+    res.json({ success: true, car });
+  } catch(e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
+
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api') && !req.path.startsWith('/images/')) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
