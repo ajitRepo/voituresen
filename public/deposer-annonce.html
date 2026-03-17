@@ -32,7 +32,16 @@ h1 { font-size:1.8rem; font-weight:800; margin-bottom:8px; }
 .photo-upload input { display:none; }
 .photo-upload p { color:#aaa; font-size:0.9rem; margin-top:8px; }
 .photo-preview { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-.photo-preview img { width:80px; height:60px; object-fit:cover; border-radius:6px; }
+.photo-slot {
+  border:2px dashed #2d3748; border-radius:10px; cursor:pointer;
+  aspect-ratio:4/3; display:flex; align-items:center; justify-content:center;
+  transition:border-color 0.2s; overflow:hidden; position:relative;
+}
+.photo-slot:hover { border-color:#FF6B00; }
+.photo-slot.has-photo { border-color:#00D46A; border-style:solid; }
+.slot-content { text-align:center; color:#aaa; font-size:0.75rem; }
+.slot-content div { margin-bottom:4px; }
+.photo-slot img { width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; }
 
 /* Options publication */
 .pub-options { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
@@ -145,16 +154,55 @@ h1 { font-size:1.8rem; font-weight:800; margin-bottom:8px; }
     <textarea id="carDesc" placeholder="Etat general, equipements, raison de la vente..."></textarea>
   </div>
 
-  <!-- PHOTO -->
-  <div class="section-title">Photo principale</div>
+  <!-- PHOTOS -->
+  <div class="section-title">Photos de la voiture</div>
   <div class="form-group">
-    <label for="photoInput" class="photo-upload" id="photoZone">
-      <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(this)">
-      <div style="font-size:2rem;">📷</div>
-      <p>Cliquez pour ajouter une photo<br><small>JPG, PNG — Max 5MB</small></p>
-    </label>
-    <div class="photo-preview" id="photoPreview"></div>
-    <p id="photoStatus" style="color:#aaa;font-size:0.8rem;margin-top:6px;"></p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;" id="photoGrid">
+      <label class="photo-slot" id="slot-0">
+        <input type="file" accept="image/*" onchange="handlePhoto(this,0)" style="display:none;">
+        <div class="slot-content">
+          <div style="font-size:1.5rem;">📷</div>
+          <small>Photo principale</small>
+        </div>
+      </label>
+      <label class="photo-slot" id="slot-1">
+        <input type="file" accept="image/*" onchange="handlePhoto(this,1)" style="display:none;">
+        <div class="slot-content">
+          <div style="font-size:1.5rem;">+</div>
+          <small>Photo 2</small>
+        </div>
+      </label>
+      <label class="photo-slot" id="slot-2">
+        <input type="file" accept="image/*" onchange="handlePhoto(this,2)" style="display:none;">
+        <div class="slot-content">
+          <div style="font-size:1.5rem;">+</div>
+          <small>Photo 3</small>
+        </div>
+      </label>
+      <label class="photo-slot" id="slot-3">
+        <input type="file" accept="image/*" onchange="handlePhoto(this,3)" style="display:none;">
+        <div class="slot-content">
+          <div style="font-size:1.5rem;">+</div>
+          <small>Intérieur</small>
+        </div>
+      </label>
+      <label class="photo-slot" id="slot-4">
+        <input type="file" accept="image/*" onchange="handlePhoto(this,4)" style="display:none;">
+        <div class="slot-content">
+          <div style="font-size:1.5rem;">+</div>
+          <small>Moteur</small>
+        </div>
+      </label>
+      <label class="photo-slot" id="slot-5">
+        <input type="file" accept="image/*" onchange="handlePhoto(this,5)" style="display:none;">
+        <div class="slot-content">
+          <div style="font-size:1.5rem;">+</div>
+          <small>Autre</small>
+        </div>
+      </label>
+    </div>
+    <p style="color:#aaa;font-size:0.8rem;">Ajoutez jusqu'à 6 photos · JPG, PNG · Max 5MB par photo</p>
+    <p id="photoStatus" style="color:#00D46A;font-size:0.8rem;margin-top:4px;"></p>
   </div>
 
   <!-- CHOIX PUBLICATION -->
@@ -204,7 +252,7 @@ h1 { font-size:1.8rem; font-weight:800; margin-bottom:8px; }
 <script>
 const WAVE_LINK = 'https://pay.wave.com/m/M_sn_T56iTH9vu1Hl/c/sn/';
 const AMOUNT = 10; // Test - changer a 15000 en production
-let uploadedImageUrl = null;
+let uploadedImages = []; // tableau de toutes les photos
 let currentPub = 'gratuit';
 
 function selectPub(type) {
@@ -224,42 +272,43 @@ function selectPub(type) {
   }
 }
 
-async function handlePhoto(input) {
+async function handlePhoto(input, idx) {
   if (!input.files || !input.files[0]) return;
   const file = input.files[0];
+  const slot = document.getElementById('slot-' + idx);
   const status = document.getElementById('photoStatus');
-  const preview = document.getElementById('photoPreview');
   
-  // Preview local
+  // Preview local immédiat
   const localUrl = URL.createObjectURL(file);
-  preview.innerHTML = '<img src="' + localUrl + '" alt="photo">';
-  status.textContent = 'Upload en cours...';
+  slot.classList.add('has-photo');
+  const existing = slot.querySelector('img');
+  if (existing) existing.remove();
+  const img = document.createElement('img');
+  img.src = localUrl;
+  slot.appendChild(img);
   
-  // Upload vers GitHub
+  status.textContent = 'Upload photo ' + (idx+1) + ' en cours...';
+  
   const reader = new FileReader();
   reader.onload = async function(e) {
     const b64 = e.target.result.split(',')[1];
     const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-    const filename = 'annonce_' + Date.now() + '.' + ext;
+    const filename = 'annonce_' + Date.now() + '_' + idx + '.' + ext;
     const tk = ['ghp_bwVyQb3QlBz', 'tefdzFwkoRe51rtEm2Y3BnWTz'].join('');
     try {
       const r = await fetch('https://api.github.com/repos/ajitRepo/voituresen/contents/public/images/' + filename, {
         method: 'PUT',
         headers: {'Authorization': 'token ' + tk, 'Content-Type': 'application/json'},
-        body: JSON.stringify({message: 'Annonce photo: ' + filename, content: b64})
+        body: JSON.stringify({message: 'Annonce photo', content: b64})
       });
       const d = await r.json();
-      if (d.content) {
-        uploadedImageUrl = '/images/' + filename;
-        status.textContent = 'Photo uploadee !';
-        status.style.color = '#00D46A';
-      } else {
-        uploadedImageUrl = localUrl;
-        status.textContent = 'Photo prete (locale)';
-      }
+      const url = d.content ? '/images/' + filename : localUrl;
+      uploadedImages[idx] = url;
+      const uploaded = uploadedImages.filter(Boolean).length;
+      status.textContent = uploaded + ' photo(s) prête(s) ✓';
     } catch(err) {
-      uploadedImageUrl = localUrl;
-      status.textContent = 'Photo prete';
+      uploadedImages[idx] = localUrl;
+      status.textContent = (idx+1) + ' photo(s) prête(s)';
     }
   };
   reader.readAsDataURL(file);
@@ -294,7 +343,7 @@ async function soumettre() {
     transmission: document.getElementById('carTransmission').value,
     seller: sellerName,
     seller_phone: phone,
-    image: uploadedImageUrl || null,
+    image: uploadedImages[0] || null, images: uploadedImages.filter(Boolean),
     verified: false,
     seats: 5
   };
