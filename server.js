@@ -507,6 +507,15 @@ app.get('/api/admin/stats', (req, res) => {
 });
 
 // SPA fallback - serve index.html for all non-API routes
+// Page concessionnaire
+app.get('/concessionnaire', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'concessionnaire.html'));
+});
+app.get('/concessionnaire.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'concessionnaire.html'));
+});
+
+
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api') && !req.path.startsWith('/images/')) {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
