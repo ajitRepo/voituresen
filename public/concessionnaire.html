@@ -155,9 +155,10 @@ async function payerWave() {
     return;
   }
   
-  // Sauvegarder la demande dans Supabase
+  // Sauvegarder la demande dans Supabase et recuperer l'ID
+  let dealerId = 'unknown';
   try {
-    await fetch('/api/dealers/register', {
+    const saveResp = await fetch('/api/dealers/register', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -169,6 +170,10 @@ async function payerWave() {
         amount: AMOUNT
       })
     });
+    const saveData = await saveResp.json();
+    if (saveData.success && saveData.dealer_id) {
+      dealerId = saveData.dealer_id;
+    }
   } catch(e) {
     console.log('Save error:', e);
   }
