@@ -280,7 +280,7 @@ tr:hover td { background:rgba(255,255,255,0.02); }
       <div class="admin-nav-item" onclick="showAdmin('annonces',this)">
         <span class="nav-icon">ÃÂ°ÃÂÃÂÃÂ</span> Annonces
       </div>
-      <div class="admin-nav-item" onclick="showAdmin('concessionnaires',this)">
+      <div class="admin-nav-item" onclick="showAdmin('concessionnaires',this);setTimeout(function(){if(typeof window.loadAdminDealers==='function')window.loadAdminDealers();},300)">
         <span class="nav-icon">ÃÂ°ÃÂÃÂÃÂ¢</span> Concessionnaires
       </div>
       <div class="admin-nav-item" onclick="showAdmin('rapportsVin',this)">
