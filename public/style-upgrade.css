@@ -1,0 +1,371 @@
+
+/* ===== VOITURESEN UI UPGRADE ===== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --orange: #FF6B00;
+  --orange-light: #FF8C38;
+  --orange-glow: rgba(255,107,0,0.15);
+  --bg-deep: #070B14;
+  --bg-card: #0F1623;
+  --bg-card-hover: #141D2E;
+  --bg-sidebar: #0B1120;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(255,107,0,0.3);
+  --text-primary: #F0F4FF;
+  --text-secondary: #8896B3;
+  --text-muted: #4A5568;
+  --green: #00D46A;
+  --green-bg: rgba(0,212,106,0.1);
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-hover: 0 8px 40px rgba(255,107,0,0.15);
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif !important;
+  background: var(--bg-deep) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ===== NAVBAR ===== */
+.navbar, nav, header {
+  background: rgba(7,11,20,0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 0 24px !important;
+  height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1000 !important;
+}
+
+.logo, .nav-logo {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1.3rem !important;
+  letter-spacing: -0.5px !important;
+}
+
+.nav-link {
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s !important;
+  text-decoration: none !important;
+}
+
+.nav-link:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+
+.nav-link.cta {
+  background: var(--orange) !important;
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 8px 18px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 14px rgba(255,107,0,0.3) !important;
+  transition: all 0.2s !important;
+}
+
+.nav-link.cta:hover {
+  background: var(--orange-light) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 20px rgba(255,107,0,0.4) !important;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar, .annonces-sidebar, [class*="sidebar"] {
+  background: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border) !important;
+  width: 320px !important;
+  overflow-y: auto !important;
+}
+
+.sidebar-title, [class*="sidebar-title"], [class*="annonces-title"] {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  color: var(--text-muted) !important;
+  padding: 16px 16px 8px !important;
+  text-transform: uppercase !important;
+}
+
+/* Barre de recherche */
+.search-input, input[placeholder*="recherche"], input[placeholder*="Recherche"] {
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  color: var(--text-primary) !important;
+  padding: 10px 14px !important;
+  font-size: 0.85rem !important;
+  font-family: 'Outfit', sans-serif !important;
+  width: 100% !important;
+  transition: all 0.2s !important;
+}
+
+.search-input:focus, input[placeholder*="recherche"]:focus {
+  border-color: var(--orange) !important;
+  background: rgba(255,107,0,0.05) !important;
+  outline: none !important;
+}
+
+/* Filtres */
+.filter-btn, [class*="filter"] button, [class*="tag"] {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--border) !important;
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+}
+
+.filter-btn:hover, [class*="filter"] button:hover {
+  border-color: var(--orange) !important;
+  color: var(--orange) !important;
+}
+
+/* ===== CARTES VOITURES ===== */
+.sidebar-car, [class*="sidebar-car"], [class*="car-item"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  position: relative !important;
+}
+
+.sidebar-car:hover, [class*="sidebar-car"]:hover {
+  background: rgba(255,107,0,0.05) !important;
+}
+
+.sidebar-car img, [class*="sidebar-car"] img {
+  width: 64px !important;
+  height: 48px !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.sidebar-car-name, [class*="car-name"] {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  color: var(--text-primary) !important;
+  line-height: 1.3 !important;
+}
+
+.sidebar-car-price, [class*="car-price"] {
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  color: var(--orange) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* Grille annonces */
+.grid-card, [class*="grid-card"] {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+}
+
+.grid-card:hover, [class*="grid-card"]:hover {
+  border-color: var(--border-hover) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: var(--shadow-hover) !important;
+  background: var(--bg-card-hover) !important;
+}
+
+.grid-card-img, [class*="grid-card-img"] {
+  height: 180px !important;
+  overflow: hidden !important;
+  background: #0F1623 !important;
+  position: relative !important;
+}
+
+.grid-card-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.4s ease !important;
+}
+
+.grid-card:hover .grid-card-img img {
+  transform: scale(1.05) !important;
+}
+
+.grid-card-body, [class*="grid-card-body"] {
+  padding: 14px 16px !important;
+}
+
+.grid-card-name, [class*="grid-card-name"] {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  color: var(--text-primary) !important;
+  margin-bottom: 6px !important;
+}
+
+.grid-card-price, [class*="grid-card-price"] {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1.1rem !important;
+  color: var(--orange) !important;
+  letter-spacing: -0.3px !important;
+}
+
+/* Badge vérifié */
+[class*="badge"], [class*="verified"], [class*="verifie"] {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  font-family: 'Outfit', sans-serif !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+}
+
+/* ===== CHAT FATOU ===== */
+.chat-area, [class*="chat"] {
+  background: var(--bg-deep) !important;
+}
+
+.chat-message, [class*="message"], [class*="msg"] {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 0.9rem !important;
+  line-height: 1.6 !important;
+}
+
+.chat-input, [placeholder*="Fatou"], [placeholder*="fatou"], [placeholder*="Demandez"] {
+  font-family: 'Outfit', sans-serif !important;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  color: var(--text-primary) !important;
+  padding: 14px 18px !important;
+  font-size: 0.9rem !important;
+  transition: all 0.2s !important;
+}
+
+.chat-input:focus, [placeholder*="Demandez"]:focus {
+  border-color: var(--orange) !important;
+  background: rgba(255,107,0,0.04) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(255,107,0,0.1) !important;
+}
+
+/* Bouton envoi chat */
+.chat-send, [class*="send-btn"], button[class*="send"] {
+  background: var(--orange) !important;
+  border-radius: 10px !important;
+  transition: all 0.2s !important;
+  border: none !important;
+}
+
+.chat-send:hover {
+  background: var(--orange-light) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Suggestions rapides */
+.quick-btn, [class*="quick"], [class*="suggestion"] {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 20px !important;
+  color: var(--text-secondary) !important;
+  padding: 7px 14px !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  white-space: nowrap !important;
+}
+
+.quick-btn:hover {
+  background: var(--orange-glow) !important;
+  border-color: var(--orange) !important;
+  color: var(--orange) !important;
+}
+
+/* Avatar Fatou */
+.fatou-avatar, [class*="fatou-avatar"], [class*="bot-avatar"] {
+  background: linear-gradient(135deg, var(--orange) 0%, #FF3D00 100%) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 14px rgba(255,107,0,0.4) !important;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,107,0,0.4); }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-orange {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,0,0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(255,107,0,0); }
+}
+
+.grid-card { animation: fadeInUp 0.4s ease both; }
+.grid-card:nth-child(1) { animation-delay: 0.05s; }
+.grid-card:nth-child(2) { animation-delay: 0.1s; }
+.grid-card:nth-child(3) { animation-delay: 0.15s; }
+.grid-card:nth-child(4) { animation-delay: 0.2s; }
+.grid-card:nth-child(5) { animation-delay: 0.25s; }
+.grid-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* ===== BOUTON VENDRE MA VOITURE ===== */
+.sell-btn {
+  background: transparent !important;
+  border: 1.5px solid var(--orange) !important;
+  color: var(--orange) !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  padding: 7px 16px !important;
+  border-radius: 9px !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  text-decoration: none !important;
+}
+
+.sell-btn:hover {
+  background: var(--orange) !important;
+  color: white !important;
+  box-shadow: 0 4px 14px rgba(255,107,0,0.3) !important;
+}
+
+/* ===== SECTION ANNONCES ===== */
+.annonces-header h2, [class*="annonces-title"] {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 1.5rem !important;
+  color: var(--text-primary) !important;
+}
+
+.annonces-header h2 span {
+  color: var(--orange) !important;
+}
