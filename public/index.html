@@ -1559,7 +1559,7 @@ function addCarCards(carIds) {
   const wrapper = document.createElement('div');
   wrapper.className = 'msg msg-bot';
   wrapper.style.maxWidth = '90%';
-  wrapper.innerHTML = `<div class="msg-avatar">👩🏾</div><div><div class="car-cards">${cards}</div></div>`;
+  wrapper.innerHTML = `<div class="msg-avatar"><img src="/images/fatou-avatar.svg" alt="Fatou" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"></div><div><div class="car-cards">${cards}</div></div>`;
   chatEl.appendChild(wrapper);
   chatEl.scrollTop = chatEl.scrollHeight;
 }
