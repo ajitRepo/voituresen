@@ -284,3 +284,14 @@ input[placeholder*="Demandez"]:focus {
 .grid-card:nth-child(6) { animation-delay: 0.24s; }
 
 .car-item { animation: fadeInUp 0.3s ease both; }
+
+.msg-avatar {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: url('/images/fatou-avatar.svg') center/cover !important;
+  font-size: 0 !important;
+  flex-shrink: 0 !important;
+  box-shadow: 0 2px 10px rgba(255,107,0,0.3) !important;
+  overflow: hidden !important;
+}
