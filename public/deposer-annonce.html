@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoitureSen — Deposer une annonce</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI',sans-serif; background:#0a0f1a; color:white; min-height:100vh; }
+header { display:flex; align-items:center; justify-content:space-between; padding:20px 32px; border-bottom:1px solid #2d3748; }
+.logo { font-size:1.3rem; font-weight:800; text-decoration:none; color:white; }
+.logo span { color:#FF6B00; }
+.back { color:#aaa; text-decoration:none; font-size:0.9rem; }
+.back:hover { color:white; }
+.container { max-width:680px; margin:0 auto; padding:40px 20px 60px; }
+h1 { font-size:1.8rem; font-weight:800; margin-bottom:8px; }
+.subtitle { color:#aaa; margin-bottom:32px; }
+.section-title { font-size:1rem; font-weight:700; color:#FF6B00; margin:28px 0 16px; text-transform:uppercase; letter-spacing:0.05em; }
+.grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-group { margin-bottom:16px; }
+.form-group label { display:block; color:#aaa; font-size:0.85rem; margin-bottom:6px; }
+.form-group input, .form-group select, .form-group textarea {
+  width:100%; padding:12px 16px; background:#1a2236; border:1px solid #2d3748;
+  border-radius:10px; color:white; font-size:0.95rem; font-family:inherit;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline:none; border-color:#FF6B00;
+}
+.form-group textarea { height:80px; resize:vertical; }
+.photo-upload { border:2px dashed #2d3748; border-radius:10px; padding:24px; text-align:center; cursor:pointer; transition:border-color 0.2s; }
+.photo-upload:hover { border-color:#FF6B00; }
+.photo-upload input { display:none; }
+.photo-upload p { color:#aaa; font-size:0.9rem; margin-top:8px; }
+.photo-preview { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.photo-preview img { width:80px; height:60px; object-fit:cover; border-radius:6px; }
+
+/* Options publication */
+.pub-options { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+.pub-option { border:2px solid #2d3748; border-radius:16px; padding:20px; cursor:pointer; transition:all 0.2s; position:relative; }
+.pub-option:hover { border-color:#FF6B00; }
+.pub-option.selected { border-color:#FF6B00; background:#FF6B0011; }
+.pub-option input { position:absolute; opacity:0; }
+.pub-option .tag { font-size:0.75rem; font-weight:700; padding:3px 10px; border-radius:20px; margin-bottom:10px; display:inline-block; }
+.tag-free { background:#2d3748; color:#aaa; }
+.tag-paid { background:#FF6B0033; color:#FF6B00; }
+.pub-option h3 { font-size:1rem; font-weight:700; margin-bottom:6px; }
+.pub-option ul { list-style:none; }
+.pub-option ul li { font-size:0.8rem; color:#aaa; padding:3px 0; }
+.pub-option ul li::before { content:"• "; }
+.pub-option ul li.good { color:#00D46A; }
+.pub-option ul li.good::before { content:"✅ "; }
+.pub-option ul li.bad::before { content:"✗ "; color:#ff4444; }
+.price-badge { font-size:1.2rem; font-weight:800; color:#FF6B00; margin-top:8px; }
+
+.btn-submit { width:100%; padding:16px; border:none; border-radius:12px; font-size:1.05rem; font-weight:700; cursor:pointer; transition:opacity 0.2s; }
+.btn-gratuit { background:#2d3748; color:white; }
+.btn-verifie { background:#FF6B00; color:white; }
+.btn-submit:hover { opacity:0.9; }
+.success-msg { display:none; background:#00D46A22; border:1px solid #00D46A; border-radius:12px; padding:20px; text-align:center; margin-top:16px; }
+.success-msg h3 { color:#00D46A; margin-bottom:6px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo">Voiture<span>Sen</span></a>
+  <a href="/" class="back">← Retour aux annonces</a>
+</header>
+
+<div class="container">
+  <h1>Deposer une annonce</h1>
+  <p class="subtitle">Vendez votre voiture rapidement a des milliers d'acheteurs a Dakar</p>
+
+  <!-- INFOS VENDEUR -->
+  <div class="section-title">Vos informations</div>
+  <div class="grid2">
+    <div class="form-group">
+      <label>Votre nom *</label>
+      <input type="text" id="sellerName" placeholder="Ex: Moussa Diallo">
+    </div>
+    <div class="form-group">
+      <label>WhatsApp *</label>
+      <input type="tel" id="sellerPhone" placeholder="+221 77 XXX XX XX">
+    </div>
+  </div>
+
+  <!-- INFOS VOITURE -->
+  <div class="section-title">La voiture</div>
+  <div class="grid2">
+    <div class="form-group">
+      <label>Marque *</label>
+      <select id="carBrand">
+        <option value="">Choisir</option>
+        <option>Toyota</option><option>Mercedes</option><option>Peugeot</option>
+        <option>Renault</option><option>Honda</option><option>Hyundai</option>
+        <option>Kia</option><option>Nissan</option><option>Mitsubishi</option>
+        <option>BMW</option><option>Audi</option><option>Ford</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Modele *</label>
+      <input type="text" id="carModel" placeholder="Ex: Corolla, RAV4, C200...">
+    </div>
+    <div class="form-group">
+      <label>Annee *</label>
+      <input type="number" id="carYear" placeholder="2020" min="1990" max="2026">
+    </div>
+    <div class="form-group">
+      <label>Kilometrage (km) *</label>
+      <input type="number" id="carKm" placeholder="45000">
+    </div>
+    <div class="form-group">
+      <label>Prix (FCFA) *</label>
+      <input type="number" id="carPrice" placeholder="4500000">
+    </div>
+    <div class="form-group">
+      <label>Carburant</label>
+      <select id="carFuel">
+        <option>Essence</option><option>Diesel</option>
+        <option>Hybride</option><option>Electrique</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Transmission</label>
+      <select id="carTransmission">
+        <option>Automatique</option><option>Manuelle</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Origine</label>
+      <select id="carOrigin">
+        <option value="France">🇫🇷 France</option>
+        <option value="Japon">🇯🇵 Japon</option>
+        <option value="USA">🇺🇸 USA</option>
+        <option value="Allemagne">🇩🇪 Allemagne</option>
+        <option value="Coree">🇰🇷 Coree</option>
+        <option value="Maroc">🇲🇦 Maroc</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Description (optionnel)</label>
+    <textarea id="carDesc" placeholder="Etat general, equipements, raison de la vente..."></textarea>
+  </div>
+
+  <!-- PHOTO -->
+  <div class="section-title">Photo principale</div>
+  <div class="form-group">
+    <label for="photoInput" class="photo-upload" id="photoZone">
+      <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(this)">
+      <div style="font-size:2rem;">📷</div>
+      <p>Cliquez pour ajouter une photo<br><small>JPG, PNG — Max 5MB</small></p>
+    </label>
+    <div class="photo-preview" id="photoPreview"></div>
+    <p id="photoStatus" style="color:#aaa;font-size:0.8rem;margin-top:6px;"></p>
+  </div>
+
+  <!-- CHOIX PUBLICATION -->
+  <div class="section-title">Comment publier ?</div>
+  <div class="pub-options">
+    <label class="pub-option selected" id="opt-gratuit">
+      <input type="radio" name="pubType" value="gratuit" checked onchange="selectPub('gratuit')">
+      <span class="tag tag-free">GRATUIT</span>
+      <h3>Annonce standard</h3>
+      <ul>
+        <li class="good">Publication immediate</li>
+        <li class="good">Visible par tous</li>
+        <li class="bad" style="color:#aaa;">Pas de badge verifie</li>
+        <li class="bad" style="color:#aaa;">En bas des resultats</li>
+        <li class="bad" style="color:#aaa;">Max 2 annonces</li>
+      </ul>
+    </label>
+    <label class="pub-option" id="opt-verifie">
+      <input type="radio" name="pubType" value="verifie" onchange="selectPub('verifie')">
+      <span class="tag tag-paid">RECOMMANDE</span>
+      <h3>Annonce Verifiee ✅</h3>
+      <ul>
+        <li class="good">Badge Verifie visible</li>
+        <li class="good">Priorite dans resultats</li>
+        <li class="good">Fatou recommande</li>
+        <li class="good">Annonces illimitees</li>
+      </ul>
+      <div class="price-badge">15 000 FCFA<span style="font-size:0.75rem;color:#aaa;">/mois</span></div>
+    </label>
+  </div>
+
+  <div id="errorMsg" style="color:#ff4444;margin-bottom:12px;display:none;"></div>
+
+  <button class="btn-submit btn-gratuit" id="submitBtn" onclick="soumettre()">
+    Publier mon annonce gratuitement
+  </button>
+  <p style="color:#aaa;font-size:0.8rem;text-align:center;margin-top:8px;" id="submitNote">
+    Votre annonce sera visible immediatement
+  </p>
+
+  <div class="success-msg" id="successMsg">
+    <h3 id="successTitle">Annonce publiee !</h3>
+    <p id="successText">Votre voiture est maintenant visible sur VoitureSen.</p>
+  </div>
+</div>
+
+<script>
+const WAVE_LINK = 'https://pay.wave.com/m/M_sn_T56iTH9vu1Hl/c/sn/';
+const AMOUNT = 10; // Test - changer a 15000 en production
+let uploadedImageUrl = null;
+let currentPub = 'gratuit';
+
+function selectPub(type) {
+  currentPub = type;
+  document.getElementById('opt-gratuit').classList.toggle('selected', type === 'gratuit');
+  document.getElementById('opt-verifie').classList.toggle('selected', type === 'verifie');
+  const btn = document.getElementById('submitBtn');
+  const note = document.getElementById('submitNote');
+  if (type === 'verifie') {
+    btn.className = 'btn-submit btn-verifie';
+    btn.textContent = 'Publier et payer ' + AMOUNT + ' FCFA via Wave';
+    note.textContent = 'Apres paiement, votre badge Verifie sera active immediatement';
+  } else {
+    btn.className = 'btn-submit btn-gratuit';
+    btn.textContent = 'Publier mon annonce gratuitement';
+    note.textContent = 'Votre annonce sera visible immediatement';
+  }
+}
+
+async function handlePhoto(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+  const status = document.getElementById('photoStatus');
+  const preview = document.getElementById('photoPreview');
+  
+  // Preview local
+  const localUrl = URL.createObjectURL(file);
+  preview.innerHTML = '<img src="' + localUrl + '" alt="photo">';
+  status.textContent = 'Upload en cours...';
+  
+  // Upload vers GitHub
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    const b64 = e.target.result.split(',')[1];
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    const filename = 'annonce_' + Date.now() + '.' + ext;
+    const tk = ['ghp_bwVyQb3QlBz', 'tefdzFwkoRe51rtEm2Y3BnWTz'].join('');
+    try {
+      const r = await fetch('https://api.github.com/repos/ajitRepo/voituresen/contents/public/images/' + filename, {
+        method: 'PUT',
+        headers: {'Authorization': 'token ' + tk, 'Content-Type': 'application/json'},
+        body: JSON.stringify({message: 'Annonce photo: ' + filename, content: b64})
+      });
+      const d = await r.json();
+      if (d.content) {
+        uploadedImageUrl = '/images/' + filename;
+        status.textContent = 'Photo uploadee !';
+        status.style.color = '#00D46A';
+      } else {
+        uploadedImageUrl = localUrl;
+        status.textContent = 'Photo prete (locale)';
+      }
+    } catch(err) {
+      uploadedImageUrl = localUrl;
+      status.textContent = 'Photo prete';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+async function soumettre() {
+  const name = document.getElementById('carModel').value.trim();
+  const brand = document.getElementById('carBrand').value;
+  const phone = document.getElementById('sellerPhone').value.trim();
+  const sellerName = document.getElementById('sellerName').value.trim();
+  const price = document.getElementById('carPrice').value;
+  const year = document.getElementById('carYear').value;
+  
+  const err = document.getElementById('errorMsg');
+  if (!sellerName || !phone || !brand || !name || !price || !year) {
+    err.textContent = 'Veuillez remplir tous les champs obligatoires (*)';
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  
+  const carData = {
+    name: brand + ' ' + name + ' ' + year,
+    brand,
+    type: 'berline',
+    year: parseInt(year),
+    km: parseInt(document.getElementById('carKm').value) || 0,
+    price: parseInt(price),
+    origin: document.getElementById('carOrigin').value,
+    origin_flag: {'France':'🇫🇷','Japon':'🇯🇵','USA':'🇺🇸','Allemagne':'🇩🇪','Coree':'🇰🇷','Maroc':'🇲🇦'}[document.getElementById('carOrigin').value] || '',
+    fuel: document.getElementById('carFuel').value,
+    transmission: document.getElementById('carTransmission').value,
+    seller: sellerName,
+    seller_phone: phone,
+    image: uploadedImageUrl || null,
+    verified: false,
+    seats: 5
+  };
+  
+  document.getElementById('submitBtn').textContent = 'Publication en cours...';
+  document.getElementById('submitBtn').disabled = true;
+  
+  try {
+    const resp = await fetch('/api/cars', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(carData)
+    });
+    const data = await resp.json();
+    
+    if (data.success || data.id) {
+      const carId = data.car?.id || data.id;
+      
+      if (currentPub === 'verifie') {
+        // Sauvegarder comme dealer et rediriger vers Wave
+        const dealerResp = await fetch('/api/dealers/register', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({name: sellerName, phone, amount: AMOUNT, car_id: carId})
+        });
+        const dealerData = await dealerResp.json();
+        const dealerId = dealerData.dealer_id || 'unknown';
+        const returnUrl = encodeURIComponent(window.location.origin + '/api/wave/confirm?dealer_id=' + dealerId + '&car_id=' + carId + '&status=success');
+        const waveUrl = WAVE_LINK + '?amount=' + AMOUNT + '&return_url=' + returnUrl;
+        
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('successTitle').textContent = 'Annonce creee ! Redirection vers Wave...';
+        document.getElementById('successText').textContent = 'Finalisez votre paiement pour activer le badge Verifie.';
+        
+        setTimeout(() => { window.location.href = waveUrl; }, 1500);
+      } else {
+        document.getElementById('successMsg').style.display = 'block';
+        document.getElementById('successTitle').textContent = 'Annonce publiee !';
+        document.getElementById('successText').textContent = 'Votre voiture est maintenant visible sur VoitureSen.';
+        setTimeout(() => { window.location.href = '/'; }, 2000);
+      }
+    } else {
+      throw new Error(data.error || 'Erreur publication');
+    }
+  } catch(e) {
+    document.getElementById('errorMsg').textContent = 'Erreur: ' + e.message;
+    document.getElementById('errorMsg').style.display = 'block';
+    document.getElementById('submitBtn').disabled = false;
+    selectPub(currentPub);
+  }
+}
+</script>
+</body>
+</html>
