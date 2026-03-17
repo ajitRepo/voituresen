@@ -573,6 +573,80 @@ app.post('/api/dealers/register', async (req, res) => {
 });
 
 
+// ============================================
+// WAVE PAYMENT - CONFIRMATION AUTOMATIQUE
+// ============================================
+
+// Route de confirmation apres paiement Wave
+app.get('/api/wave/confirm', async (req, res) => {
+  const { dealer_id, status } = req.query;
+  
+  try {
+    if (status === 'success' || !status) {
+      // Activer le badge du concessionnaire
+      if (dealer_id) {
+        await querySupabase('PATCH', 'dealers?id=eq.' + dealer_id, {
+          status: 'active',
+          verified: true,
+          paid_at: new Date().toISOString()
+        });
+      }
+      // Rediriger vers page de succes
+      res.redirect('/paiement-confirme?dealer_id=' + (dealer_id || '') + '&status=success');
+    } else {
+      res.redirect('/paiement-confirme?status=cancelled');
+    }
+  } catch(e) {
+    console.error('Wave confirm error:', e);
+    res.redirect('/paiement-confirme?status=error');
+  }
+});
+
+// Route inscription concessionnaire
+app.post('/api/dealers/register', async (req, res) => {
+  try {
+    const { name, phone, email, city, stock, amount } = req.body;
+    const result = await querySupabase('POST', 'dealers', {
+      name, phone, email: email || null,
+      city: city || 'Dakar',
+      stock: stock || '1-5',
+      status: 'pending',
+      verified: false,
+      amount: amount || 15000
+    });
+    const dealer = Array.isArray(result) ? result[0] : result;
+    res.json({ success: true, dealer_id: dealer.id, dealer });
+  } catch(e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
+// Route pour voir tous les concessionnaires (admin)
+app.get('/api/admin/dealers', async (req, res) => {
+  try {
+    const dealers = await querySupabase('GET', 'dealers?order=created_at.desc');
+    res.json({ success: true, dealers });
+  } catch(e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
+// Route pour activer/desactiver un concessionnaire (admin)
+app.patch('/api/admin/dealers/:id', async (req, res) => {
+  try {
+    const result = await querySupabase('PATCH', 'dealers?id=eq.' + req.params.id, req.body);
+    res.json({ success: true, dealer: result });
+  } catch(e) {
+    res.json({ success: false, error: e.message });
+  }
+});
+
+// Page de confirmation paiement
+app.get('/paiement-confirme', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'paiement-confirme.html'));
+});
+
+
 // ADMIN LOGIN SECURISE
 app.post('/api/admin/login', (req, res) => {
   const { username, password } = req.body;
